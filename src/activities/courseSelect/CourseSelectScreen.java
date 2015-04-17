@@ -1,23 +1,20 @@
-package main;
-
+package activities.courseSelect;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.util.FPSLogger;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-import android.util.Log;
 import android.view.Display;
 
+/* contact TODO for questions on this file */
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
@@ -29,16 +26,15 @@ import android.view.Display;
  * screen, not through the buttons. if all interface goes through your buttons,
  * that shouldn't be necessary.
  *
- * @author jack - jack.davidson38@gmail.com
+ * @author Jack - jack.davidson38@gmail.com
  *
  */
-public class AndengineHello extends SimpleBaseGameActivity implements
-		IOnSceneTouchListener {
+public class CourseSelectScreen extends SimpleBaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	private static final int width = 1280;
-	private static int height;
+	private static final int height = 1280;
+	private static int width;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -65,23 +61,29 @@ public class AndengineHello extends SimpleBaseGameActivity implements
 		Display display = getWindowManager().getDefaultDisplay();
 		// get the width and height of the screen in pixels for our ratio
 		// calculations
-		int tempWidth = display.getWidth(); // deprecated
-		height = display.getHeight(); // deprecated
+		@SuppressWarnings("deprecation")
+		int tempWidth = display.getWidth();
+		@SuppressWarnings("deprecation")
+		int tempHeight = display.getHeight();
 		// calculate what the height needs to be. width stays 1280.
-		float heightWidthRatio = (float) height / (float) tempWidth;
-		height = (int) (width * heightWidthRatio);
+		float widthHeightRatio = (float) tempWidth / (float) tempHeight;
+		width = (int) (height * widthHeightRatio);
 		// declare the camera, we want something thats 1280 by whatever.
 		final Camera camera = new Camera(0, 0, width, height);
 		// EngineOptions are used by Andengine. Shouldn't need to play around
 		// with this too much
 		EngineOptions engineOptions = new EngineOptions(true,
-				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
+				ScreenOrientation.PORTRAIT_FIXED, new RatioResolutionPolicy(
 						width, height), camera);
-		// if we need sounds:
+		// TODO: if we need sounds:
 		// engineOptions.getAudioOptions().setNeedsMusic(true);
 		return engineOptions;
 	}
 
+	/**
+	 * this is where loading happens. really, we can load wherever we like
+	 * though, so ignore this function.
+	 */
 	@Override
 	public void onCreateResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -92,39 +94,19 @@ public class AndengineHello extends SimpleBaseGameActivity implements
 
 	/**
 	 * entry point!!!!!!!! this is where most of your code will be. basically
-	 * everything that goes on screen (thats not declared in xml instead)
-	 * belongs on here
+	 * everything that goes on screen belongs on here, or in helper functions
+	 * that this function uses
+	 * 
+	 * @author: Jack - jack.davidson38@gmail.com
 	 */
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(0f, 1f, 0f));
-		this.mScene.setOnSceneTouchListener(this);
-		mScene.setTouchAreaBindingOnActionDownEnabled(true);
+		this.mScene.setBackground(new Background(0f, 0f, 1f));
+		/* TODO: contact server through phpInteractions for list of courses */
+		/* TODO: add the ability to scroll through the list, and check boxes in the list */
+		
 		return this.mScene;
 	}
-
-	@Override
-	public boolean onSceneTouchEvent(final Scene pScene,
-			final TouchEvent pSceneTouchEvent) {
-		if (pSceneTouchEvent.isActionDown()) {
-			Log.i("AndengineHello", "x:" + pSceneTouchEvent.getX() + " y:"
-					+ pSceneTouchEvent.getY());
-			return true;
-		}
-		return false;
-	}
-	/*
-	 * @Override public void onResumeGame() { super.onResumeGame();
-	 * 
-	 * }
-	 * 
-	 * @Override public void onPauseGame() { super.onPauseGame(); }
-	 * 
-	 * @Override public void onWindowFocusChanged(boolean pHasWindowFocus) {
-	 * super.onWindowFocusChanged(pHasWindowFocus); }
-	 * 
-	 * @Override public void onDestroy() { super.onDestroy(); }
-	 */
 }
