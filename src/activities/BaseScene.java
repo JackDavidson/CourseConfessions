@@ -14,6 +14,9 @@ public abstract class BaseScene extends SimpleBaseGameActivity{
 	// ===========================================================
 	protected static final int height = 1280;
 	protected static int width;
+	
+	protected static int screenHeightPx;
+	protected static int screenWidthPx;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -34,10 +37,10 @@ public abstract class BaseScene extends SimpleBaseGameActivity{
 	Display display = getWindowManager().getDefaultDisplay();
 	// get the width and height of the screen in pixels for our ratio
 	// calculations
-	int tempWidth = display.getWidth();
-	int tempHeight = display.getHeight();
+	screenWidthPx = display.getWidth();
+	screenHeightPx = display.getHeight();
 	// calculate what the height needs to be. width stays 1280.
-	float widthHeightRatio = (float) tempWidth / (float) tempHeight;
+	float widthHeightRatio = (float) screenWidthPx / (float) screenHeightPx;
 	width = (int) (height * widthHeightRatio);
 	// declare the camera, we want something thats 1280 by whatever.
 	final Camera camera = new Camera(0, 0, width, height);

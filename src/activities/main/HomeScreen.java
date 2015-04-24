@@ -10,12 +10,25 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+
 import activities.BaseScene;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.Log;import android.view.ViewGroup;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsoluteLayout;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
@@ -32,20 +45,19 @@ import android.widget.EditText;
  * @author Jack - jack.davidson38@gmail.com
  *
  */
-public class HomeScreen extends BaseScene implements
-		IOnSceneTouchListener, TextWatcher {
+public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	//private static final int height = 1280;
-	//private static int width;
+	// private static final int height = 1280;
+	// private static int width;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	private BitmapTextureAtlas mBitmapTextureAtlas;
 	private Scene mScene;
-	private EditText editTextExample;
+	private EditText usernameEditText;
 
 	// ===========================================================
 	// Constructors
@@ -54,19 +66,41 @@ public class HomeScreen extends BaseScene implements
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	protected void onSetContentView() {
 		super.onSetContentView();
 		/* ========= How to do text entry ====================== */
-		editTextExample = new EditText(this);
-		editTextExample.addTextChangedListener(this);
-		this.addContentView(editTextExample, new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT));
+		usernameEditText = new EditText(this);
+		usernameEditText.setTextColor(Color.WHITE);
+
+		/********
+		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
+		 * this!!! TODO
+		 *****/
+		usernameEditText.setX(screenWidthPx * 1 / 4);
+		usernameEditText.setY(screenHeightPx * 1 / 4);
+
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				screenWidthPx * 2 / 4, 100);
+
+		InputFilter filter = new InputFilter() {
+			@Override
+			public CharSequence filter(CharSequence source, int start, int end,
+					Spanned dest, int dstart, int dend) {
+				for (int i = start; i < end; i++)
+					if (!Character.isLetter(source.charAt(i)))
+						return "";
+
+				return null;
+			}
+		};
+
+		usernameEditText.setFilters(new InputFilter[] { filter });
+
+		this.addContentView(usernameEditText, lp);
 		/* ========= End How to do text entry ================== */
 	}
-
-
 
 	/**
 	 * this is where loading happens. really, we can load wherever we like
@@ -76,7 +110,7 @@ public class HomeScreen extends BaseScene implements
 	public void onCreateResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
-				this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+				this.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
 		this.mBitmapTextureAtlas.load();
 	}
 
@@ -96,23 +130,36 @@ public class HomeScreen extends BaseScene implements
 		// mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
 		/* ========= How To Create a image on scene ============ */
-		final ITextureRegion logoTextureRegion = BitmapTextureAtlasTextureRegionFactory
+		// using area 0x0 to 640x1136
+		final ITextureRegion backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"badge_large.png", 0, 0);
-		final Sprite logoSprite = new Sprite(50, 50, logoTextureRegion,
-				this.getVertexBufferObjectManager());
-		mScene.attachChild(logoSprite);
+						"background.png", 0, 0);
+
+		int centerScreenX = width / 2;
+		int topOfBackground = 0; // since height = 1280 always, the top of
+									// background always belongs at 0
+		int leftOfBackground = centerScreenX - (640 / 2); // 640 is the width of
+															// the background
+		final Sprite background = new Sprite(leftOfBackground, topOfBackground,
+				backgroundTextureRegion, this.getVertexBufferObjectManager());
+		mScene.attachChild(background);
 		/* ========= End How To Create a image on scene ========= */
 
 		/* ========= How To Make an image a button ============== */
-		final Sprite touchLogoSprite = new Sprite(50, 500, logoTextureRegion,
+		// using area 640x0 to 1140x90
+		final ITextureRegion loginTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBitmapTextureAtlas, this,
+						"placeholderLogin.png", 640, 0);
+		final Sprite touchLogoSprite = new Sprite(width / 2 - 500 / 2,
+				height * 13 / 16, loginTextureRegion,
 				this.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				/* this is an example of how to open another scene */
-				if (pSceneTouchEvent.isActionUp())
-					startCourseSelectScreen();
+				if (pSceneTouchEvent.isActionUp()) {
+					attemptLogin();
+				}
 				return true;
 			}
 		};
@@ -123,6 +170,13 @@ public class HomeScreen extends BaseScene implements
 		// this.mBitmapTextureAtlas.load();
 
 		return this.mScene;
+	}
+
+	protected void attemptLogin() {
+		// TODO Auto-generated method stub
+		String userName = usernameEditText.getText().toString();
+		Log.i("HomeScreen Attempt login username:", userName);
+		startCourseSelectScreen();
 	}
 
 	private void startCourseSelectScreen() {
@@ -150,24 +204,6 @@ public class HomeScreen extends BaseScene implements
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void afterTextChanged(final Editable pEditable) {
-		// TODO stuff
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
