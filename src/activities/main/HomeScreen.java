@@ -1,32 +1,27 @@
 package activities.main;
 
-import org.andengine.entity.scene.IOnSceneTouchListener;
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.util.FPSLogger;
-import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
+import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import android.text.Editable;
+import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsoluteLayout;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -45,7 +40,7 @@ import android.widget.RelativeLayout;
  * @author Jack - jack.davidson38@gmail.com
  *
  */
-public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
+public class HomeScreen extends BaseScene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -55,8 +50,6 @@ public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	private BitmapTextureAtlas mBitmapTextureAtlas;
-	private Scene mScene;
 	private EditText usernameEditText;
 
 	// ===========================================================
@@ -68,8 +61,29 @@ public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 	// ===========================================================
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
-	protected void onSetContentView() {
-		super.onSetContentView();
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		/* ==== how to set background ===== */
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		LinearLayout linearLayout = new LinearLayout(this);
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		int id = R.raw.background;
+		ImageView imageView = new ImageView(this);
+		LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+		imageView.setAdjustViewBounds(true);
+		imageView.setScaleType(ScaleType.CENTER_CROP);
+		imageView.setImageResource(id);
+		imageView.setLayoutParams(vp);
+		linearLayout.addView(imageView);
+		addContentView(linearLayout, vp);
+		/* ==== END how to set background ===== */
+
 		/* ========= How to do text entry ====================== */
 		usernameEditText = new EditText(this);
 		usernameEditText.setTextColor(Color.WHITE);
@@ -78,11 +92,11 @@ public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
-		usernameEditText.setX(screenWidthPx * 1 / 4);
-		usernameEditText.setY(screenHeightPx * 1 / 4);
+		usernameEditText.setX(widthPx * 1 / 4);
+		usernameEditText.setY(heightPx * 1 / 4);
 
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				screenWidthPx * 2 / 4, 100);
+				widthPx * 2 / 4, 70);
 
 		InputFilter filter = new InputFilter() {
 			@Override
@@ -100,76 +114,29 @@ public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 
 		this.addContentView(usernameEditText, lp);
 		/* ========= End How to do text entry ================== */
-	}
 
-	/**
-	 * this is where loading happens. really, we can load wherever we like
-	 * though, so ignore this function.
-	 */
-	@Override
-	public void onCreateResources() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
-				this.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
-		this.mBitmapTextureAtlas.load();
-	}
-
-	/**
-	 * entry point!!!!!!!! this is where most of your code will be. basically
-	 * everything that goes on screen belongs on here, or in helper functions
-	 * that this uses
-	 * 
-	 * @author: Jack - jack.davidson38@gmail.com
-	 */
-	@Override
-	public Scene onCreateScene() {
-		this.mEngine.registerUpdateHandler(new FPSLogger());
-		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(0f, 1f, 0f));
-		this.mScene.setOnSceneTouchListener(this);
-		// mScene.setTouchAreaBindingOnActionDownEnabled(true);
-
-		/* ========= How To Create a image on scene ============ */
-		// using area 0x0 to 640x1136
-		final ITextureRegion backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"background.png", 0, 0);
-
-		int centerScreenX = width / 2;
-		int topOfBackground = 0; // since height = 1280 always, the top of
-									// background always belongs at 0
-		int leftOfBackground = centerScreenX - (640 / 2); // 640 is the width of
-															// the background
-		final Sprite background = new Sprite(leftOfBackground, topOfBackground,
-				backgroundTextureRegion, this.getVertexBufferObjectManager());
-		mScene.attachChild(background);
-		/* ========= End How To Create a image on scene ========= */
-
-		/* ========= How To Make an image a button ============== */
-		// using area 640x0 to 1140x90
-		final ITextureRegion loginTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"placeholderLogin.png", 640, 0);
-		final Sprite touchLogoSprite = new Sprite(width / 2 - 500 / 2,
-				height * 13 / 16, loginTextureRegion,
-				this.getVertexBufferObjectManager()) {
+		/* ========= How to add a button ======================= */
+		Button bt = new Button(this);
+		bt.setBackgroundDrawable(getResources().getDrawable(
+				R.raw.placeholderlogin));
+		bt.setX(widthPx / 2 - lp.width / 2);
+		bt.setY((height - 200) * nativeToPxRatio);
+		bt.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
+		bt.setOnTouchListener(new OnTouchListener() {
 			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
-					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				/* this is an example of how to open another scene */
-				if (pSceneTouchEvent.isActionUp()) {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
 					attemptLogin();
+					return true;
 				}
-				return true;
+
+				return false;
 			}
-		};
-		mScene.registerTouchArea(touchLogoSprite);
-		mScene.attachChild(touchLogoSprite);
-		/* ========= End How To Make that image a button ======== */
+		});
+		addContentView(bt, lp);
+		/* ========= End How to add a button =================== */
 
-		// this.mBitmapTextureAtlas.load();
-
-		return this.mScene;
 	}
 
 	protected void attemptLogin() {
@@ -184,42 +151,4 @@ public class HomeScreen extends BaseScene implements IOnSceneTouchListener {
 				activities.courseSelect.CourseSelectScreen.class);
 		this.startActivity(courseSelectScreen);
 	}
-
-	/**
-	 * this is just an example to show you how to handle screen touches. The way
-	 * it works is that screen touches are first caught by buttons, then if you
-	 * return "false" (i think its false) they are passed along to the lower
-	 * buttons or the screen. So, the below function is used for scrolling, but
-	 * not much else.
-	 * 
-	 * @author: Jack - jack.davidson38@gmail.com
-	 */
-	@Override
-	public boolean onSceneTouchEvent(final Scene pScene,
-			final TouchEvent pSceneTouchEvent) {
-		/* TODO: actually do something.... */
-		if (pSceneTouchEvent.isActionDown()) {
-			Log.i("HomeScreen", "x:" + pSceneTouchEvent.getX() + " y:"
-					+ pSceneTouchEvent.getY());
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * the below is to make a note of functions we will be implementing much
-	 * later
-	 */
-	/*
-	 * @Override public void onResumeGame() { super.onResumeGame();
-	 * 
-	 * }
-	 * 
-	 * @Override public void onPauseGame() { super.onPauseGame(); }
-	 * 
-	 * @Override public void onWindowFocusChanged(boolean pHasWindowFocus) {
-	 * super.onWindowFocusChanged(pHasWindowFocus); }
-	 * 
-	 * @Override public void onDestroy() { super.onDestroy(); }
-	 */
 }
