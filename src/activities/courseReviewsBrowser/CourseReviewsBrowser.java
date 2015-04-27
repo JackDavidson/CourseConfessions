@@ -9,4 +9,5 @@ public class CourseReviewsBrowser {
 	 * results after you have checked them in courseSelect. 
 	 * Manager:
 	 */
+	
 }

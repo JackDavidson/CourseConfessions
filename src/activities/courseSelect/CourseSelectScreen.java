@@ -7,7 +7,18 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 
+import com.bitsplease.courseconfessions.R;
+
 import activities.BaseScene;
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ImageView.ScaleType;
 
 /* contact TODO for questions on this file */
 /**
@@ -25,52 +36,29 @@ import activities.BaseScene;
  *
  */
 public class CourseSelectScreen extends BaseScene {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-	//private static final int height = 1280;
-	//private static int width;
-	// ===========================================================
-	// Fields
-	// ===========================================================
-	private BitmapTextureAtlas mBitmapTextureAtlas;
-	private Scene mScene;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
-	/**
-	 * this is where loading happens. really, we can load wherever we like
-	 * though, so ignore this function.
-	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
-	public void onCreateResources() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
-				this.getTextureManager(), 64, 128, TextureOptions.BILINEAR);
-		this.mBitmapTextureAtlas.load();
-	}
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-	/**
-	 * entry point!!!!!!!! this is where most of your code will be. basically
-	 * everything that goes on screen belongs on here, or in helper functions
-	 * that this function uses
-	 * 
-	 * @author: Jack - jack.davidson38@gmail.com
-	 */
-	@Override
-	public Scene onCreateScene() {
-		this.mEngine.registerUpdateHandler(new FPSLogger());
-		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(0f, 0f, 1f));
-		/* TODO: contact server through phpInteractions for list of courses */
-		/* TODO: add the ability to scroll through the list, and check boxes in the list */
-		
-		return this.mScene;
+		/* ==== how to set background ===== */
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		LinearLayout linearLayout = new LinearLayout(this);
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		int id = R.raw.background;
+		ImageView imageView = new ImageView(this);
+		LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+		imageView.setAdjustViewBounds(true);
+		imageView.setScaleType(ScaleType.CENTER_CROP);
+		imageView.setImageResource(id);
+		imageView.setLayoutParams(vp);
+		linearLayout.addView(imageView);
+		addContentView(linearLayout, vp);
+		/* ==== END how to set background ===== */
 	}
 }
