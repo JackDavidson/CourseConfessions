@@ -2,6 +2,7 @@ package activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 
 public class BaseScene extends Activity {
@@ -23,6 +24,7 @@ public class BaseScene extends Activity {
 		// calculate what the height needs to be. width stays 1280.
 		float widthHeightRatio = (float) widthPx / (float) heightPx;
 		width = (int) (height * widthHeightRatio);
-		nativeToPxRatio = (float)height/(float)heightPx;
+		nativeToPxRatio = (float)(float)heightPx/height;
+		Log.e("ratio", "ratio: " + nativeToPxRatio);
 	}
 }

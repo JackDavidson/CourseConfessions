@@ -92,11 +92,12 @@ public class HomeScreen extends BaseScene {
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
-		usernameEditText.setX(widthPx * 1 / 4);
-		usernameEditText.setY(heightPx * 1 / 4);
 
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				widthPx * 2 / 4, 70);
+				(int)(400*nativeToPxRatio), (int)(70*nativeToPxRatio));
+		
+		usernameEditText.setX((widthPx/2) - (lp.width/2));
+		usernameEditText.setY(heightPx * 1 / 4);
 
 		InputFilter filter = new InputFilter() {
 			@Override
