@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
@@ -51,6 +53,7 @@ public class HomeScreen extends BaseScene {
 	// Fields
 	// ===========================================================
 	private EditText usernameEditText;
+	private EditText passwordEditText;
 
 	// ===========================================================
 	// Constructors
@@ -85,19 +88,33 @@ public class HomeScreen extends BaseScene {
 		/* ==== END how to set background ===== */
 
 		/* ========= How to do text entry ====================== */
+		/** Username placeholder initializer */
 		usernameEditText = new EditText(this);
-		usernameEditText.setTextColor(Color.WHITE);
-
+		usernameEditText.setTextColor(Color.rgb(12, 26, 38));
+		usernameEditText.setHint("Username");
+		
+		/** Password placeholder initializer */
+		passwordEditText = new EditText(this);
+		passwordEditText.setHint("Password");
+		passwordEditText.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD); // Should work, but doesn't??? TODO
+		passwordEditText.setTextColor(Color.rgb(12, 26, 38));
+		//passwordEditText.setHint("Password");
+		
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
 
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				(int)(400*nativeToPxRatio), (int)(70*nativeToPxRatio));
+				(int)(500*nativeToPxRatio), (int)(70*nativeToPxRatio));
+		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
+				(int) (500*nativeToPxRatio), (int) (100*nativeToPxRatio));
 		
-		usernameEditText.setX((widthPx/2) - (lp.width/2));
-		usernameEditText.setY(heightPx * 1 / 4);
+		usernameEditText.setX((widthPx/2) - (lp.width/2)+50);
+		usernameEditText.setY((heightPx * 1 / 2)-155);
+		
+		passwordEditText.setX((widthPx/2) -(lp.width/2)+50);
+		passwordEditText.setY((heightPx * 1 / 2)+45);
 
 		InputFilter filter = new InputFilter() {
 			@Override
@@ -114,6 +131,7 @@ public class HomeScreen extends BaseScene {
 		usernameEditText.setFilters(new InputFilter[] { filter });
 
 		this.addContentView(usernameEditText, lp);
+		this.addContentView(passwordEditText, lp);
 		/* ========= End How to do text entry ================== */
 
 		/* ========= How to add a button ======================= */
@@ -122,8 +140,8 @@ public class HomeScreen extends BaseScene {
 				R.raw.placeholderlogin));
 		bt.setX(widthPx / 2 - lp.width / 2);
 		bt.setY((height - 200) * nativeToPxRatio);
-		bt.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		bt.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT));
 		bt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -135,7 +153,7 @@ public class HomeScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView(bt, lp);
+		addContentView(bt, login);
 		/* ========= End How to add a button =================== */
 
 	}
