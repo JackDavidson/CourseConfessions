@@ -96,9 +96,8 @@ public class HomeScreen extends BaseScene {
 		/** Password placeholder initializer */
 		passwordEditText = new EditText(this);
 		passwordEditText.setHint("Password");
-		passwordEditText.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD); // Should work, but doesn't??? TODO
+		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		passwordEditText.setTextColor(Color.rgb(12, 26, 38));
-		//passwordEditText.setHint("Password");
 		
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
@@ -110,11 +109,11 @@ public class HomeScreen extends BaseScene {
 		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
 				(int) (500*nativeToPxRatio), (int) (100*nativeToPxRatio));
 		
-		usernameEditText.setX((widthPx/2) - (lp.width/2)+50);
-		usernameEditText.setY((heightPx * 1 / 2)-155);
+		usernameEditText.setX((widthPx/2) - (lp.width/2)+34*nativeToPxRatio);
+		usernameEditText.setY((heightPx * 1 / 2)-104*nativeToPxRatio);
 		
-		passwordEditText.setX((widthPx/2) -(lp.width/2)+50);
-		passwordEditText.setY((heightPx * 1 / 2)+45);
+		passwordEditText.setX((widthPx/2) -(lp.width/2)+34*nativeToPxRatio);
+		passwordEditText.setY((heightPx * 1 / 2)+30*nativeToPxRatio);
 
 		InputFilter filter = new InputFilter() {
 			@Override
