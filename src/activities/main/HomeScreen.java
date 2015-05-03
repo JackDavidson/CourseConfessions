@@ -1,5 +1,22 @@
 package activities.main;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
@@ -9,6 +26,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
@@ -54,6 +72,7 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	private EditText usernameEditText;
 	private EditText passwordEditText;
+	private TextView loginResultTextView;
 
 	// ===========================================================
 	// Constructors
@@ -67,10 +86,17 @@ public class HomeScreen extends BaseScene {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* ==== how to set background ===== */
+		/* ==== settings ==== */
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		/* ==== END settings ==== */
+
+		/* ==== how to set background ===== */
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 		linearLayout.setLayoutParams(new LayoutParams(
@@ -87,33 +113,43 @@ public class HomeScreen extends BaseScene {
 		addContentView(linearLayout, vp);
 		/* ==== END how to set background ===== */
 
+		/* ====== how to display text ====== */
+		loginResultTextView = new TextView(this);
+		loginResultTextView.setX(50 * nativeToPxRatio);
+		loginResultTextView.setY((height / 2 + 100) * nativeToPxRatio);
+		RelativeLayout.LayoutParams loginResultParams = new RelativeLayout.LayoutParams(
+				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
+		loginResultTextView.setTextColor(Color.WHITE);
+		loginResultTextView.setText("Ready");
+		addContentView(loginResultTextView, loginResultParams);
+		/* ==== END how to display text ==== */
+
 		/* ========= How to do text entry ====================== */
 		/** Username placeholder initializer */
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		usernameEditText = new EditText(this);
 		usernameEditText.setTextColor(Color.rgb(12, 26, 38));
 		usernameEditText.setHint("Username");
-		
+		usernameEditText.setX((widthPx / 2) - (lp.width / 2) + 34
+				* nativeToPxRatio);
+		usernameEditText.setY((heightPx * 1 / 2) - 104 * nativeToPxRatio);
+
 		/** Password placeholder initializer */
 		passwordEditText = new EditText(this);
 		passwordEditText.setHint("Password");
-		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		passwordEditText.setTextColor(Color.rgb(12, 26, 38));
-		
+
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
 
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				(int)(500*nativeToPxRatio), (int)(70*nativeToPxRatio));
-		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
-				(int) (500*nativeToPxRatio), (int) (100*nativeToPxRatio));
-		
-		usernameEditText.setX((widthPx/2) - (lp.width/2)+34*nativeToPxRatio);
-		usernameEditText.setY((heightPx * 1 / 2)-104*nativeToPxRatio);
-		
-		passwordEditText.setX((widthPx/2) -(lp.width/2)+34*nativeToPxRatio);
-		passwordEditText.setY((heightPx * 1 / 2)+30*nativeToPxRatio);
+		passwordEditText.setX((widthPx / 2) - (lp.width / 2) + 34
+				* nativeToPxRatio);
+		passwordEditText.setY((heightPx * 1 / 2) + 30 * nativeToPxRatio);
 
 		InputFilter filter = new InputFilter() {
 			@Override
@@ -139,8 +175,9 @@ public class HomeScreen extends BaseScene {
 				R.raw.placeholderlogin));
 		bt.setX(widthPx / 2 - lp.width / 2);
 		bt.setY((height - 200) * nativeToPxRatio);
-		bt.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+
+		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
+				(int) (500 * nativeToPxRatio), (int) (100 * nativeToPxRatio));
 		bt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -158,10 +195,78 @@ public class HomeScreen extends BaseScene {
 	}
 
 	protected void attemptLogin() {
+		String stringResultUserName = null; // where the username will be put,
+											// if we're successful.
 		// TODO Auto-generated method stub
 		String userName = usernameEditText.getText().toString();
+		String userPass = passwordEditText.getText().toString();
 		Log.i("HomeScreen Attempt login username:", userName);
-		startCourseSelectScreen();
+		Log.i("HomeScreen Attempt login pass:", userPass);
+
+		String result = "";
+		// the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username", userName));
+		nameValuePairs.add(new BasicNameValuePair("password", userPass));
+		InputStream is = null;
+
+		// http post
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(
+					"http://www.courseconfessions.com/androidlogin.php");
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		} catch (Exception e) {
+			Log.e("log_tag", "Error in http connection " + e.toString());
+		}
+		// convert response to string
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					is, "iso-8859-1"), 8);
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+			is.close();
+
+			result = sb.toString();
+			Log.e("result", result);
+		} catch (Exception e) {
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+
+		// parse json data
+		try {
+			JSONArray jArray = new JSONArray(result);
+			Log.e("log_tag", "made it here");
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject json_data = jArray.getJSONObject(i);
+				Log.i("", "made it to second");
+				Log.i("", json_data.getString("USER"));
+				stringResultUserName = json_data.getString("USER");
+				// Log.i("log_tag", "Length: " + json_data.length() + " "
+				// + "USER: " + json_data.getString("USER"));
+			}
+		} catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+
+		// startCourseSelectScreen();
+		
+		
+		if(stringResultUserName != null){
+			if(stringResultUserName.equals("fail")){
+				loginResultTextView.setText("Incorrect login username or password!");
+			} else {
+				loginResultTextView.setText("Success! Logged in as: " + stringResultUserName);
+			}
+		} else {
+			loginResultTextView.setText("Failed to log in! connection error");
+		}
 	}
 
 	private void startCourseSelectScreen() {
