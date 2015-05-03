@@ -22,7 +22,11 @@ import com.bitsplease.courseconfessions.R;
 import activities.BaseScene;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,22 +100,19 @@ public class HomeScreen extends BaseScene {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/* ==== END settings ==== */
 
-		/* ==== how to set background ===== */
+		/* ==== Set background ===== */
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		linearLayout.setLayoutParams(new LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		int id = R.raw.background;
-		ImageView imageView = new ImageView(this);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.raw.background);
+		DTImageView imageView = new DTImageView(this);
+		imageView.imageBitmap = Bitmap.createScaledBitmap(bitmap,(int)(1000*nativeToPxRatio),(int)(1280*nativeToPxRatio),true);
+		imageView.setX(widthPx/2 - (1000/2)*nativeToPxRatio);
 		LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-		imageView.setAdjustViewBounds(true);
-		imageView.setScaleType(ScaleType.CENTER_CROP);
-		imageView.setImageResource(id);
-		imageView.setLayoutParams(vp);
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		linearLayout.setClipChildren(false);
 		linearLayout.addView(imageView);
 		addContentView(linearLayout, vp);
-		/* ==== END how to set background ===== */
+		/* ==== END set background ===== */
 
 		/* ====== how to display text ====== */
 		loginResultTextView = new TextView(this);
@@ -273,5 +274,20 @@ public class HomeScreen extends BaseScene {
 		Intent courseSelectScreen = new Intent(this,
 				activities.courseSelect.CourseSelectScreen.class);
 		this.startActivity(courseSelectScreen);
+	}
+	
+	public class DTImageView extends View {
+
+	     public Bitmap imageBitmap;
+
+	     public DTImageView(Context context) { 
+	         super(context); 
+	     } 
+
+	     protected void onDraw(Canvas canvas) {
+	        super.onDraw(canvas);
+	        if(imageBitmap != null)
+	          canvas.drawBitmap(imageBitmap, 0, 0, null); 
+	     }
 	}
 }
