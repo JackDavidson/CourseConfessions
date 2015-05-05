@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.SDCardWriter;
+
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
@@ -48,6 +50,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
@@ -192,6 +195,13 @@ public class HomeScreen extends BaseScene {
 		});
 		addContentView(bt, login);
 		/* ========= End How to add a button =================== */
+		
+		
+		/* ======== Quick how to write/read files ============== */
+		SDCardWriter.writeFile(getFilesDir().toString(),"placeholderName", "placeholderComment");
+		String read = SDCardWriter.readFile(getFilesDir().toString() + "placeholderName");
+		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG).show();
+		/* ========== END how to write/read files ============== */
 
 	}
 
