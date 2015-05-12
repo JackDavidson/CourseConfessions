@@ -187,6 +187,7 @@ public class HomeScreen extends BaseScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					attemptLogin();
+					startCourseSelectScreen();
 					return true;
 				}
 
