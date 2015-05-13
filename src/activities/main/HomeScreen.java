@@ -18,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.SDCardWriter;
+import visuals.PlacementEditText;
+import visuals.PlacementImage;
 
 import com.bitsplease.courseconfessions.R;
 
@@ -77,8 +79,8 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	private EditText usernameEditText;
-	private EditText passwordEditText;
+	private PlacementEditText placeUserText;
+	private PlacementEditText placePassText;
 	private TextView loginResultTextView;
 
 	// ===========================================================
@@ -104,17 +106,23 @@ public class HomeScreen extends BaseScene {
 		/* ==== END settings ==== */
 
 		/* ==== Set background ===== */
-		LinearLayout linearLayout = new LinearLayout(this);
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.raw.background);
-		DTImageView imageView = new DTImageView(this);
-		imageView.imageBitmap = Bitmap.createScaledBitmap(bitmap,(int)(1000*nativeToPxRatio),(int)(1280*nativeToPxRatio),true);
-		imageView.setX(widthPx/2 - (1000/2)*nativeToPxRatio);
-		LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		linearLayout.setClipChildren(false);
-		linearLayout.addView(imageView);
-		addContentView(linearLayout, vp);
+		PlacementImage image = new PlacementImage(this,
+				(int)(widthPx / (2*nativeToPxRatio)- 1000/2),0,1000,1280);
+		//PlacementImage image = new PlacementImage(this,(widthPx/2)- (1000/ 2) +
+			//	(int)((1000/2)*nativeToPxRatio),0,1000, 1280);
+		//text.setX((context.widthPx / 2) -  x* context.nativeToPxRatio);
+		//LinearLayout linearLayout = new LinearLayout(this);
+		//linearLayout.setOrientation(LinearLayout.VERTICAL);
+		//Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.raw.background);
+		//DTImageView imageView = new DTImageView(this);
+		//imageView.imageBitmap = Bitmap.createScaledBitmap(bitmap,(int)(1000*nativeToPxRatio),(int)(1280*nativeToPxRatio),true);
+		//imageView.setX(widthPx/2 - (1000/2)*nativeToPxRatio);
+		//LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
+				//LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		//linearLayout.setClipChildren(false);
+		//linearLayout.addView(imageView);
+		//addContentView(linearLayout, vp);
+		image.attachToScene();
 		/* ==== END set background ===== */
 
 		/* ====== how to display text ====== */
@@ -129,48 +137,18 @@ public class HomeScreen extends BaseScene {
 		/* ==== END how to display text ==== */
 
 		/* ========= How to do text entry ====================== */
-		/** Username placeholder initializer */
+		placeUserText = new PlacementEditText(this,34,-104,500,70,"Username");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		usernameEditText = new EditText(this);
-		usernameEditText.setTextColor(Color.rgb(12, 26, 38));
-		usernameEditText.setHint("Username");
-		usernameEditText.setX((widthPx / 2) - (lp.width / 2) + 34
-				* nativeToPxRatio);
-		usernameEditText.setY((heightPx * 1 / 2) - 104 * nativeToPxRatio);
-
-		/** Password placeholder initializer */
-		passwordEditText = new EditText(this);
-		passwordEditText.setHint("Password");
-		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		passwordEditText.setTextColor(Color.rgb(12, 26, 38));
+		placePassText = new PlacementEditText(this,34,30,500,70,"Password");
+		
 
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
-
-		passwordEditText.setX((widthPx / 2) - (lp.width / 2) + 34
-				* nativeToPxRatio);
-		passwordEditText.setY((heightPx * 1 / 2) + 30 * nativeToPxRatio);
-
-		InputFilter filter = new InputFilter() {
-			@Override
-			public CharSequence filter(CharSequence source, int start, int end,
-					Spanned dest, int dstart, int dend) {
-				for (int i = start; i < end; i++)
-					if (!Character.isLetter(source.charAt(i)))
-						return "";
-
-				return null;
-			}
-		};
-
-		usernameEditText.setFilters(new InputFilter[] { filter });
-
-		this.addContentView(usernameEditText, lp);
-		this.addContentView(passwordEditText, lp);
+		placeUserText.attachToScene();
+		placePassText.attachToScene();
 		/* ========= End How to do text entry ================== */
 
 		/* ========= How to add a button ======================= */
@@ -210,8 +188,8 @@ public class HomeScreen extends BaseScene {
 		String stringResultUserName = null; // where the username will be put,
 											// if we're successful.
 		// TODO Auto-generated method stub
-		String userName = usernameEditText.getText().toString();
-		String userPass = passwordEditText.getText().toString();
+		String userName = placeUserText.getEditText().getText().toString();
+		String userPass = placePassText.getEditText().getText().toString();
 		Log.i("HomeScreen Attempt login username:", userName);
 		Log.i("HomeScreen Attempt login pass:", userPass);
 
@@ -287,18 +265,4 @@ public class HomeScreen extends BaseScene {
 		this.startActivity(courseSelectScreen);
 	}
 	
-	public class DTImageView extends View {
-
-	     public Bitmap imageBitmap;
-
-	     public DTImageView(Context context) { 
-	         super(context); 
-	     } 
-
-	     protected void onDraw(Canvas canvas) {
-	        super.onDraw(canvas);
-	        if(imageBitmap != null)
-	          canvas.drawBitmap(imageBitmap, 0, 0, null); 
-	     }
-	}
 }

@@ -8,9 +8,9 @@ import android.view.Display;
 public class BaseScene extends Activity {
 
 	/* native size = 1280x800, or 1280x??? */
-	protected float nativeToPxRatio;
-	protected int widthPx;
-	protected int heightPx;
+	public float nativeToPxRatio;
+	public int widthPx;
+	public int heightPx;
 	protected int width;
 	protected static final int height = 1280;
 	@Override
