@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.SDCardWriter;
+import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
 
@@ -86,7 +87,8 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
+	phpInteractions php = new phpInteractions();
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -164,7 +166,7 @@ public class HomeScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					attemptLogin();
+					phpInteractions.attemptLogin(placeUserText, placePassText, loginResultTextView);
 					startCourseSelectScreen();
 					return true;
 				}
@@ -182,81 +184,6 @@ public class HomeScreen extends BaseScene {
 		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG).show();
 		/* ========== END how to write/read files ============== */
 
-	}
-
-	protected void attemptLogin() {
-		String stringResultUserName = null; // where the username will be put,
-											// if we're successful.
-		// TODO Auto-generated method stub
-		String userName = placeUserText.getEditText().getText().toString();
-		String userPass = placePassText.getEditText().getText().toString();
-		Log.i("HomeScreen Attempt login username:", userName);
-		Log.i("HomeScreen Attempt login pass:", userPass);
-
-		String result = "";
-		// the year data to send
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("username", userName));
-		nameValuePairs.add(new BasicNameValuePair("password", userPass));
-		InputStream is = null;
-
-		// http post
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(
-					"http://www.courseconfessions.com/androidlogin.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-		}
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-
-			result = sb.toString();
-			Log.e("result", result);
-		} catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-
-		// parse json data
-		try {
-			JSONArray jArray = new JSONArray(result);
-			Log.e("log_tag", "made it here");
-			for (int i = 0; i < jArray.length(); i++) {
-				JSONObject json_data = jArray.getJSONObject(i);
-				Log.i("", "made it to second");
-				Log.i("", json_data.getString("USER"));
-				stringResultUserName = json_data.getString("USER");
-				// Log.i("log_tag", "Length: " + json_data.length() + " "
-				// + "USER: " + json_data.getString("USER"));
-			}
-		} catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
-		}
-
-		// startCourseSelectScreen();
-		
-		
-		if(stringResultUserName != null){
-			if(stringResultUserName.equals("fail")){
-				loginResultTextView.setText("Incorrect login username or password!");
-			} else {
-				loginResultTextView.setText("Success! Logged in as: " + stringResultUserName);
-			}
-		} else {
-			loginResultTextView.setText("Failed to log in! connection error");
-		}
 	}
 
 	private void startCourseSelectScreen() {
