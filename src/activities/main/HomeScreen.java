@@ -1,22 +1,8 @@
 package activities.main;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import user.User;
+import util.LoginException;
 import util.SDCardWriter;
 import util.phpInteractions;
 import visuals.PlacementEditText;
@@ -25,32 +11,16 @@ import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,16 +29,16 @@ import android.widget.Toast;
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
- *
+ * 
  * Andengine provides a "SimpleBaseGameActivity from which your game activity
  * (in this case AndengineHello) should always be extended
- *
+ * 
  * implements IOnSceneTouchListener is for touch interface directly through the
  * screen, not through the buttons. if all interface goes through your buttons,
  * that shouldn't be necessary.
- *
+ * 
  * @author Jack - jack.davidson38@gmail.com
- *
+ * 
  */
 public class HomeScreen extends BaseScene {
 	// ===========================================================
@@ -88,11 +58,10 @@ public class HomeScreen extends BaseScene {
 	// Constructors
 	// ===========================================================
 	phpInteractions php = new phpInteractions();
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,22 +77,8 @@ public class HomeScreen extends BaseScene {
 		/* ==== END settings ==== */
 
 		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this,
-				(int)(widthPx / (2*nativeToPxRatio)- 1000/2),0,1000,1280);
-		//PlacementImage image = new PlacementImage(this,(widthPx/2)- (1000/ 2) +
-			//	(int)((1000/2)*nativeToPxRatio),0,1000, 1280);
-		//text.setX((context.widthPx / 2) -  x* context.nativeToPxRatio);
-		//LinearLayout linearLayout = new LinearLayout(this);
-		//linearLayout.setOrientation(LinearLayout.VERTICAL);
-		//Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.raw.background);
-		//DTImageView imageView = new DTImageView(this);
-		//imageView.imageBitmap = Bitmap.createScaledBitmap(bitmap,(int)(1000*nativeToPxRatio),(int)(1280*nativeToPxRatio),true);
-		//imageView.setX(widthPx/2 - (1000/2)*nativeToPxRatio);
-		//LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(
-				//LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		//linearLayout.setClipChildren(false);
-		//linearLayout.addView(imageView);
-		//addContentView(linearLayout, vp);
+		PlacementImage image = new PlacementImage(this, (int) (widthPx
+				/ (2 * nativeToPxRatio) - 1000 / 2), 0, 1000, 1280);
 		image.attachToScene();
 		/* ==== END set background ===== */
 
@@ -139,11 +94,11 @@ public class HomeScreen extends BaseScene {
 		/* ==== END how to display text ==== */
 
 		/* ========= How to do text entry ====================== */
-		placeUserText = new PlacementEditText(this,34,-104,500,70,"Username");
+		placeUserText = new PlacementEditText(this, 34, -104, 500, 70,
+				"Username");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		placePassText = new PlacementEditText(this,34,30,500,70,"Password");
-		
+		placePassText = new PlacementEditText(this, 34, 30, 500, 70, "Password");
 
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
@@ -166,8 +121,7 @@ public class HomeScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					phpInteractions.attemptLogin(placeUserText, placePassText, loginResultTextView);
-					startCourseSelectScreen();
+					attemptLogin();
 					return true;
 				}
 
@@ -176,20 +130,42 @@ public class HomeScreen extends BaseScene {
 		});
 		addContentView(bt, login);
 		/* ========= End How to add a button =================== */
-		
-		
+
 		/* ======== Quick how to write/read files ============== */
-		SDCardWriter.writeFile(getFilesDir().toString(),"placeholderName", "placeholderComment");
-		String read = SDCardWriter.readFile(getFilesDir().toString() + "placeholderName");
-		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG).show();
+		SDCardWriter.writeFile(getFilesDir().toString(), "placeholderName",
+				"placeholderComment");
+		String read = SDCardWriter.readFile(getFilesDir().toString()
+				+ "placeholderName");
+		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG)
+				.show();
 		/* ========== END how to write/read files ============== */
 
 	}
 
-	private void startCourseSelectScreen() {
-		Intent courseSelectScreen = new Intent(this,
-				activities.courseSelect.CourseSelectScreen.class);
-		this.startActivity(courseSelectScreen);
+	@Override
+	protected void onResume() {
+		super.onResume();
 	}
-	
+
+	private void attemptLogin() {
+		boolean loginSuccess = false;
+		User user = null;
+		String userName = placeUserText.getEditText().getText().toString();
+		String userPass = placePassText.getEditText().getText().toString();
+
+		try {
+			user = phpInteractions.attemptLoginAndCrateUser(userName, userPass, this);
+			loginSuccess = true;
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			this.loginResultTextView.setText(e.getMessage());
+		}
+		if (loginSuccess) {
+			// username/pass are valid, and we can now log in.
+			this.loginResultTextView.setText("Login success! as: "
+					+ user.getRealName());
+			this.startScreen(Screen.CourseSelectScreen);
+		}
+	}
+
 }

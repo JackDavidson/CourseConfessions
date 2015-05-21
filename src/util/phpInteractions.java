@@ -17,13 +17,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import user.User;
 import visuals.PlacementEditText;
+import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
 public class phpInteractions {
 
-	/* contact Eric and Jack for questions on this file */
+	/* contact Eric/Jack/Nolen for questions on this file */
 
 	/**
 	 * TODO: comments, explaining method
@@ -34,8 +36,8 @@ public class phpInteractions {
 	 *            TODO
 	 * @return TODO
 	 */
-	public static boolean attemptLogin(PlacementEditText placeUserText,
-			PlacementEditText placePassText, TextView loginResultTextView) {
+	public static User attemptLoginAndCrateUser(String userName,
+			String userPass, Context context) throws LoginException {
 		/*
 		 * TODO: contact server, return success or failure. handle exceptions as
 		 * appropriate
@@ -43,8 +45,7 @@ public class phpInteractions {
 		// if we're successful.
 		// TODO Auto-generated method stub
 		String stringResultUserName = null; // where the username will be put,
-		String userName = placeUserText.getEditText().getText().toString();
-		String userPass = placePassText.getEditText().getText().toString();
+		
 		Log.i("HomeScreen Attempt login username:", userName);
 		Log.i("HomeScreen Attempt login pass:", userPass);
 
@@ -57,18 +58,12 @@ public class phpInteractions {
 				nameValuePairs,
 				"http://www.courseconfessions.com/androidlogin.php")));
 
-		if (stringResultUserName != null) {
-			if (stringResultUserName.equals("fail")) {
-				loginResultTextView
-						.setText("Incorrect login username or password!");
-			} else {
-				loginResultTextView.setText("Success! Logged in as: "
-						+ stringResultUserName);
-			}
-			return true;
-		} else {
-			loginResultTextView.setText("Failed to log in! connection error");
-			return false;
+		if(stringResultUserName == null){
+			throw new LoginException("Failed to connext to server");
+		} else if (stringResultUserName.equals("fail")) {
+			throw new LoginException("Incorrect Username or password");
+		}	else {
+			return new User(userName, userPass, stringResultUserName, context);
 		}
 
 	}
