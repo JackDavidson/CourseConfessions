@@ -1,6 +1,7 @@
 package activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -13,6 +14,7 @@ public class BaseScene extends Activity {
 	public int heightPx;
 	protected int width;
 	protected static final int height = 1280;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,7 +26,25 @@ public class BaseScene extends Activity {
 		// calculate what the height needs to be. width stays 1280.
 		float widthHeightRatio = (float) widthPx / (float) heightPx;
 		width = (int) (height * widthHeightRatio);
-		nativeToPxRatio = (float)(float)heightPx/height;
+		nativeToPxRatio = (float) (float) heightPx / height;
 		Log.e("ratio", "ratio: " + nativeToPxRatio);
+	}
+
+	public void startScreen(Screen screen) {
+		switch (screen) {
+		case HomeScreen:
+			break;
+		case CourseSelectScreen:
+			Intent courseSelectScreen = new Intent(this,
+					activities.courseSelect.CourseSelectScreen.class);
+			this.startActivity(courseSelectScreen);
+			break;
+
+		}
+
+	}
+
+	public enum Screen {
+		HomeScreen, CourseSelectScreen
 	}
 }
