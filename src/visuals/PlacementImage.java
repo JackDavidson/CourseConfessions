@@ -32,12 +32,12 @@ public class PlacementImage implements Placeable {
 	private LinearLayout.LayoutParams vp;
 	private LinearLayout linearLayout;
 	private Bitmap bitmap;
-	public PlacementImage(BaseScene context, int x, int y, int width, int height) 
+	public PlacementImage(BaseScene context, int id, int x, int y, int width, int height) 
 	{
 		context2 = context;
 		linearLayout = new LinearLayout(context);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		bitmap = BitmapFactory.decodeResource(context.getResources(), R.raw.background);
+		bitmap = BitmapFactory.decodeResource(context.getResources(), id);
 		imageView = new DTImageView(context);
 		vp = new LinearLayout.LayoutParams((int)(width*context.nativeToPxRatio), 
 			(int)(height*context.nativeToPxRatio));

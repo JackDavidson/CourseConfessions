@@ -51,9 +51,6 @@ public class CourseSelectScreen extends BaseScene {
 		super.onCreate(savedInstanceState);
 
 		/* ==== TODO set background ===== */
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/* === END how to set background ==== */
 
 		/* ==== how to make the view scrollable === */

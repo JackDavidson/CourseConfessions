@@ -1,10 +1,21 @@
 package activities;
 
+import com.bitsplease.courseconfessions.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 public class BaseScene extends Activity {
 
@@ -15,9 +26,23 @@ public class BaseScene extends Activity {
 	protected int width;
 	protected static final int height = 1280;
 
+	Button menuBt;
+	Button logoutBt;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		/* ==== settings ==== */
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		/* ==== END settings ==== */
+
 		Display display = getWindowManager().getDefaultDisplay();
 		// get the width and height of the screen in pixels for our ratio
 		// calculations
@@ -27,7 +52,80 @@ public class BaseScene extends Activity {
 		float widthHeightRatio = (float) widthPx / (float) heightPx;
 		width = (int) (height * widthHeightRatio);
 		nativeToPxRatio = (float) (float) heightPx / height;
-		Log.e("ratio", "ratio: " + nativeToPxRatio);
+
+		/* ========= How to add a button ======================= */
+		menuBt = new Button(this);
+
+		menuBt.setBackgroundDrawable(getResources().getDrawable(R.raw.menubtn));
+		menuBt.setX(10);
+		menuBt.setY(10);
+
+		RelativeLayout.LayoutParams menuLP = new RelativeLayout.LayoutParams(
+				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio));
+		menuBt.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					toggleSideMenu();
+					return true;
+				}
+
+				return false;
+			}
+		});
+		addContentView(menuBt, menuLP);
+		/* ========= End How to add a button =================== */
+
+		/* ========= Off screen example log out BTN ============ */
+		logoutBt = new Button(this);
+
+		logoutBt.setBackgroundDrawable(getResources().getDrawable(R.raw.logoutbtn));
+		logoutBt.setX(0);
+		logoutBt.setY(75);
+
+		RelativeLayout.LayoutParams offscreenBtnLP = new RelativeLayout.LayoutParams(
+				(int) (150 * nativeToPxRatio), (int) (75 * nativeToPxRatio));
+		logoutBt.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					logout();
+					return true;
+				}
+
+				return false;
+			}
+		});
+		addContentView(logoutBt, offscreenBtnLP);
+		/* ======== End Off screen example log out BTN ======= */
+
+		Log.i("ratio", "ratio: " + nativeToPxRatio);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		menuBt.bringToFront();
+		logoutBt.bringToFront();
+	}
+
+	boolean sideMenuIsOut = false;
+	private void toggleSideMenu() {
+		// TODO: slide in the menu buttons
+		TranslateAnimation animation = null;
+		if(sideMenuIsOut){
+			animation = new TranslateAnimation(-500*nativeToPxRatio, 0, 0, 0);
+		} else {
+			animation = new TranslateAnimation(0, -500*nativeToPxRatio, 0, 0);
+		}
+		sideMenuIsOut = !sideMenuIsOut;
+		animation.setDuration(300); // duartion in ms
+		animation.setFillAfter(true);
+		logoutBt.startAnimation(animation);
+	}
+	
+	private void logout() {
+		
 	}
 
 	public void startScreen(Screen screen) {

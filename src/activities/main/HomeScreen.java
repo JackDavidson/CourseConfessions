@@ -1,6 +1,5 @@
 package activities.main;
 
-
 import user.User;
 import util.LoginException;
 import util.SDCardWriter;
@@ -66,19 +65,10 @@ public class HomeScreen extends BaseScene {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* ==== settings ==== */
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
-		StrictMode.setThreadPolicy(policy);
-
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		/* ==== END settings ==== */
-
 		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this, (int) (widthPx
-				/ (2 * nativeToPxRatio) - 1000 / 2), 0, 1000, 1280);
+		PlacementImage image = new PlacementImage(this, R.raw.background,
+				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000,
+				1280);
 		image.attachToScene();
 		/* ==== END set background ===== */
 
@@ -154,7 +144,8 @@ public class HomeScreen extends BaseScene {
 		String userPass = placePassText.getEditText().getText().toString();
 
 		try {
-			user = phpInteractions.attemptLoginAndCrateUser(userName, userPass, this);
+			user = phpInteractions.attemptLoginAndCrateUser(userName, userPass,
+					this);
 			loginSuccess = true;
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
