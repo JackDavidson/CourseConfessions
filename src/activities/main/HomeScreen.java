@@ -84,11 +84,12 @@ public class HomeScreen extends BaseScene {
 		/* ==== END how to display text ==== */
 
 		/* ========= How to do text entry ====================== */
-		placeUserText = new PlacementEditText(this, 34, -104, 500, 70,
-				"Username");
+		placeUserText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 - 104, 500, 70, "Username");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		placePassText = new PlacementEditText(this, 34, 30, 500, 70, "Password");
+		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 + 30, 500, 70, "Password");
 
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
@@ -157,6 +158,8 @@ public class HomeScreen extends BaseScene {
 					+ user.getRealName());
 			this.startScreen(Screen.CourseSelectScreen);
 		}
+		
+		this.startScreen(Screen.WriteReviewScreen);
 	}
 
 }

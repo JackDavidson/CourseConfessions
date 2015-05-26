@@ -137,12 +137,17 @@ public class BaseScene extends Activity {
 					activities.courseSelect.CourseSelectScreen.class);
 			this.startActivity(courseSelectScreen);
 			break;
+		case WriteReviewScreen:
+			Intent writeReviewScreen = new Intent(this,
+					activities.writeReview.WriteReviewScreen.class);
+			this.startActivity(writeReviewScreen);
+			break;
 
 		}
 
 	}
 
 	public enum Screen {
-		HomeScreen, CourseSelectScreen
+		HomeScreen, CourseSelectScreen, WriteReviewScreen
 	}
 }
