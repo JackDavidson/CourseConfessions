@@ -60,13 +60,13 @@ public class PlacementImage implements Placeable {
 	@Override
 	public void setX(int x) {
 		// TODO Auto-generated method stub
-		imageView.setX((context2.widthPx / 2) - x * context2.nativeToPxRatio);
+		imageView.setX(x * context2.nativeToPxRatio);
 	}
 
 	@Override
 	public void setY(int y) {
 		// TODO Auto-generated method stub
-		imageView.setY((context2.heightPx * 1 / 2) + y * context2.nativeToPxRatio);
+		imageView.setY(y * context2.nativeToPxRatio);
 	}
 
 	@Override
