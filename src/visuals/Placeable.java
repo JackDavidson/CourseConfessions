@@ -1,7 +1,7 @@
 package visuals;
 
 import android.widget.EditText;
-
+//interface to be used by PlacementEditText and PlacementImage
 public interface Placeable {
 	abstract void attachToScene();
 	abstract void setX(int x);

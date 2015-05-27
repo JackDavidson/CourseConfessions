@@ -14,16 +14,15 @@ public class XMLStringParser {
 	 * this is the root of the XML document. the root doesn't need a special
 	 * name
 	 */
+	//one of the ctors for the class, initializes arraylist items to size 5.
 	public XMLStringParser() {
 		items = new ArrayList<XMLStringObject>(5);
 	}
-
+	//another ctor for the class, initializes arraylist items to size 5, 
+	//and fills the items arraylist with the xml name value pairs.
 	public XMLStringParser(String input) throws XMLEOFException {
 		// TODO: handle loading up username/pass
 		items = new ArrayList<XMLStringObject>(5);
-
-		String currentName = "";
-		String currentValue = "";
 
 		// i needs to be an array because we need to pass by reference
 		// sorry for the hack
@@ -42,11 +41,11 @@ public class XMLStringParser {
 			i[0]++;
 		}
 	}
-
+	//add an item to the arraylist
 	public void addItem(XMLStringObject item) {
 		items.add(item);
 	}
-	
+	//return the value of the item with a certain name
 	public String getChildsValue(String name){
 		for (XMLStringObject item : items) {
 			if(item.name.equals(name))
@@ -54,7 +53,7 @@ public class XMLStringParser {
 		}
 		return "";
 	}
-
+	//toString method for the xml string parser.
 	public String toString() {
 		String asString = "";
 		asString += XML_BEGIN;

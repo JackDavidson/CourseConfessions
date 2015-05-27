@@ -16,12 +16,13 @@ public class XMLStringObject {
 	 * @param name
 	 * @param value
 	 */
+	//initialize the name value pairs in the constructor
 	public XMLStringObject(String name, String value) {
 		this.name = name;
 		this.value = value;
 		items = new ArrayList<XMLStringObject>(5);
 	}
-
+	//another constructor, reads an XML file for the name value pair
 	public XMLStringObject(String fileContents, int[] position)
 			throws XMLEOFException {
 		this("", "");
@@ -65,11 +66,11 @@ public class XMLStringObject {
 			items.add(new XMLStringObject(fileContents, position));
 		}
 	}
-
+	//add an item to the arraylist
 	public void addItem(XMLStringObject item) {
 		items.add(item);
 	}
-
+	//XMLStringObject's toString() method, depth is the amount of indent (i think)
 	public String toString(int depth) {
 		// Initialize an empty string
 		String asString = "";

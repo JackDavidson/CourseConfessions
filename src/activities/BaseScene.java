@@ -1,7 +1,7 @@
 package activities;
 
 import com.bitsplease.courseconfessions.R;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,10 @@ public class BaseScene extends Activity {
 	Button menuBt;
 	Button logoutBt;
 
+	@SuppressLint("ClickableViewAccessibility")
+	@SuppressWarnings("deprecation")
 	@Override
+	//set some settings and apply them to the window, rest is explained in the method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -98,18 +101,24 @@ public class BaseScene extends Activity {
 		});
 		addContentView(logoutBt, offscreenBtnLP);
 		/* ======== End Off screen example log out BTN ======= */
-
+		
+		
+		 /* ====how to print out a debug statement in logcat=====*/
 		Log.i("ratio", "ratio: " + nativeToPxRatio);
+		/* ====how to print out a debug statement in logcat=====*/
 	}
 
 	@Override
+	//calls android.activity's onStart() method, and brings the menu button 
+	//and the logout button to the front
 	protected void onStart() {
 		super.onStart();
 		menuBt.bringToFront();
 		logoutBt.bringToFront();
 	}
 
-	boolean sideMenuIsOut = false;
+	boolean sideMenuIsOut = false; //whether the side menu is out or not
+	//brings the side menu in and out of view.
 	private void toggleSideMenu() {
 		// TODO: slide in the menu buttons
 		TranslateAnimation animation = null;
@@ -123,11 +132,11 @@ public class BaseScene extends Activity {
 		animation.setFillAfter(true);
 		logoutBt.startAnimation(animation);
 	}
-	
+	//logout. pretty self explanatory.
 	private void logout() {
 		
 	}
-
+	//start a certain screen, the screen which is going to be started is passed into the method
 	public void startScreen(Screen screen) {
 		switch (screen) {
 		case HomeScreen:
@@ -146,7 +155,7 @@ public class BaseScene extends Activity {
 		}
 
 	}
-
+	//defines the different screens
 	public enum Screen {
 		HomeScreen, CourseSelectScreen, WriteReviewScreen
 	}
