@@ -39,7 +39,7 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
-public class HomeScreen extends BaseScene {
+public class SignupScreen extends BaseScene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -66,7 +66,7 @@ public class HomeScreen extends BaseScene {
 		super.onCreate(savedInstanceState);
 
 		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this, R.raw.background,
+		PlacementImage image = new PlacementImage(this, R.raw.signup,
 				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000,
 				1280);
 		image.attachToScene();
@@ -102,7 +102,7 @@ public class HomeScreen extends BaseScene {
 		/* ========= Login button ========= */
 		Button loginBtn = new Button(this);
 		loginBtn.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.placeholderlogin));
+				R.raw.placeholdersignup));
 		loginBtn.setX(widthPx / 2 - lp.width / 2);
 		loginBtn.setY((height - 350) * nativeToPxRatio);
 
@@ -122,34 +122,35 @@ public class HomeScreen extends BaseScene {
 		addContentView(loginBtn, login);
 		/* ========= End Login Button  ========= */
 		
-		/* ========= Signup Button ========= */
-		Button signupButton = new Button(this);
-		signupButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.signupbtn));
-		signupButton.setX((widthPx / 2 - lp.width / 2) + 65*nativeToPxRatio);
-		signupButton.setY((height - 100) * nativeToPxRatio);
+		/* ========= Login Button ========= */
+		Button loginButton = new Button(this);
+		loginButton.setBackgroundDrawable(getResources().getDrawable(
+				R.raw.loginbtn));
+		loginButton.setX((widthPx / 2 - lp.width / 2) + 65);
+		loginButton.setY((height - 100) * nativeToPxRatio);
 
-		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
+		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
-		signupButton.setOnTouchListener(new OnTouchListener() {
+		loginButton.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					startScreen(Screen.SignupScreen);
+					//startScreen(Screen.HomeScreen);
+					finish();
 					return true;
 				}
 
 				return false;
 			}
 		});
-		addContentView (signupButton, signupBtnLayout);
-		/* ========= End Signup Button ========= */
+		addContentView (loginButton, loginBtnLayout);
+		/* ========= End Login Button ========= */
 		
 		/* ========= Forgot Button ========= */
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2 - lp.width / 2) + 250*nativeToPxRatio);
+		forgotButton.setX((widthPx / 2 - lp.width / 2) + 415);
 		forgotButton.setY((height - 100) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
@@ -158,7 +159,9 @@ public class HomeScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
+					finish();
 					startScreen(Screen.ForgotScreen);
+					//finish();
 					return true;
 				}
 

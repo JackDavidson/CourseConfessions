@@ -131,6 +131,19 @@ public class BaseScene extends Activity {
 	public void startScreen(Screen screen) {
 		switch (screen) {
 		case HomeScreen:
+			Intent homeScreen = new Intent(this,
+					activities.main.HomeScreen.class);
+			this.startActivity(homeScreen);
+			break;
+		case SignupScreen:
+			Intent signupScreen = new Intent(this,
+					activities.main.SignupScreen.class);
+			this.startActivity(signupScreen);
+			break;
+		case ForgotScreen:
+			Intent forgotScreen = new Intent(this,
+					activities.main.ForgotScreen.class);
+			this.startActivity(forgotScreen);
 			break;
 		case CourseSelectScreen:
 			Intent courseSelectScreen = new Intent(this,
@@ -148,6 +161,6 @@ public class BaseScene extends Activity {
 	}
 
 	public enum Screen {
-		HomeScreen, CourseSelectScreen, WriteReviewScreen
+		HomeScreen, SignupScreen, ForgotScreen, CourseSelectScreen, WriteReviewScreen
 	}
 }
