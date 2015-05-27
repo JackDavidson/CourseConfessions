@@ -1,5 +1,5 @@
 package activities.courseReviewsBrowser;
-
+//browse course reviews
 public class CourseReviewsBrowser {
 	/* contact TODO for info on this file */
 	/* TODO: we will also need to add this in the acroid manifest */

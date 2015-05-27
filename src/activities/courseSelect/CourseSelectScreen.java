@@ -16,18 +16,13 @@ import util.phpInteractions;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import android.annotation.TargetApi;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ImageView.ScaleType;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -49,82 +44,82 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  *
  */
+//this is the course select screen, where you select courses.
 public class CourseSelectScreen extends BaseScene {
-   
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@SuppressWarnings("deprecation")
+	@Override
+	//ran when the screen is created, aka after startScreen(); most of it is explained inside the method.
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        /* ==== TODO set background ===== */
-        /* === END how to set background ==== */
+		/* ==== TODO set background ===== */
+				//copy and paste code from HomeScreen.java here and change it a little maybe
+		
+		/* === END how to set background ==== */
 
-        /* ==== how to make the view scrollable === */
+		/* ==== how to make the view scrollable === */
 
-        // there are 3 objects here.
-        phpInteractions course = new phpInteractions();
-       
-        ArrayList<String> courseList = course.getListOfCourses("CSE", 0, 0);
-        System.out.println(courseList.toString());
-       
-        ScrollView scroll = new ScrollView(this);
-        scroll.setBackgroundColor(Color.TRANSPARENT);
-        LayoutParams scrollLayoutParams = new LayoutParams(
-                LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		// there are 3 objects here.
 
-        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.WRAP_CONTENT,
-                TableLayout.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT);
+		ScrollView scroll = new ScrollView(this);
+		scroll.setBackgroundColor(Color.TRANSPARENT);
+		LayoutParams scrollLayoutParams = new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-        TableLayout tableLayout = new TableLayout(this);
-        tableLayout.setLayoutParams(tableParams);
+		TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(
+				TableLayout.LayoutParams.WRAP_CONTENT,
+				TableLayout.LayoutParams.WRAP_CONTENT);
+		TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
+				TableRow.LayoutParams.WRAP_CONTENT,
+				TableRow.LayoutParams.WRAP_CONTENT);
 
-        // first row
-        TableRow tableRow1 = new TableRow(this);// create a new row
-        tableRow1.setLayoutParams(tableParams); // set the params
-        TextView textView = new TextView(this);// add txt
-        textView.setText(courseList.toString());
-        textView.setLayoutParams(rowParams); // add txt
-        textView.setTextColor(Color.BLACK); // add txt
-        tableRow1.addView(textView); // add txt
-        CheckBox cb = new CheckBox(this); // add a check box
-        cb.setBackgroundColor(Color.BLACK);// add a check box
-        tableRow1.addView(cb); // add a check box
-        tableLayout.addView(tableRow1); // add txt
+		TableLayout tableLayout = new TableLayout(this);
+		tableLayout.setLayoutParams(tableParams);
 
-        // second row
-        TableRow tableRow2 = new TableRow(this);
-        tableRow2.setLayoutParams(tableParams);
-        TextView textView2 = new TextView(this);
-        textView2
-                .setText("this is another test \n\n\nn\n\n\n\n\n\n\n\n\n\\sadfdn\\\n\n\n\n\n\n\n\n\n\njjjjj");
-        textView2.setTextColor(Color.BLACK);
-        textView2.setLayoutParams(rowParams);
-        tableRow2.addView(textView2);
-        CheckBox cb2 = new CheckBox(this); // add a check box
-        cb2.setBackgroundColor(Color.BLACK);// add a check box
-        tableRow2.addView(cb2); // add a check box
-        tableLayout.addView(tableRow2);
+		// first row
+		TableRow tableRow1 = new TableRow(this);// create a new row
+		tableRow1.setLayoutParams(tableParams); // set the params
+		TextView textView = new TextView(this);// add txt
+		textView.setText("this is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
+		textView.setLayoutParams(rowParams); // add txt
+		textView.setTextColor(Color.BLACK); // add txt
+		tableRow1.addView(textView); // add txt
+		CheckBox cb = new CheckBox(this); // add a check box
+		cb.setBackgroundColor(Color.BLACK);// add a check box
+		tableRow1.addView(cb); // add a check box
+		tableLayout.addView(tableRow1); // add txt
 
-        scroll.addView(tableLayout);
-        addContentView(scroll, scrollLayoutParams);
-        /* == END how to make the view scrollable == */
+		// second row
+		TableRow tableRow2 = new TableRow(this);
+		tableRow2.setLayoutParams(tableParams);
+		TextView textView2 = new TextView(this);
+		textView2
+				.setText("this is another test \n\n\nn\n\n\n\n\n\n\n\n\n\\sadfdn\\\n\n\n\n\n\n\n\n\n\njjjjj");
+		textView2.setTextColor(Color.BLACK);
+		textView2.setLayoutParams(rowParams);
+		tableRow2.addView(textView2);
+		CheckBox cb2 = new CheckBox(this); // add a check box
+		cb2.setBackgroundColor(Color.BLACK);// add a check box
+		tableRow2.addView(cb2); // add a check box
+		tableLayout.addView(tableRow2);
 
-        // example code reading the ser file
-        String read = SDCardWriter.readFile(getFilesDir().toString()
-                + User.SAVE_FILE);
-        Toast.makeText(this, "Read file, result is:\n" + read,
-                Toast.LENGTH_LONG).show();
-        // end example code reading the user file
-        /* ====== reloading the User object ======== */
-        User user = new User(this);
-        String userNamePass = "username: " + user.getUserName() + "\n"
-                + "password: " + user.getPassword();
-        Toast.makeText(this, "Recreated user:\n" + userNamePass,
-                Toast.LENGTH_LONG).show();
-        /* ===== end reloading the user object ==== */
+		scroll.addView(tableLayout);
+		addContentView(scroll, scrollLayoutParams);
+		/* == END how to make the view scrollable == */
 
-    }
+		// example code reading the ser file
+		String read = SDCardWriter.readFile(getFilesDir().toString()
+				+ User.SAVE_FILE);
+		Toast.makeText(this, "Read file, result is:\n" + read,
+				Toast.LENGTH_LONG).show();
+		// end example code reading the user file
+		/* ====== reloading the User object ======== */
+		User user = new User(this);
+		String userNamePass = "username: " + user.getUserName() + "\n"
+				+ "password: " + user.getPassword();
+		Toast.makeText(this, "Recreated user:\n" + userNamePass,
+				Toast.LENGTH_LONG).show();
+		/* ===== end reloading the user object ==== */
+
+	}
 }

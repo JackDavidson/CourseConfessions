@@ -1,5 +1,5 @@
 package util;
-
+//handles login exceptions
 public class LoginException extends Exception {
 	/**
 	 * 

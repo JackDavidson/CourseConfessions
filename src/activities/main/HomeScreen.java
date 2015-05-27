@@ -6,19 +6,14 @@ import util.SDCardWriter;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
-
 import com.bitsplease.courseconfessions.R;
-
 import activities.BaseScene;
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,9 +54,12 @@ public class HomeScreen extends BaseScene {
 	phpInteractions php = new phpInteractions();
 
 	// ===========================================================
+	@SuppressLint("ClickableViewAccessibility")
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	@SuppressWarnings("deprecation")
 	@Override
+	//set background display text and other stuff, mostly explained in method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -134,10 +132,11 @@ public class HomeScreen extends BaseScene {
 	}
 
 	@Override
+	//call baseScene.onResume();
 	protected void onResume() {
 		super.onResume();
 	}
-
+	//attempt a login if the login button is pressed
 	private void attemptLogin() {
 		boolean loginSuccess = false;
 		User user = null;
@@ -158,7 +157,9 @@ public class HomeScreen extends BaseScene {
 					+ user.getRealName());
 			this.startScreen(Screen.CourseSelectScreen);
 		}
-		
+		/*how to move to a screen: aka the write review screen in this example
+			WriteReviewScreen is a constant...see the bottom of BaseScene.java 
+			for more information*/
 		this.startScreen(Screen.WriteReviewScreen);
 	}
 
