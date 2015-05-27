@@ -6,14 +6,19 @@ import util.SDCardWriter;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
+
 import com.bitsplease.courseconfessions.R;
+
 import activities.BaseScene;
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,7 +39,7 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
-public class HomeScreen extends BaseScene {
+public class ForgotScreen extends BaseScene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -54,12 +59,9 @@ public class HomeScreen extends BaseScene {
 	phpInteractions php = new phpInteractions();
 
 	// ===========================================================
-	@SuppressLint("ClickableViewAccessibility")
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	@SuppressWarnings("deprecation")
 	@Override
-	//set background display text and other stuff, mostly explained in method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -97,16 +99,16 @@ public class HomeScreen extends BaseScene {
 		placePassText.attachToScene();
 		/* ========= End How to do text entry ================== */
 
-		/* ========= Login button ========= */
-		Button loginBtn = new Button(this);
-		loginBtn.setBackgroundDrawable(getResources().getDrawable(
+		/* ========= Forgot button ========= */
+		Button forgotBtn = new Button(this);
+		forgotBtn.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.placeholderlogin));
-		loginBtn.setX(widthPx / 2 - lp.width / 2);
-		loginBtn.setY((height - 350) * nativeToPxRatio);
+		forgotBtn.setX(widthPx / 2 - lp.width / 2);
+		forgotBtn.setY((height - 350) * nativeToPxRatio);
 
-		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
+		RelativeLayout.LayoutParams forgot = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (100 * nativeToPxRatio));
-		loginBtn.setOnTouchListener(new OnTouchListener() {
+		forgotBtn.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -117,23 +119,48 @@ public class HomeScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView(loginBtn, login);
+		addContentView(forgotBtn, forgot);
 		/* ========= End Login Button  ========= */
+		
+		/* ========= Login Button ========= */
+		Button loginButton = new Button(this);
+		loginButton.setBackgroundDrawable(getResources().getDrawable(
+				R.raw.loginbtn));
+		loginButton.setX((widthPx / 2 - lp.width / 2) + 65);
+		loginButton.setY((height - 100) * nativeToPxRatio);
+
+		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
+				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
+		loginButton.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					finish();
+					return true;
+				}
+
+				return false;
+			}
+		});
+		addContentView (loginButton, loginBtnLayout);
+		/* ========= End Login Button ========= */
 		
 		/* ========= Signup Button ========= */
 		Button signupButton = new Button(this);
 		signupButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.signupbtn));
-		signupButton.setX((widthPx / 2 - lp.width / 2) + 65*nativeToPxRatio);
+		signupButton.setX((widthPx / 2 - lp.width / 2) + 415);
 		signupButton.setY((height - 100) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
-				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
+				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
 		signupButton.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
+					finish();
 					startScreen(Screen.SignupScreen);
+					//finish();
 					return true;
 				}
 
@@ -141,29 +168,6 @@ public class HomeScreen extends BaseScene {
 			}
 		});
 		addContentView (signupButton, signupBtnLayout);
-		/* ========= End Signup Button ========= */
-		
-		/* ========= Forgot Button ========= */
-		Button forgotButton = new Button(this);
-		forgotButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2 - lp.width / 2) + 250*nativeToPxRatio);
-		forgotButton.setY((height - 100) * nativeToPxRatio);
-
-		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
-				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
-		forgotButton.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					startScreen(Screen.ForgotScreen);
-					return true;
-				}
-
-				return false;
-			}
-		});
-		addContentView (forgotButton, forgotBtnLayout);
 		/* ========= End Forgot Button ========= */
 		
 		/* ======== Quick how to write/read files ============== */
@@ -178,11 +182,10 @@ public class HomeScreen extends BaseScene {
 	}
 
 	@Override
-	//call baseScene.onResume();
 	protected void onResume() {
 		super.onResume();
 	}
-	//attempt a login if the login button is pressed
+
 	private void attemptLogin() {
 		boolean loginSuccess = false;
 		User user = null;
@@ -203,9 +206,7 @@ public class HomeScreen extends BaseScene {
 					+ user.getRealName());
 			this.startScreen(Screen.CourseSelectScreen);
 		}
-		/*how to move to a screen: aka the write review screen in this example
-			WriteReviewScreen is a constant...see the bottom of BaseScene.java 
-			for more information*/
+		
 		this.startScreen(Screen.WriteReviewScreen);
 	}
 
