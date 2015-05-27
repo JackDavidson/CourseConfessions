@@ -60,6 +60,7 @@ public class CourseSelectScreen extends BaseScene {
 		/* ==== how to make the view scrollable === */
 
 		// there are 3 objects here.
+		ArrayList<String> courses = phpInteractions.getListOfCourses("any", 0, 10);
 
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
@@ -80,7 +81,7 @@ public class CourseSelectScreen extends BaseScene {
 		TableRow tableRow1 = new TableRow(this);// create a new row
 		tableRow1.setLayoutParams(tableParams); // set the params
 		TextView textView = new TextView(this);// add txt
-		textView.setText("this is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
+		textView.setText("\nthis is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
 		textView.setLayoutParams(rowParams); // add txt
 		textView.setTextColor(Color.BLACK); // add txt
 		tableRow1.addView(textView); // add txt
