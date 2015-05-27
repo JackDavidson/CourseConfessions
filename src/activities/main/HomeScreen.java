@@ -206,7 +206,7 @@ public class HomeScreen extends BaseScene {
 		/*how to move to a screen: aka the write review screen in this example
 			WriteReviewScreen is a constant...see the bottom of BaseScene.java 
 			for more information*/
-		this.startScreen(Screen.WriteReviewScreen);
+		this.startScreen(Screen.CourseSelectScreen);
 	}
 
 }

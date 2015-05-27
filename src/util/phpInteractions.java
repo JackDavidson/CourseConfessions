@@ -30,7 +30,7 @@ import android.util.Log;
 @SuppressWarnings("deprecation")
 public class phpInteractions {
 
-	/* contact Eric/Jack/Nolen for questions on this file */
+	/* contact Eric/Jack/Nolan for questions on this file */
 
 	/**
 	 * TODO: comments, explaining method
@@ -74,22 +74,30 @@ public class phpInteractions {
 	}
 
 	@SuppressLint("NewApi")
-	public static ArrayList<String> parseCourseJSON(HttpGet g) {
-		ArrayList<String> list = new ArrayList<String>(); // where the list of
-															// courses will be
-															// held
+	public static ArrayList<String> parseCourseListJSON(String result) {
+		//return object for all courses to be added to
+		ArrayList<String> resultCourses = new ArrayList<String>();
+		//placeholder string to take in JSON object
+		String jsonParse = "";
 		try {
-			JSONArray jArray = new JSONArray(g);
+			JSONArray jArray = new JSONArray(result);
 			Log.e("log_tag", "made it here");
 			for (int i = 0; i < jArray.length(); i++) {
-				list.add(jArray.get(i).toString());
+				JSONObject json_data = jArray.getJSONObject(i);
+				Log.i("", "made it to second");
+				Log.i("", json_data.getString("COURSES"));
+				jsonParse = json_data.getString("COURSES");
 				// Log.i("log_tag", "Length: " + json_data.length() + " "
 				// + "USER: " + json_data.getString("USER"));
 			}
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
-		return list;
+		
+		//parse string and create array out of it
+		resultCourses.add(jsonParse);
+		
+		return resultCourses;
 	}
 
 	public static InputStream httpPost(ArrayList<NameValuePair> pairs,
@@ -180,10 +188,13 @@ public class phpInteractions {
 		// nameValuePairs.add(new BasicNameValuePair("password", userPass));
 		// String page = new
 		// Communicator().executeHttpGet("http://www.courseconfessions.com/androidgetcourselist.php");
-		HttpGet httpget = new HttpGet(
-				"http://www.courseconfessions.com/androidgetcourselist.php");
-		ArrayList<String> courseList = parseCourseJSON(httpget);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username", null));
 
+		ArrayList<String> courseList = parseCourseListJSON(convertRespToString(httpPost(
+				nameValuePairs,
+				"http://www.courseconfessions.com/androidgetcourselist.php")));
+		
 		if (courseList.size() == 0) {
 			try {
 				throw new LoginException("Failed to connext to server");

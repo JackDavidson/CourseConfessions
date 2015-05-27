@@ -15,13 +15,16 @@ public final class R {
     }
     public static final class raw {
         public static final int background=0x7f030000;
-        public static final int logoutbtn=0x7f030001;
-        public static final int menubtn=0x7f030002;
-        public static final int menubutton=0x7f030003;
-        public static final int placeholderlogin=0x7f030004;
-        public static final int placeholdersignup=0x7f030005;
-        public static final int sidepanel=0x7f030006;
-        public static final int signup=0x7f030007;
+        public static final int forgotbtn=0x7f030001;
+        public static final int loginbtn=0x7f030002;
+        public static final int logoutbtn=0x7f030003;
+        public static final int menubtn=0x7f030004;
+        public static final int menubutton=0x7f030005;
+        public static final int placeholderlogin=0x7f030006;
+        public static final int placeholdersignup=0x7f030007;
+        public static final int sidepanel=0x7f030008;
+        public static final int signup=0x7f030009;
+        public static final int signupbtn=0x7f03000a;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
