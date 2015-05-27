@@ -78,7 +78,7 @@ public class phpInteractions {
 		//return object for all courses to be added to
 		ArrayList<String> resultCourses = new ArrayList<String>();
 		//placeholder string to take in JSON object
-		String jsonParse = null;
+		String jsonParse = "";
 		try {
 			JSONArray jArray = new JSONArray(result);
 			Log.e("log_tag", "made it here");
@@ -93,6 +93,9 @@ public class phpInteractions {
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
+		
+		//parse string and create array out of it
+		resultCourses.add(jsonParse);
 		
 		return resultCourses;
 	}

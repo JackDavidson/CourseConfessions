@@ -81,7 +81,7 @@ public class CourseSelectScreen extends BaseScene {
 		TableRow tableRow1 = new TableRow(this);// create a new row
 		tableRow1.setLayoutParams(tableParams); // set the params
 		TextView textView = new TextView(this);// add txt
-		textView.setText("\nthis is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
+		textView.setText(courses.get(0) + "\nthis is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
 		textView.setLayoutParams(rowParams); // add txt
 		textView.setTextColor(Color.BLACK); // add txt
 		tableRow1.addView(textView); // add txt
