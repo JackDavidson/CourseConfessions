@@ -1,13 +1,16 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +23,8 @@ import org.json.JSONObject;
 import user.User;
 import visuals.PlacementEditText;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -71,12 +76,20 @@ public class phpInteractions {
 	public static InputStream httpPost(ArrayList<NameValuePair> pairs,
 			String url) {
 		InputStream is = null;
+		
+		
 
 		try {
-			HttpClient httpclient = new DefaultHttpClient();
+			//HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(url);
 			httppost.setEntity(new UrlEncodedFormEntity(pairs));
-			HttpResponse response = httpclient.execute(httppost);
+			//HttpResponse response = httpclient.execute(httppost);
+			
+			
+			HttpPoster httpPoster = (HttpPoster) new HttpPoster().execute(httppost);
+			
+			HttpResponse response = (HttpResponse) httpPoster.get(3, TimeUnit.SECONDS);
+			
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
 		} catch (Exception e) {
@@ -146,4 +159,34 @@ public class phpInteractions {
 		 */
 		return null;
 	}
+	
+	private static class HttpPoster extends AsyncTask<HttpPost, Void, HttpResponse> {
+
+        @Override
+        protected HttpResponse doInBackground(HttpPost... params) {
+        	HttpClient httpclient = new DefaultHttpClient();
+            try {
+				return httpclient.execute(params[0]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            return null;
+        }
+
+     /*   @Override
+        protected void onPostExecute(String result) {
+            // might want to change "executed" for the returned string passed
+            // into onPostExecute() but that is upto you
+        }*/
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
+    }
 }
