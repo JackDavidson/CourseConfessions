@@ -14,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import user.User;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,7 +34,7 @@ public class phpInteractions {
 
 	/**
 	 * TODO: comments, explaining method
-	 * 
+	 *
 	 * @param username
 	 *            TODO
 	 * @param password
@@ -48,7 +50,7 @@ public class phpInteractions {
 		// if we're successful.
 		// TODO Auto-generated method stub
 		String stringResultUserName = null; // where the username will be put,
-		
+
 		Log.i("HomeScreen Attempt login username:", userName);
 		Log.i("HomeScreen Attempt login pass:", userPass);
 
@@ -61,33 +63,51 @@ public class phpInteractions {
 				nameValuePairs,
 				"http://www.courseconfessions.com/androidlogin.php")));
 
-		if(stringResultUserName == null){
+		if (stringResultUserName == null) {
 			throw new LoginException("Failed to connext to server");
 		} else if (stringResultUserName.equals("fail")) {
 			throw new LoginException("Incorrect Username or password");
-		}	else {
+		} else {
 			return new User(userName, userPass, stringResultUserName, context);
 		}
 
 	}
 
+	@SuppressLint("NewApi")
+	public static ArrayList<String> parseCourseJSON(HttpGet g) {
+		ArrayList<String> list = new ArrayList<String>(); // where the list of
+															// courses will be
+															// held
+		try {
+			JSONArray jArray = new JSONArray(g);
+			Log.e("log_tag", "made it here");
+			for (int i = 0; i < jArray.length(); i++) {
+				list.add(jArray.get(i).toString());
+				// Log.i("log_tag", "Length: " + json_data.length() + " "
+				// + "USER: " + json_data.getString("USER"));
+			}
+		} catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+		return list;
+	}
+
 	public static InputStream httpPost(ArrayList<NameValuePair> pairs,
 			String url) {
 		InputStream is = null;
-		
-		
 
 		try {
-			//HttpClient httpclient = new DefaultHttpClient();
+			// HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(url);
 			httppost.setEntity(new UrlEncodedFormEntity(pairs));
-			//HttpResponse response = httpclient.execute(httppost);
-			
-			
-			HttpPoster httpPoster = (HttpPoster) new HttpPoster().execute(httppost);
-			
-			HttpResponse response = (HttpResponse) httpPoster.get(3, TimeUnit.SECONDS);
-			
+			// HttpResponse response = httpclient.execute(httppost);
+
+			HttpPoster httpPoster = (HttpPoster) new HttpPoster()
+					.execute(httppost);
+
+			HttpResponse response = (HttpResponse) httpPoster.get(3,
+					TimeUnit.SECONDS);
+
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
 		} catch (Exception e) {
@@ -137,7 +157,7 @@ public class phpInteractions {
 
 	/**
 	 * TODO: comments
-	 * 
+	 *
 	 * @param couseSection
 	 *            ex. CSE, BIO, etc.
 	 * @param lowNumber
@@ -146,9 +166,8 @@ public class phpInteractions {
 	 *            pass 0 for no upper limit
 	 * @return TODO
 	 */
-	//get the list of courses, and store them in a string and return it
-	public static String[] getListOfCourses(String couseSection, int lowNumber,
-			int highNumber) {
+	public static ArrayList<String> getListOfCourses(String courseSection,
+			int lowNumber, int highNumber) {
 		/*
 		 * TODO: create a string array with all the couse sections and numbers
 		 * avaiable. ex. CSE 100, CSE 110. should only include results listed
@@ -156,15 +175,33 @@ public class phpInteractions {
 		 * that this code can be expanded at a later date. for now, always pass
 		 * this function "CSE, 0, 0"
 		 */
-		return null;
+
+		// course.add(new BasicNameValuePair("CourseSection", courseSection));
+		// nameValuePairs.add(new BasicNameValuePair("password", userPass));
+		// String page = new
+		// Communicator().executeHttpGet("http://www.courseconfessions.com/androidgetcourselist.php");
+		HttpGet httpget = new HttpGet(
+				"http://www.courseconfessions.com/androidgetcourselist.php");
+		ArrayList<String> courseList = parseCourseJSON(httpget);
+
+		if (courseList.size() == 0) {
+			try {
+				throw new LoginException("Failed to connext to server");
+			} catch (LoginException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return courseList;
 	}
-	
-	private static class HttpPoster extends AsyncTask<HttpPost, Void, HttpResponse> {
+
+	private static class HttpPoster extends
+			AsyncTask<HttpPost, Void, HttpResponse> {
 
 		@Override
-        protected HttpResponse doInBackground(HttpPost... params) {
-        	HttpClient httpclient = new DefaultHttpClient();
-            try {
+		protected HttpResponse doInBackground(HttpPost... params) {
+			HttpClient httpclient = new DefaultHttpClient();
+			try {
 				return httpclient.execute(params[0]);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
@@ -173,21 +210,23 @@ public class phpInteractions {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            return null;
-        }
+			return null;
+		}
 
-     /*   @Override
-        protected void onPostExecute(String result) {
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you
-        }*/
+		/*
+		 * @Override protected void onPostExecute(String result) { // might want
+		 * to change "executed" for the returned string passed // into
+		 * onPostExecute() but that is upto you }
+		 */
 
-        @Override
-        //TODO?
-        protected void onPreExecute() {}
+		@Override
+		// TODO?
+		protected void onPreExecute() {
+		}
 
-        @Override
-        //TODO?
-        protected void onProgressUpdate(Void... values) {}
-    }
+		@Override
+		// TODO?
+		protected void onProgressUpdate(Void... values) {
+		}
+	}
 }
