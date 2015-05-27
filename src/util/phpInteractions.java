@@ -21,13 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import user.User;
-import visuals.PlacementEditText;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class phpInteractions {
 
 	/* contact Eric/Jack/Nolen for questions on this file */
@@ -148,6 +146,7 @@ public class phpInteractions {
 	 *            pass 0 for no upper limit
 	 * @return TODO
 	 */
+	//get the list of courses, and store them in a string and return it
 	public static String[] getListOfCourses(String couseSection, int lowNumber,
 			int highNumber) {
 		/*
@@ -162,7 +161,7 @@ public class phpInteractions {
 	
 	private static class HttpPoster extends AsyncTask<HttpPost, Void, HttpResponse> {
 
-        @Override
+		@Override
         protected HttpResponse doInBackground(HttpPost... params) {
         	HttpClient httpclient = new DefaultHttpClient();
             try {
@@ -184,9 +183,11 @@ public class phpInteractions {
         }*/
 
         @Override
+        //TODO?
         protected void onPreExecute() {}
 
         @Override
+        //TODO?
         protected void onProgressUpdate(Void... values) {}
     }
 }

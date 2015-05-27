@@ -1,7 +1,5 @@
 package visuals;
 
-import com.bitsplease.courseconfessions.R;
-
 import activities.BaseScene;
 //import activities.main.DTImageView;
 import android.content.Context;
@@ -9,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -32,6 +29,7 @@ public class PlacementImage implements Placeable {
 	private LinearLayout.LayoutParams vp;
 	private LinearLayout linearLayout;
 	private Bitmap bitmap;
+	//places an image relative to the image's left corner, not the center. someone might need to confirm that
 	public PlacementImage(BaseScene context, int id, int x, int y, int width, int height) 
 	{
 		context2 = context;
@@ -49,8 +47,10 @@ public class PlacementImage implements Placeable {
 		linearLayout.setClipChildren(false);
 		linearLayout.addView(imageView);
 	}
+	//to fill the interface requirements
 	public EditText getEditText(){return null;}
 	@Override
+	//attach the image to the scene
 	public void attachToScene() {
 		// TODO Auto-generated method stub
 		context2.addContentView(linearLayout, vp);
@@ -58,29 +58,33 @@ public class PlacementImage implements Placeable {
 	}
 
 	@Override
+	//set the value of x
 	public void setX(int x) {
 		// TODO Auto-generated method stub
 		imageView.setX(x * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the value of y
 	public void setY(int y) {
 		// TODO Auto-generated method stub
 		imageView.setY(y * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the width
 	public void setWidth(int width) {
 		// TODO Auto-generated method stub
 		vp.width = (int) (width * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the height
 	public void setHeight(int height) {
 		// TODO Auto-generated method stub
 		vp.height = (int) (height * context2.nativeToPxRatio);
 	}
-
+	//helper class for the bitmapping, and placement of the image.
 	public class DTImageView extends View {
 
 	    public Bitmap imageBitmap;

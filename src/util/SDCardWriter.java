@@ -20,6 +20,7 @@ import android.util.Log;
 public class SDCardWriter {
 	
 	// TODO: this needs to be cleaned up
+	//write the file to the SD card, throw an exception if it fails
 	public static void writeFile(String filePath, String fileName, String content) {
 		try {
 			fileName = fileName.replaceAll("[^a-zA-Z0-9./-]", "_");
@@ -38,7 +39,7 @@ public class SDCardWriter {
 			Log.e("SDCardWriter", "failed writing SD file" + e1.getMessage());
 		}
 	}
-
+	//read a file from the SD card, throw an exception if it fails
 	public static String readFile(String file) {
 		String aBuffer = "";
 		try {
@@ -59,7 +60,7 @@ public class SDCardWriter {
 		// Log.e("stuff", aBuffer);
 		return aBuffer;
 	}
-
+	//read a file from an input stream, throw exception if it fails
 	public static String readFile(InputStream fIn) {
 		String aBuffer = "";
 		try {

@@ -1,17 +1,9 @@
 package activities.writeReview;
 
 import user.User;
-import util.SDCardWriter;
 import visuals.PlacementEditText;
 import activities.BaseScene;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.CheckBox;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /* contact TODO for questions on this file */
@@ -29,11 +21,15 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
+//this will be the class that holds the write review screen.
 public class WriteReviewScreen extends BaseScene {
 
-	private PlacementEditText placeReviewText;
+	private PlacementEditText placeReviewText; //the textbox where we're putting the review in 
+	//TODO: cap the textbox at 1000 characters?
 
 	@Override
+	//when the method is created this is ran. Most of the implementation 
+	//is explained in the method itself.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 

@@ -1,29 +1,12 @@
 package activities.courseSelect;
 
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.util.FPSLogger;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-
 import user.User;
 import util.SDCardWriter;
-
-import com.bitsplease.courseconfessions.R;
-
 import activities.BaseScene;
-import android.annotation.TargetApi;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ImageView.ScaleType;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -45,12 +28,17 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
+//this is the course select screen, where you select courses.
 public class CourseSelectScreen extends BaseScene {
+	@SuppressWarnings("deprecation")
 	@Override
+	//ran when the screen is created, aka after startScreen(); most of it is explained inside the method.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		/* ==== TODO set background ===== */
+				//copy and paste code from HomeScreen.java here and change it a little maybe
+		
 		/* === END how to set background ==== */
 
 		/* ==== how to make the view scrollable === */

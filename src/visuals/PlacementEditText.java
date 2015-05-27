@@ -25,7 +25,7 @@ public class PlacementEditText implements Placeable {
 	private RelativeLayout.LayoutParams lp;
 	private EditText text;
 	private BaseScene context2;
-
+	//places it via top left corner of the text box. someone check this to make sure?
 	public PlacementEditText(BaseScene context, int x, int y, int width,
 			int height, String hint) {
 		context2 = context;
@@ -45,10 +45,11 @@ public class PlacementEditText implements Placeable {
 	}
 
 	@Override
+	//return the EditText field of the PlacementEditText object
 	public EditText getEditText() {
 		return text;
 	}
-
+	//attach the placementEditText to scene.
 	public void attachToScene() {
 		// TODO Auto-generated method stub
 		if (text.getHint().equals("Username")) {
@@ -71,26 +72,26 @@ public class PlacementEditText implements Placeable {
 	}
 
 	@Override
+	//set the x
 	public void setX(int x) {
-		// TODO Auto-generated method stub
 		text.setX(x * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the y
 	public void setY(int y) {
-		// TODO Auto-generated method stub
 		text.setY(y * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the width
 	public void setWidth(int width) {
-		// TODO Auto-generated method stub
 		lp.width = (int) (width * context2.nativeToPxRatio);
 	}
 
 	@Override
+	//set the height
 	public void setHeight(int height) {
-		// TODO Auto-generated method stub
 		lp.height = (int) (height * context2.nativeToPxRatio);
 	}
 
