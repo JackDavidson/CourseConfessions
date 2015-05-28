@@ -59,7 +59,7 @@ public class phpInteractions {
 		nameValuePairs.add(new BasicNameValuePair("username", userName));
 		nameValuePairs.add(new BasicNameValuePair("password", userPass));
 
-		stringResultUserName = parseJSON(convertRespToString(httpPost(
+		stringResultUserName = parseLoginJSON(convertRespToString(httpPost(
 				nameValuePairs,
 				"http://www.courseconfessions.com/androidlogin.php")));
 
@@ -76,7 +76,7 @@ public class phpInteractions {
 	@SuppressLint("NewApi")
 	public static ArrayList<String> parseCourseListJSON(String result) {
 		//return object for all courses to be added to
-		ArrayList<String> resultCourses = new ArrayList<String>();
+		//ArrayList<String> resultCourses = new ArrayList<String>();
 		//placeholder string to take in JSON object
 		String jsonParse = "";
 		try {
@@ -95,7 +95,7 @@ public class phpInteractions {
 		}
 		
 		//parse string and create array out of it
-		resultCourses.add(jsonParse);
+		ArrayList<String> resultCourses = Splitter.splitStringArray(jsonParse);
 		
 		return resultCourses;
 	}
@@ -144,7 +144,7 @@ public class phpInteractions {
 		return result;
 	}
 
-	public static String parseJSON(String result) {
+	public static String parseLoginJSON(String result) {
 		String resultUserName = null; // where the username will be put,
 		try {
 			JSONArray jArray = new JSONArray(result);
