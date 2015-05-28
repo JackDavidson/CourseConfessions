@@ -46,7 +46,9 @@ public class SignupScreen extends BaseScene {
 	// Fields
 	// ===========================================================
 	private PlacementEditText placeUserText;
+	private PlacementEditText placeEmailText;
 	private PlacementEditText placePassText;
+	private PlacementEditText placeConfirmPassText;
 	private TextView loginResultTextView;
 
 	// ===========================================================
@@ -62,7 +64,7 @@ public class SignupScreen extends BaseScene {
 		super.onCreate(savedInstanceState);
 
 		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this, R.raw.signup,
+		PlacementImage image = new PlacementImage(this, R.raw.backgroundsignup,
 				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000,
 				1280);
 		image.attachToScene();
@@ -79,32 +81,40 @@ public class SignupScreen extends BaseScene {
 		addContentView(loginResultTextView, loginResultParams);
 		/* ==== END how to display text ==== */
 
-		/* ========= How to do text entry ====================== */
-		placeUserText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
-				height / 2 - 104, 500, 70, "Username");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
-				height / 2 + 30, 500, 70, "Password");
 
+		/* ========= Text Entry ========= */
+		placeUserText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 - 179, 500, 70, "Username");
+		placeEmailText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 - 48, 500, 70, "Email");
+		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 + 84, 500, 70, "Password");
+		placeConfirmPassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
+				height / 2 + 216, 500, 70, "Confirm Password");
+		/* ========= End Text Entry ========= */
+		
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
 		placeUserText.attachToScene();
+		placeEmailText.attachToScene();
 		placePassText.attachToScene();
+		placeConfirmPassText.attachToScene();
 		/* ========= End How to do text entry ================== */
 
-		/* ========= Login button ========= */
-		Button loginBtn = new Button(this);
-		loginBtn.setBackgroundDrawable(getResources().getDrawable(
+		/* ========= Signup button ========= */
+		Button signupBtn = new Button(this);
+		signupBtn.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.placeholdersignup));
-		loginBtn.setX(widthPx / 2 - lp.width / 2);
-		loginBtn.setY((height - 350) * nativeToPxRatio);
+		signupBtn.setX(widthPx / 2 - lp.width / 2);
+		signupBtn.setY((height - 250) * nativeToPxRatio);
 
-		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
+		RelativeLayout.LayoutParams signup = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (100 * nativeToPxRatio));
-		loginBtn.setOnTouchListener(new OnTouchListener() {
+		signupBtn.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -115,23 +125,22 @@ public class SignupScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView(loginBtn, login);
-		/* ========= End Login Button  ========= */
+		addContentView(signupBtn, signup);
+		/* ========= End Signup Button  ========= */
 		
 		/* ========= Login Button ========= */
 		Button loginButton = new Button(this);
 		loginButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.loginbtn));
-		loginButton.setX((widthPx / 2 - lp.width / 2) + 65);
-		loginButton.setY((height - 100) * nativeToPxRatio);
-
+		loginButton.setX((widthPx / 2) - 170*nativeToPxRatio); //- lp.width / 2));// + 65*nativeToPxRatio);
+		loginButton.setY((height - 70) * nativeToPxRatio);
+		
 		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
 		loginButton.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					//startScreen(Screen.HomeScreen);
 					finish();
 					return true;
 				}
@@ -146,8 +155,8 @@ public class SignupScreen extends BaseScene {
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2 - lp.width / 2) + 415);
-		forgotButton.setY((height - 100) * nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);//  - lp.width));// + 250*nativeToPxRatio);
+		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
@@ -157,7 +166,6 @@ public class SignupScreen extends BaseScene {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					finish();
 					startScreen(Screen.ForgotScreen);
-					//finish();
 					return true;
 				}
 

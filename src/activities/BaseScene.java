@@ -4,6 +4,7 @@ import com.bitsplease.courseconfessions.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -63,8 +64,8 @@ public class BaseScene extends Activity {
 		menuBt = new Button(this);
 
 		menuBt.setBackgroundDrawable(getResources().getDrawable(R.raw.menubtn));
-		menuBt.setX(10);
-		menuBt.setY(10);
+		menuBt.setX(20);
+		menuBt.setY(30);
 
 		RelativeLayout.LayoutParams menuLP = new RelativeLayout.LayoutParams(
 				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio));
@@ -85,13 +86,14 @@ public class BaseScene extends Activity {
 		/* ========= Off screen example log out BTN ============ */
 		logoutBt = new Button(this);
 
-		logoutBt.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.logoutbtn));
+		//logoutBt.setBackgroundDrawable(getResources().getDrawable(
+		//		R.raw.logoutbtn));
+		logoutBt.setBackgroundColor(Color.parseColor("#071017"));
 		logoutBt.setX(0);
-		logoutBt.setY(75);
+		logoutBt.setY(150);
 
 		RelativeLayout.LayoutParams offscreenBtnLP = new RelativeLayout.LayoutParams(
-				(int) (150 * nativeToPxRatio), (int) (75 * nativeToPxRatio));
+				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
 		logoutBt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
