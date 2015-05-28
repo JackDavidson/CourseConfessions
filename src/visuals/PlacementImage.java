@@ -28,14 +28,13 @@ public class PlacementImage implements Placeable {
 	private BaseScene context2;
 	private LinearLayout.LayoutParams vp;
 	private LinearLayout linearLayout;
-	private Bitmap bitmap;
 	//places an image relative to the image's left corner, not the center. someone might need to confirm that
 	public PlacementImage(BaseScene context, int id, int x, int y, int width, int height) 
 	{
 		context2 = context;
 		linearLayout = new LinearLayout(context);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		bitmap = BitmapFactory.decodeResource(context.getResources(), id);
+		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), id);
 		imageView = new DTImageView(context);
 		vp = new LinearLayout.LayoutParams((int)(width*context.nativeToPxRatio), 
 			(int)(height*context.nativeToPxRatio));

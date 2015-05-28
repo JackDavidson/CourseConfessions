@@ -51,7 +51,7 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	phpInteractions php = new phpInteractions();
+	//phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	@SuppressLint("ClickableViewAccessibility")
@@ -209,4 +209,8 @@ public class HomeScreen extends BaseScene {
 		this.startScreen(Screen.CourseSelectScreen);
 	}
 
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+	}
 }

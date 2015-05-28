@@ -28,7 +28,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 @SuppressWarnings("deprecation")
-public class phpInteractions {
+public abstract class phpInteractions {
 
 	/* contact Eric/Jack/Nolan for questions on this file */
 
