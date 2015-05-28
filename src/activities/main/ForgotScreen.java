@@ -56,7 +56,7 @@ public class ForgotScreen extends BaseScene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	phpInteractions php = new phpInteractions();
+	//phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
