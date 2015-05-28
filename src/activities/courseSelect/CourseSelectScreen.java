@@ -2,25 +2,13 @@ package activities.courseSelect;
 
 import java.util.ArrayList;
 
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.util.FPSLogger;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-
 import user.User;
 import util.SDCardWriter;
 import util.phpInteractions;
 
-import com.bitsplease.courseconfessions.R;
-
 import activities.BaseScene;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
