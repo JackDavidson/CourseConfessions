@@ -34,10 +34,11 @@ public class PlacementEditText implements Placeable {
 				(int) (height * context.nativeToPxRatio));
 		text = new EditText(context);
 		text.setTextColor(Color.rgb(12, 26, 38));
+		text.setTextSize(16);
 		text.setHint(hint);
 		setX(x);
 		setY(y);
-		if (text.getHint().equals("Password")) {
+		if (text.getHint().equals("Password") || text.getHint().equals("Confirm Password")) {
 			text.setInputType(InputType.TYPE_CLASS_TEXT
 					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		}

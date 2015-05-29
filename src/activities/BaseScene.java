@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -29,7 +30,6 @@ public class BaseScene extends Activity {
 	protected int width;
 	protected static final int height = 1280;
 
-	
 	RelativeLayout sideMenu;
 	Button menuBt;
 	Button logoutBt;
@@ -43,11 +43,9 @@ public class BaseScene extends Activity {
 		super.onCreate(savedInstanceState);
 
 		/* ==== settings ==== */
-		/*
-		 * StrictMode.ThreadPolicy policy = new
-		 * StrictMode.ThreadPolicy.Builder() .permitAll().build();
-		 * StrictMode.setThreadPolicy(policy);
-		 */
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -92,15 +90,15 @@ public class BaseScene extends Activity {
 		sideMenu = new RelativeLayout(this);
 		RelativeLayout.LayoutParams menuViewLP = new RelativeLayout.LayoutParams(
 				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
-		//sideMenu.setLayoutParams(menuViewLP);
-		sideMenu.setX(-500*nativeToPxRatio);
+		// sideMenu.setLayoutParams(menuViewLP);
+		sideMenu.setX(-500 * nativeToPxRatio);
 		sideMenu.setY(150);
 		addContentView(sideMenu, menuViewLP);
 		/* ===== End Add a view for sliding in/out ======== */
 
 		/* ========= Add logout button to the sideMenu ============ */
 		logoutBt = new Button(this);
-		logoutBt.setBackgroundColor(Color.parseColor("#071017"));
+		logoutBt.setBackgroundColor(Color.parseColor("#1A3754"));
 		logoutBt.setX(0);
 		logoutBt.setY(0);
 
@@ -140,14 +138,16 @@ public class BaseScene extends Activity {
 
 	// brings the side menu in and out of view.
 	private void toggleSideMenu() {
-		ObjectAnimator mover = null; 
+		ObjectAnimator mover = null;
 		if (sideMenuIsOut) {
 			// slide from right to left
-			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, -500*nativeToPxRatio);
+			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, -500
+					* nativeToPxRatio);
 		} else {
 			// slide in from left
-			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", -500*nativeToPxRatio, 0);
-			
+			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", -500
+					* nativeToPxRatio, 0);
+
 		}
 		sideMenuIsOut = !sideMenuIsOut;
 		mover.start();

@@ -1,11 +1,14 @@
 package activities.main;
 
+import util.LoginException;
+import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
 
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
+import activities.BaseScene.Screen;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -41,13 +44,13 @@ public class ForgotScreen extends BaseScene {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	private PlacementEditText placeUsernameText;
 	private PlacementEditText placeEmailText;
-	private TextView loginResultTextView;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	//phpInteractions php = new phpInteractions();
+	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -63,28 +66,24 @@ public class ForgotScreen extends BaseScene {
 		image.attachToScene();
 		/* ==== END set background ===== */
 
-		/* ====== how to display text ====== */
-		loginResultTextView = new TextView(this);
-		loginResultTextView.setX(50 * nativeToPxRatio);
-		loginResultTextView.setY((height / 2 + 100) * nativeToPxRatio);
-		RelativeLayout.LayoutParams loginResultParams = new RelativeLayout.LayoutParams(
-				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		loginResultTextView.setTextColor(Color.WHITE);
-		loginResultTextView.setText("Ready");
-		addContentView(loginResultTextView, loginResultParams);
-		/* ==== END how to display text ==== */
-
 		/* ========= Text Entry ========= */
+		placeUsernameText = new PlacementEditText(this, width / 2 - 500 / 2
+				+ 34, height / 2 - 80, 500, 70, "Username");
 		placeEmailText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
-				height / 2 - 22, 500, 70, "Email");
+				height / 2 + 52, 500, 70, "Email");
+		/* ========= END Text Entry ========= */
+		
+		/* ========= Set Layout Params for screen ========= */
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		/* ========= END Text Entry ========= */
+		/* ========= END Layout Params ========= */
+
 
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
 		 *****/
+		placeUsernameText.attachToScene();
 		placeEmailText.attachToScene();
 		/* ========= End How to do text entry ================== */
 
@@ -109,13 +108,13 @@ public class ForgotScreen extends BaseScene {
 			}
 		});
 		addContentView(forgotBtn, forgot);
-		/* ========= END Forgot Button  ========= */
-		
+		/* ========= END Forgot Button ========= */
+
 		/* ========= Login Button ========= */
 		Button loginButton = new Button(this);
 		loginButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.loginbtn));
-		loginButton.setX((widthPx / 2) - 170*nativeToPxRatio); //- lp.width / 2));// + 65*nativeToPxRatio);
+		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		loginButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
@@ -131,14 +130,14 @@ public class ForgotScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView (loginButton, loginBtnLayout);
+		addContentView(loginButton, loginBtnLayout);
 		/* ========= End Login Button ========= */
-		
+
 		/* ========= Signup Button ========= */
 		Button signupButton = new Button(this);
 		signupButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.signupbtn));
-		signupButton.setX((widthPx / 2) + 30*nativeToPxRatio);//  - lp.width));// + 250*nativeToPxRatio);
+		signupButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		signupButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
@@ -148,16 +147,16 @@ public class ForgotScreen extends BaseScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					finish();
-					startScreen(Screen.SignupScreen);
+					startScreen (Screen.SignupScreen);
 					return true;
 				}
 
 				return false;
 			}
 		});
-		addContentView (signupButton, signupBtnLayout);
+		addContentView(signupButton, signupBtnLayout);
 		/* ========= END Signup Button ========= */
-		
+
 	}
 
 	@Override
@@ -165,21 +164,24 @@ public class ForgotScreen extends BaseScene {
 		super.onResume();
 	}
 
+	/* Attempt to send an password reset email */
 	private void attemptPasswordReset() {
-		/** TODO need to finish the password reset email */
+		/** TODO comments */
 		boolean sendEmailSuccess = false;
-		
-		/** Do something here and if email is sent, set bool to true */
-		sendEmailSuccess = true;
-		
+		String userName = placeUsernameText.getEditText().getText().toString();
+		String userEmail = placeEmailText.getEditText().getText().toString();
+
+		try {
+			sendEmailSuccess = phpInteractions.attemptForgotPassword(userName,
+					userEmail, this);
+		} catch (LoginException e) {
+			/* Throw an exception to the user */
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		}
 		if (sendEmailSuccess) {
 			/* Make toast, but don't butter it */
-			Toast.makeText(this, "Password Reset Email has been sent.", Toast.LENGTH_LONG).show();
-			/* End the screen, go back to the login screen. */
+			this.startScreen(Screen.HomeScreen);
 			finish();
-		}
-		else {
-			
 		}
 	}
 

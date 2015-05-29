@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public abstract class phpInteractions {
@@ -33,14 +34,14 @@ public abstract class phpInteractions {
 
 	/**
 	 * TODO: comments, explaining method
-	 *
+	 * 
 	 * @param username
 	 *            TODO
 	 * @param password
 	 *            TODO
 	 * @return TODO
 	 */
-	public static User attemptLoginAndCrateUser(String userName,
+	public static User attemptLoginAndCreateUser(String userName,
 			String userPass, Context context) throws LoginException {
 		/*
 		 * TODO: contact server, return success or failure. handle exceptions as
@@ -63,20 +64,115 @@ public abstract class phpInteractions {
 				"http://www.courseconfessions.com/androidlogin.php")));
 
 		if (stringResultUserName == null) {
-			throw new LoginException("Failed to connext to server");
+			throw new LoginException("Failed to connect to server");
 		} else if (stringResultUserName.equals("fail")) {
-			throw new LoginException("Incorrect Username or password");
+			throw new LoginException("Incorrect Username or Password");
 		} else {
 			return new User(userName, userPass, stringResultUserName, context);
 		}
 
 	}
 
+	/** TODO: still working on this part */
+	public static boolean attemptForgotPassword(String userName,
+			String userEmail, Context context) throws LoginException {
+		/*
+		 * TODO: contact server, return success or failure. handle exceptions as
+		 * appropriate
+		 */
+		// if we're successful.
+		// TODO Auto-generated method stub
+		String stringResultUserEmail = null;
+
+		Log.i("ForgotScreen Attempt username:", userName);
+		Log.i("ForgotScreen Attempt email:", userEmail);
+
+		// the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username", userName));
+		nameValuePairs.add(new BasicNameValuePair("email", userEmail));
+
+		stringResultUserEmail = trimJSONString(convertRespToString(httpPost(
+				nameValuePairs,
+				"http://www.courseconfessions.com/androidforgotpassword.php")));
+
+		if (stringResultUserEmail == null) {
+			throw new LoginException("Failed to connect to server.");
+		} else if (stringResultUserEmail.equals("success")) {
+			Toast.makeText(context, "Password Reset Email has been sent",
+					Toast.LENGTH_LONG).show();
+			return true;
+		} else {
+			Toast.makeText(context, stringResultUserEmail, Toast.LENGTH_LONG)
+					.show();
+			return false;
+		}
+	}
+
+	/** TODO: still working on this part */
+	public static boolean attemptSignup(String userName, String userEmail,
+			String userPass, String userConfirmPass, Context context)
+			throws LoginException {
+		/*
+		 * TODO: contact server, return success or failure. handle exceptions as
+		 * appropriate
+		 */
+		// if we're successful.
+		// TODO Auto-generated method stub
+		ArrayList<String> stringResultUserEmail = null;
+
+		Log.i("SignupScreen Attempt login username:", userName);
+		Log.i("SignupScreen Attempt email:", userEmail);
+		Log.i("SignupScreen Attempt pass:", userPass);
+		Log.i("SignupScreen Attempt confirmPass:", userConfirmPass);
+
+		// the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username", userName));
+		nameValuePairs.add(new BasicNameValuePair("email", userEmail));
+		nameValuePairs.add(new BasicNameValuePair("password", userPass));
+		nameValuePairs
+				.add(new BasicNameValuePair("cpassword", userConfirmPass));
+
+		stringResultUserEmail = Splitter
+				.splitStringArray((convertRespToString(httpPost(nameValuePairs,
+						"http://www.courseconfessions.com/androidcreateaccount.php"))));
+
+		if (stringResultUserEmail.size() == 0) {
+			throw new LoginException("Failed to connect to server.");
+		} else if (stringResultUserEmail.get(0).equals("success")) {
+			Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG)
+					.show();
+			return true;
+		} else {
+			for (String a : stringResultUserEmail) {
+				Toast.makeText(context, a, Toast.LENGTH_LONG).show();
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * takes off the [" and "]
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private static String trimJSONString(String input) {
+		if (input == null || input.length() == 0) {
+			return null;
+		}
+		Log.e("", input);
+		String result = input.substring(2, input.length() - 3);
+		Log.e("", result);
+		return result;
+	}
+
 	@SuppressLint("NewApi")
 	public static ArrayList<String> parseCourseListJSON(String result) {
-		//return object for all courses to be added to
-		//ArrayList<String> resultCourses = new ArrayList<String>();
-		//placeholder string to take in JSON object
+		// return object for all courses to be added to
+		// ArrayList<String> resultCourses = new ArrayList<String>();
+		// placeholder string to take in JSON object
 		String jsonParse = "";
 		try {
 			JSONArray jArray = new JSONArray(result);
@@ -92,10 +188,10 @@ public abstract class phpInteractions {
 		} catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
-		
-		//parse string and create array out of it
+
+		// parse string and create array out of it
 		ArrayList<String> resultCourses = Splitter.splitStringArray(jsonParse);
-		
+
 		return resultCourses;
 	}
 
@@ -112,8 +208,8 @@ public abstract class phpInteractions {
 			HttpPoster httpPoster = (HttpPoster) new HttpPoster()
 					.execute(httppost);
 
-			HttpResponse response = (HttpResponse) httpPoster.get(3,
-					TimeUnit.SECONDS);
+			HttpResponse response = (HttpResponse) httpPoster.get(3000,
+					TimeUnit.MILLISECONDS);
 
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
@@ -164,7 +260,7 @@ public abstract class phpInteractions {
 
 	/**
 	 * TODO: comments
-	 *
+	 * 
 	 * @param couseSection
 	 *            ex. CSE, BIO, etc.
 	 * @param lowNumber
@@ -193,10 +289,10 @@ public abstract class phpInteractions {
 		ArrayList<String> courseList = parseCourseListJSON(convertRespToString(httpPost(
 				nameValuePairs,
 				"http://www.courseconfessions.com/androidgetcourselist.php")));
-		
+
 		if (courseList.size() == 0) {
 			try {
-				throw new LoginException("Failed to connext to server");
+				throw new LoginException("Failed to connect to server");
 			} catch (LoginException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

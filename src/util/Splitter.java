@@ -9,6 +9,10 @@ public class Splitter {
 	{
 		
 		String[] result = jsonResult.split("\",\"");
+		if(result.length > 0){
+			result[0] = result[0].substring(2);
+			result[result.length - 1] = result[result.length - 1].substring(0, result[result.length - 1].length() - 3);
+		}
 		Log.e("", ""+result.length);
 		ArrayList<String> splitResult = new ArrayList<String>();
 		for(int i = 0; i < result.length; i ++)
