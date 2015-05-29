@@ -49,7 +49,9 @@ public class CourseSelectScreen extends BaseScene {
 
 		// there are 3 objects here.
 		ArrayList<String> courses = phpInteractions.getListOfCourses("any", 0, 10);
-
+		//[{"COURSES":["CSE 100","CSE 110","CSE 140","ECE 30"]}]
+		
+		
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
 		LayoutParams scrollLayoutParams = new LayoutParams(
@@ -61,7 +63,72 @@ public class CourseSelectScreen extends BaseScene {
 		TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
 				TableRow.LayoutParams.WRAP_CONTENT,
 				TableRow.LayoutParams.WRAP_CONTENT);
+		
+		
+		
+		/*** ==== Testing ==== ***/
+		  
+		TableLayout tableLayout = new TableLayout(this);
+		tableLayout.setLayoutParams(tableParams);
 
+		
+		for(int i = 0; i < courses.size(); i++)
+		{
+			TableRow tableRow = new TableRow(this);// create a new row
+			tableRow.setLayoutParams(tableParams); // set the params
+			TextView textView = new TextView(this);// add txt
+			textView.setText("Course " + (i+1) + ": " 
+			                     + courses.get(i).replaceAll("[^a-zA-Z0-9\\s]","") + "\t\t\t");
+			textView.setLayoutParams(rowParams); // add txt
+			textView.setTextColor(Color.BLACK); // add txt
+			tableRow.addView(textView); // add txt
+			
+			CheckBox cb = new CheckBox(this); // add a check box
+			cb.setBackgroundColor(Color.DKGRAY);// add a check box
+		    tableRow.addView(cb); // add a check box
+			tableLayout.addView(tableRow); // add txt
+		}
+		
+		
+//		// first row
+//		TableRow tableRow1 = new TableRow(this);// create a new row
+//		tableRow1.setLayoutParams(tableParams); // set the params
+//		TextView textView = new TextView(this);// add txt
+//		//textView.setText(courses.get(0) + "\nthis is a test \n\n\nn\n\n\n\n\n\n\n\n\n\\n\\\n\n\n\n\n\n\n\n\n\nhhhhh");
+//		textView.setText("Course 1: " + courses.get(0));
+//		textView.setLayoutParams(rowParams); // add txt
+//		textView.setTextColor(Color.BLACK); // add txt
+//		tableRow1.addView(textView); // add txt
+//		CheckBox cb = new CheckBox(this); // add a check box
+//		cb.setBackgroundColor(Color.DKGRAY);// add a check box
+//		tableRow1.addView(cb); // add a check box
+//		tableLayout.addView(tableRow1); // add txt
+//
+//		// second row
+//		TableRow tableRow2 = new TableRow(this);
+//		tableRow2.setLayoutParams(tableParams);
+//		TextView textView2 = new TextView(this);
+//		//textView2.setText("this is another test \n\n\nn\n\n\n\n\n\n\n\n\n\\sadfdn\\\n\n\n\n\n\n\n\n\n\njjjjj");
+//		textView.setText("Course 1: " + courses.get(0) + "\n\n\n\n" + 
+//						"Course 2: " + courses.get(1) + "\n\n\n\n" +
+//						"Course 3: " + courses.get(2) + "\n\n\n\n" + 
+//						"Course 4: " + courses.get(3)  + "\n");
+//		
+//		textView2.setTextColor(Color.BLACK);
+//		textView2.setLayoutParams(rowParams);
+//		tableRow2.addView(textView2);
+//		CheckBox cb2 = new CheckBox(this); // add a check box
+//		cb2.setBackgroundColor(Color.BLACK);// add a check box
+//		tableRow2.addView(cb2); // add a check box
+//		tableLayout.addView(tableRow2);
+		
+		
+		scroll.addView(tableLayout);
+		addContentView(scroll, scrollLayoutParams);
+		 
+		/***  ==== Testing ==== ***/
+		
+		/*     original
 		TableLayout tableLayout = new TableLayout(this);
 		tableLayout.setLayoutParams(tableParams);
 
@@ -91,9 +158,11 @@ public class CourseSelectScreen extends BaseScene {
 		cb2.setBackgroundColor(Color.BLACK);// add a check box
 		tableRow2.addView(cb2); // add a check box
 		tableLayout.addView(tableRow2);
-
+		
 		scroll.addView(tableLayout);
 		addContentView(scroll, scrollLayoutParams);
+		        end original   */
+		
 		/* == END how to make the view scrollable == */
 
 		// example code reading the ser file
