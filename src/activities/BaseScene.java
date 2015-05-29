@@ -1,13 +1,17 @@
 package activities;
 
 import com.bitsplease.courseconfessions.R;
+
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,6 +29,8 @@ public class BaseScene extends Activity {
 	protected int width;
 	protected static final int height = 1280;
 
+	
+	RelativeLayout sideMenu;
 	Button menuBt;
 	Button logoutBt;
 
@@ -46,7 +52,7 @@ public class BaseScene extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		/* ==== END settings ==== */
 
 		Display display = getWindowManager().getDefaultDisplay();
@@ -63,8 +69,8 @@ public class BaseScene extends Activity {
 		menuBt = new Button(this);
 
 		menuBt.setBackgroundDrawable(getResources().getDrawable(R.raw.menubtn));
-		menuBt.setX(10);
-		menuBt.setY(10);
+		menuBt.setX(20);
+		menuBt.setY(30);
 
 		RelativeLayout.LayoutParams menuLP = new RelativeLayout.LayoutParams(
 				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio));
@@ -82,16 +88,24 @@ public class BaseScene extends Activity {
 		addContentView(menuBt, menuLP);
 		/* ========= End How to add a button =================== */
 
-		/* ========= Off screen example log out BTN ============ */
-		logoutBt = new Button(this);
+		/* ====== Add a view for sliding in/out ========== */
+		sideMenu = new RelativeLayout(this);
+		RelativeLayout.LayoutParams menuViewLP = new RelativeLayout.LayoutParams(
+				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
+		//sideMenu.setLayoutParams(menuViewLP);
+		sideMenu.setX(-500*nativeToPxRatio);
+		sideMenu.setY(150);
+		addContentView(sideMenu, menuViewLP);
+		/* ===== End Add a view for sliding in/out ======== */
 
-		logoutBt.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.logoutbtn));
+		/* ========= Add logout button to the sideMenu ============ */
+		logoutBt = new Button(this);
+		logoutBt.setBackgroundColor(Color.parseColor("#071017"));
 		logoutBt.setX(0);
-		logoutBt.setY(75);
+		logoutBt.setY(0);
 
 		RelativeLayout.LayoutParams offscreenBtnLP = new RelativeLayout.LayoutParams(
-				(int) (150 * nativeToPxRatio), (int) (75 * nativeToPxRatio));
+				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
 		logoutBt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -100,10 +114,11 @@ public class BaseScene extends Activity {
 					return true;
 				}
 
-				return false;
+				return true;
 			}
 		});
-		addContentView(logoutBt, offscreenBtnLP);
+		logoutBt.setLayoutParams(offscreenBtnLP);
+		sideMenu.addView(logoutBt); // add the button to the side menu
 		/* ======== End Off screen example log out BTN ======= */
 
 		/* ====how to print out a debug statement in logcat===== */
@@ -118,23 +133,24 @@ public class BaseScene extends Activity {
 		super.onStart();
 		menuBt.bringToFront();
 		logoutBt.bringToFront();
+		sideMenu.bringToFront();
 	}
 
 	boolean sideMenuIsOut = false; // whether the side menu is out or not
 
 	// brings the side menu in and out of view.
 	private void toggleSideMenu() {
-		// TODO: slide in the menu buttons
-		TranslateAnimation animation = null;
+		ObjectAnimator mover = null; 
 		if (sideMenuIsOut) {
-			animation = new TranslateAnimation(-500 * nativeToPxRatio, 0, 0, 0);
+			// slide from right to left
+			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, -500*nativeToPxRatio);
 		} else {
-			animation = new TranslateAnimation(0, -500 * nativeToPxRatio, 0, 0);
+			// slide in from left
+			mover = ObjectAnimator.ofFloat(sideMenu, "translationX", -500*nativeToPxRatio, 0);
+			
 		}
 		sideMenuIsOut = !sideMenuIsOut;
-		animation.setDuration(300); // duartion in ms
-		animation.setFillAfter(true);
-		logoutBt.startAnimation(animation);
+		mover.start();
 	}
 
 	// logout. pretty self explanatory.
@@ -153,7 +169,7 @@ public class BaseScene extends Activity {
 	// start a certain screen, the screen which is going to be started is passed
 	// into the method
 	public void startScreen(Screen screen) {
-		if (preventOpenNewScreen){
+		if (preventOpenNewScreen) {
 			Log.e("", "prevent open");
 			return;
 		}

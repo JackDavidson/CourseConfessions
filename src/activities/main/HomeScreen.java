@@ -124,8 +124,8 @@ public class HomeScreen extends BaseScene {
 		Button signupButton = new Button(this);
 		signupButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.signupbtn));
-		signupButton.setX((widthPx / 2 - lp.width / 2) + 65*nativeToPxRatio);
-		signupButton.setY((height - 100) * nativeToPxRatio);
+		signupButton.setX((widthPx / 2) - 170*nativeToPxRatio); //- lp.width / 2));// + 65*nativeToPxRatio);
+		signupButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
@@ -147,8 +147,8 @@ public class HomeScreen extends BaseScene {
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2 - lp.width / 2) + 250*nativeToPxRatio);
-		forgotButton.setY((height - 100) * nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);//  - lp.width));// + 250*nativeToPxRatio);
+		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
