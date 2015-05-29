@@ -46,8 +46,7 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	private PlacementEditText placeUserText;
 	private PlacementEditText placePassText;
-	private TextView loginResultTextView;
-
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -70,25 +69,18 @@ public class HomeScreen extends BaseScene {
 		image.attachToScene();
 		/* ==== END set background ===== */
 
-		/* ====== how to display text ====== */
-		loginResultTextView = new TextView(this);
-		loginResultTextView.setX(50 * nativeToPxRatio);
-		loginResultTextView.setY((height / 2 + 100) * nativeToPxRatio);
-		RelativeLayout.LayoutParams loginResultParams = new RelativeLayout.LayoutParams(
-				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		loginResultTextView.setTextColor(Color.WHITE);
-		loginResultTextView.setText("Ready");
-		addContentView(loginResultTextView, loginResultParams);
-		/* ==== END how to display text ==== */
-
-		/* ========= How to do text entry ====================== */
+		/* ========= Text Entry ========= */
 		placeUserText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
 				height / 2 - 104, 500, 70, "Username");
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
 				height / 2 + 30, 500, 70, "Password");
-
+		/* ========= END Text Entry ========= */
+		
+		/* ========= Set Layout Params for screen ========= */
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
+		/* ========= END Layout Params ========= */
+		
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
@@ -124,7 +116,7 @@ public class HomeScreen extends BaseScene {
 		Button signupButton = new Button(this);
 		signupButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.signupbtn));
-		signupButton.setX((widthPx / 2) - 170*nativeToPxRatio); //- lp.width / 2));// + 65*nativeToPxRatio);
+		signupButton.setX((widthPx / 2) - 170*nativeToPxRatio);
 		signupButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
@@ -147,7 +139,7 @@ public class HomeScreen extends BaseScene {
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);//  - lp.width));// + 250*nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
@@ -165,24 +157,17 @@ public class HomeScreen extends BaseScene {
 		});
 		addContentView (forgotButton, forgotBtnLayout);
 		/* ========= End Forgot Button ========= */
-		
-		/* ======== Quick how to write/read files ============== */
-		SDCardWriter.writeFile(getFilesDir().toString(), "placeholderName",
-				"placeholderComment");
-		String read = SDCardWriter.readFile(getFilesDir().toString()
-				+ "placeholderName");
-		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG)
-				.show();
-		/* ========== END how to write/read files ============== */
-
 	}
 
 	@Override
-	//call baseScene.onResume();
+	/**
+	 *  call baseScene.onResume(); 
+	 *  */
 	protected void onResume() {
 		super.onResume();
 	}
-	//attempt a login if the login button is pressed
+	
+	/* Attempt login when user click on the login screen */
 	private void attemptLogin() {
 		boolean loginSuccess = false;
 		User user = null;
@@ -190,23 +175,21 @@ public class HomeScreen extends BaseScene {
 		String userPass = placePassText.getEditText().getText().toString();
 
 		try {
-			user = phpInteractions.attemptLoginAndCrateUser(userName, userPass,
+			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass,
 					this);
 			loginSuccess = true;
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
-			this.loginResultTextView.setText(e.getMessage());
+			Toast.makeText(this, e.getMessage(),
+					Toast.LENGTH_LONG).show();
 		}
 		if (loginSuccess) {
-			// username/pass are valid, and we can now log in.
-			this.loginResultTextView.setText("Login success! as: "
-					+ user.getRealName());
+			/* Make some toast, but butter it this time */
+			Toast.makeText(this, "Welcome " + user.getRealName(),
+					Toast.LENGTH_LONG).show();
 			this.startScreen(Screen.CourseSelectScreen);
+			finish();
 		}
-		/*how to move to a screen: aka the write review screen in this example
-			WriteReviewScreen is a constant...see the bottom of BaseScene.java 
-			for more information*/
-		this.startScreen(Screen.CourseSelectScreen);
 	}
 
 	@Override

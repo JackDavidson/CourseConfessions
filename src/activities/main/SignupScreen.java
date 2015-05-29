@@ -49,12 +49,11 @@ public class SignupScreen extends BaseScene {
 	private PlacementEditText placeEmailText;
 	private PlacementEditText placePassText;
 	private PlacementEditText placeConfirmPassText;
-	private TextView loginResultTextView;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	//phpInteractions php = new phpInteractions();
+	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -70,19 +69,10 @@ public class SignupScreen extends BaseScene {
 		image.attachToScene();
 		/* ==== END set background ===== */
 
-		/* ====== how to display text ====== */
-		loginResultTextView = new TextView(this);
-		loginResultTextView.setX(50 * nativeToPxRatio);
-		loginResultTextView.setY((height / 2 + 100) * nativeToPxRatio);
-		RelativeLayout.LayoutParams loginResultParams = new RelativeLayout.LayoutParams(
-				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		loginResultTextView.setTextColor(Color.WHITE);
-		loginResultTextView.setText("Ready");
-		addContentView(loginResultTextView, loginResultParams);
-		/* ==== END how to display text ==== */
-
+		/* ========= Layout Params for screen width ========= */
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
+		/* ========= END Layout Params ========= */
 
 		/* ========= Text Entry ========= */
 		placeUserText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
@@ -91,10 +81,10 @@ public class SignupScreen extends BaseScene {
 				height / 2 - 48, 500, 70, "Email");
 		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
 				height / 2 + 84, 500, 70, "Password");
-		placeConfirmPassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
-				height / 2 + 216, 500, 70, "Confirm Password");
+		placeConfirmPassText = new PlacementEditText(this, width / 2 - 500 / 2
+				+ 34, height / 2 + 216, 500, 70, "Confirm Password");
 		/* ========= End Text Entry ========= */
-		
+
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
@@ -118,7 +108,7 @@ public class SignupScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					attemptLogin();
+					attemptSignup();
 					return true;
 				}
 
@@ -126,15 +116,17 @@ public class SignupScreen extends BaseScene {
 			}
 		});
 		addContentView(signupBtn, signup);
-		/* ========= End Signup Button  ========= */
-		
+		/* ========= End Signup Button ========= */
+
 		/* ========= Login Button ========= */
 		Button loginButton = new Button(this);
 		loginButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.loginbtn));
-		loginButton.setX((widthPx / 2) - 170*nativeToPxRatio); //- lp.width / 2));// + 65*nativeToPxRatio);
+		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio); // - lp.width /
+																	// 2));// +
+																	// 65*nativeToPxRatio);
 		loginButton.setY((height - 70) * nativeToPxRatio);
-		
+
 		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (150 * nativeToPxRatio), (int) (28 * nativeToPxRatio));
 		loginButton.setOnTouchListener(new OnTouchListener() {
@@ -148,14 +140,17 @@ public class SignupScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView (loginButton, loginBtnLayout);
+		addContentView(loginButton, loginBtnLayout);
 		/* ========= End Login Button ========= */
-		
+
 		/* ========= Forgot Button ========= */
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);//  - lp.width));// + 250*nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);// -
+																// lp.width));//
+																// +
+																// 250*nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
@@ -172,17 +167,8 @@ public class SignupScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView (forgotButton, forgotBtnLayout);
+		addContentView(forgotButton, forgotBtnLayout);
 		/* ========= End Forgot Button ========= */
-		
-		/* ======== Quick how to write/read files ============== */
-		SDCardWriter.writeFile(getFilesDir().toString(), "placeholderName",
-				"placeholderComment");
-		String read = SDCardWriter.readFile(getFilesDir().toString()
-				+ "placeholderName");
-		Toast.makeText(this, "Read file, result is: " + read, Toast.LENGTH_LONG)
-				.show();
-		/* ========== END how to write/read files ============== */
 
 	}
 
@@ -191,28 +177,23 @@ public class SignupScreen extends BaseScene {
 		super.onResume();
 	}
 
-	private void attemptLogin() {
-		boolean loginSuccess = false;
-		User user = null;
+	private void attemptSignup() {
+		boolean signupSuccess = false;
 		String userName = placeUserText.getEditText().getText().toString();
+		String userEmail = placeEmailText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
+		String userConfirmPass = placeConfirmPassText.getEditText().getText()
+				.toString();
 
 		try {
-			user = phpInteractions.attemptLoginAndCrateUser(userName, userPass,
-					this);
-			loginSuccess = true;
+			signupSuccess = phpInteractions.attemptSignup(userName, userEmail, userPass, userConfirmPass, this);
 		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			this.loginResultTextView.setText(e.getMessage());
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-		if (loginSuccess) {
-			// username/pass are valid, and we can now log in.
-			this.loginResultTextView.setText("Login success! as: "
-					+ user.getRealName());
-			this.startScreen(Screen.CourseSelectScreen);
+		if (signupSuccess) {
+			this.startScreen(Screen.HomeScreen);
+			finish();
 		}
-		
-		this.startScreen(Screen.WriteReviewScreen);
 	}
 
 }
