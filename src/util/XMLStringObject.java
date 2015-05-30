@@ -7,7 +7,7 @@ import android.util.Log;
 public class XMLStringObject {
 	String name;
 	String value;
-	ArrayList<XMLStringObject> items;
+	ArrayList<XMLStringObject> children;
 
 	/**
 	 * these are the sub-objects in an xml file. think of them like nodes in a
@@ -20,7 +20,7 @@ public class XMLStringObject {
 	public XMLStringObject(String name, String value) {
 		this.name = name;
 		this.value = value;
-		items = new ArrayList<XMLStringObject>(5);
+		children = new ArrayList<XMLStringObject>(5);
 	}
 
 	// another constructor, reads an XML file for the name value pair
@@ -70,7 +70,7 @@ public class XMLStringObject {
 
 				XMLStringObject child = new XMLStringObject(fileContents,
 						position);
-				items.add(child);
+				children.add(child);
 
 				while (!(fileContents.charAt(position[0]) == '<'))
 					position[0]++;
@@ -86,11 +86,19 @@ public class XMLStringObject {
 
 	// add an item to the arraylist
 	public void addItem(XMLStringObject item) {
-		items.add(item);
+		children.add(item);
 	}
 
 	public void addItem(String name, String value) {
 		addItem(new XMLStringObject(name, value));
+	}
+
+	public ArrayList<XMLStringObject> getChildren() {
+		return children;
+	}
+
+	public String getValue() {
+		return value;
 	}
 
 	// XMLStringObject's toString() method, depth is the amount of indent (i
@@ -104,9 +112,9 @@ public class XMLStringObject {
 		asString += "<" + name + ">";
 		asString += value;
 		// if we have children, we need to give them some space, and write them
-		if (items.size() > 0) {
+		if (children.size() > 0) {
 			asString += "\n";
-			for (XMLStringObject item : items) {
+			for (XMLStringObject item : children) {
 				asString += "\n" + item.toString(depth + 1) + "\n";
 			}
 			asString += "\n";

@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 
 public class BaseScene extends Activity {
 
-	protected static String XML_SCREEN_DATA_NAME = "screenData";
 
 	public float nativeToPxRatio;
 	public int widthPx;

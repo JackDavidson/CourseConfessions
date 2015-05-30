@@ -102,13 +102,14 @@ public class CourseSelectScreen extends BaseScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					XMLStringObject xmlPageSpecifficData = new XMLStringObject(
-							BaseScene.XML_SCREEN_DATA_NAME, "");
+							User.XML_SCREEN_DATA_NAME, "");
 					for (int i = 0; i < courses.size(); i++)
 						if (checkBoxes[i].isChecked())
 							xmlPageSpecifficData.addItem(
 									CourseReviewsBrowser.XML_COURSES_NAME,
 									courses.get(i));
 					user.addXmlPageData(xmlPageSpecifficData);
+					user.setScreen(Screen.CourseReviewsBrowser);
 					user.writeUserToFile(getContext());
 					startScreen(Screen.CourseReviewsBrowser);
 					return true;
