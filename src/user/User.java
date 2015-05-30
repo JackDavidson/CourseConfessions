@@ -11,6 +11,7 @@ public class User {
 
 	/* ====== For every user ====== */
 	public static String SAVE_FILE = "userInfo.xml";
+	public static String XML_SCREEN_DATA_NAME = "screenData";
 	private static String USER_NAME = "username";
 	private static String USER_PASSWORD = "password";
 	private static String USER_SCREEN = "screen";
@@ -23,6 +24,7 @@ public class User {
 
 	/* ===== For page-speciffic data ===== */
 	private XMLStringObject xmlPageSpecifficData;
+
 	/* === End For page-speciffic data === */
 
 	public User(String userName, String password, String realName,
@@ -40,15 +42,13 @@ public class User {
 	 * pass. the file will be in XML format."
 	 */
 	public User(Context context) {
-		// TODO: assume we're reading from the file, and go load up the old
-		// username and pass. the file will be in XML format.
-		//
 		setupUserFromFile(context);
 	}
 
-	public void addXmlPageData(XMLStringObject xmlPageSpecifficData){
+	public void addXmlPageData(XMLStringObject xmlPageSpecifficData) {
 		this.xmlPageSpecifficData = xmlPageSpecifficData;
 	}
+
 	// write user to an xml file...I think
 	public void writeUserToFile(Context context) {
 		XMLStringParser xmlRoot = new XMLStringParser();
@@ -60,7 +60,7 @@ public class User {
 		xmlRoot.addItem(xmlUserName);
 		xmlRoot.addItem(xmlUserPassword);
 		xmlRoot.addItem(xmlActiveScreen);
-		if(xmlPageSpecifficData != null)
+		if (xmlPageSpecifficData != null)
 			xmlRoot.addItem(xmlPageSpecifficData);
 
 		String userInfoString = xmlRoot.toString();
@@ -85,8 +85,13 @@ public class User {
 		this.userName = xmlRoot.getChildsValue(USER_NAME);
 		this.password = xmlRoot.getChildsValue(USER_PASSWORD);
 		this.activeScreen = Screen.valueOf(xmlRoot.getChildsValue(USER_SCREEN));
+		this.xmlPageSpecifficData = xmlRoot.getChild(XML_SCREEN_DATA_NAME);
 		// TODO: userName =
 		// TODO: password =
+	}
+
+	public XMLStringObject getPageData() {
+		return xmlPageSpecifficData;
 	}
 
 	// return the username
@@ -104,21 +109,17 @@ public class User {
 		return realName;
 	}
 
-	// attempt login, and if its successful the username and password will be
-	// passed to an XML file.
-	boolean attemptLogin() {
-		// TODO: use the php stuff to try to do a login,
-		// TODO: if login successful, write username and pass to a file in XML
-		// format. ex:
-		// <xml>
-		// <userName>jsdavids</userName>
-		// <password>Amorphous43$</password>
-		// <rememberInfo>false</rememberInfo>
-		// </xml>
-
-		// SDCardWriter.writeFile(getFilesDir().toString(),saveFile,
-		// "<xml>....</xml>");
+	// TODO: attempt login, and if its successful then return true
+	boolean checkCredentials() {
 		return true;
+	}
+
+	public Screen getScreen() {
+		return activeScreen;
+	}
+
+	public void setScreen(Screen screen) {
+		activeScreen = screen;
 	}
 
 }
