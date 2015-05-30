@@ -16,13 +16,14 @@ public class XMLStringObject {
 	 * @param name
 	 * @param value
 	 */
-	//initialize the name value pairs in the constructor
+	// initialize the name value pairs in the constructor
 	public XMLStringObject(String name, String value) {
 		this.name = name;
 		this.value = value;
 		items = new ArrayList<XMLStringObject>(5);
 	}
-	//another constructor, reads an XML file for the name value pair
+
+	// another constructor, reads an XML file for the name value pair
 	public XMLStringObject(String fileContents, int[] position)
 			throws XMLEOFException {
 		this("", "");
@@ -46,10 +47,9 @@ public class XMLStringObject {
 			this.value += fileContents.charAt(position[0]);
 			position[0]++;
 		}
-		position[0]++;
 		// finally, lets read in the ending name. it should
 		// match. if not, then we need to add a sub-object
-		int endNamePos = 0;
+		int endNamePos = 1;
 		String endName = "";
 		while (fileContents.charAt(position[0] + endNamePos) != '>') {
 			endName += fileContents.charAt(position[0] + endNamePos);
@@ -61,16 +61,40 @@ public class XMLStringObject {
 			position[0] += (endNamePos + 1);
 			Log.e("", "no child! name:" + this.name + " value:" + this.value);
 		} else {
-			Log.e("", "have child!");
+			Log.e("", "have child! " + this.name + " end: " + endName);
+			this.value = ""; // if we have children, we should have no value
 			// we have a child! lets read and add it.
-			items.add(new XMLStringObject(fileContents, position));
+
+			boolean atEnd = false;
+			while (!atEnd) {
+
+				XMLStringObject child = new XMLStringObject(fileContents,
+						position);
+				items.add(child);
+
+				while (!(fileContents.charAt(position[0]) == '<'))
+					position[0]++;
+
+				String testEnd = fileContents.substring(position[0]);
+				Log.e("", "testEnd: " + testEnd);
+
+				if (testEnd.startsWith("</" + this.name))
+					atEnd = true;
+			}
 		}
 	}
-	//add an item to the arraylist
+
+	// add an item to the arraylist
 	public void addItem(XMLStringObject item) {
 		items.add(item);
 	}
-	//XMLStringObject's toString() method, depth is the amount of indent (i think)
+
+	public void addItem(String name, String value) {
+		addItem(new XMLStringObject(name, value));
+	}
+
+	// XMLStringObject's toString() method, depth is the amount of indent (i
+	// think)
 	public String toString(int depth) {
 		// Initialize an empty string
 		String asString = "";
@@ -86,6 +110,8 @@ public class XMLStringObject {
 				asString += "\n" + item.toString(depth + 1) + "\n";
 			}
 			asString += "\n";
+			for (int i = 0; i < depth; i++)
+				asString += "  ";
 		}
 		// and end the item with its forward slash
 		asString += "</" + name + ">";

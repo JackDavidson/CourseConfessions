@@ -169,7 +169,7 @@ public abstract class phpInteractions {
 	}
 
 	@SuppressLint("NewApi")
-	public static ArrayList<String> parseCourseListJSON(String result) {
+	public static ArrayList<String> parseListJSON(String result, String name) {
 		// return object for all courses to be added to
 		// ArrayList<String> resultCourses = new ArrayList<String>();
 		// placeholder string to take in JSON object
@@ -180,8 +180,8 @@ public abstract class phpInteractions {
 			for (int i = 0; i < jArray.length(); i++) {
 				JSONObject json_data = jArray.getJSONObject(i);
 				Log.i("", "made it to second");
-				Log.i("", json_data.getString("COURSES"));
-				jsonParse = json_data.getString("COURSES");
+				Log.i("", json_data.getString(name));
+				jsonParse = json_data.getString(name);
 				// Log.i("log_tag", "Length: " + json_data.length() + " "
 				// + "USER: " + json_data.getString("USER"));
 			}
@@ -259,7 +259,11 @@ public abstract class phpInteractions {
 	}
 
 	/**
-	 * TODO: comments
+	 * create a string array with all the course sections and numbers avaiable.
+	 * ex. CSE 100, CSE 110. should only include results listed under the
+	 * courseSection. Note: courseSection is included to ensure that this code
+	 * can be expanded at a later date. for now, always pass this function
+	 * "CSE, 0, 0"
 	 * 
 	 * @param couseSection
 	 *            ex. CSE, BIO, etc.
@@ -271,13 +275,6 @@ public abstract class phpInteractions {
 	 */
 	public static ArrayList<String> getListOfCourses(String courseSection,
 			int lowNumber, int highNumber) {
-		/*
-		 * TODO: create a string array with all the couse sections and numbers
-		 * avaiable. ex. CSE 100, CSE 110. should only include results listed
-		 * under the courseSection. Note: courseSection is included to ensure
-		 * that this code can be expanded at a later date. for now, always pass
-		 * this function "CSE, 0, 0"
-		 */
 
 		// course.add(new BasicNameValuePair("CourseSection", courseSection));
 		// nameValuePairs.add(new BasicNameValuePair("password", userPass));
@@ -286,17 +283,35 @@ public abstract class phpInteractions {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("username", null));
 
-		ArrayList<String> courseList = parseCourseListJSON(convertRespToString(httpPost(
-				nameValuePairs,
-				"http://www.courseconfessions.com/androidgetcourselist.php")));
+		ArrayList<String> courseList = parseListJSON(
+				convertRespToString(httpPost(nameValuePairs,
+						"http://www.courseconfessions.com/androidgetcourselist.php")),
+				"COURSES");
 
 		if (courseList.size() == 0) {
-			try {
-				throw new LoginException("Failed to connect to server");
-			} catch (LoginException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Log.e("phpInteractions", "Failed to connect to server");
+		}
+		return courseList;
+	}
+
+	public static ArrayList<String> getReviewsOfCourses(String courseSection,
+			String courseNum) {
+
+		// course.add(new BasicNameValuePair("CourseSection", courseSection));
+		// nameValuePairs.add(new BasicNameValuePair("password", userPass));
+		// String page = new
+		// Communicator().executeHttpGet("http://www.courseconfessions.com/androidgetcourselist.php");
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("dept", courseSection));
+		nameValuePairs.add(new BasicNameValuePair("num", courseNum));
+
+		ArrayList<String> courseList = parseListJSON(
+				convertRespToString(httpPost(nameValuePairs,
+						"http://www.courseconfessions.com/androidgetcoursereviews.php")),
+				"REVIEWS");
+
+		if (courseList.size() == 0) {
+			Log.e("phpInteractions", "Failed to connect to server");
 		}
 		return courseList;
 	}
