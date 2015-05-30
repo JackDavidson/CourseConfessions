@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
-import activities.BaseScene;
+import activities.SideMenuScene;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -19,7 +18,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 /* contact Leovao/Orrozco for questions on this file */
-public class CourseReviewsBrowser extends BaseScene {
+public class CourseReviewsBrowser extends SideMenuScene {
 	public static String XML_COURSES_NAME = "course";
 
 	@Override
