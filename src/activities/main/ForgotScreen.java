@@ -9,14 +9,12 @@ import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
 import activities.BaseScene.Screen;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
@@ -123,6 +121,7 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startScreen(Screen.HomeScreen);
 					finish();
 					return true;
 				}
@@ -146,8 +145,8 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					finish();
 					startScreen (Screen.SignupScreen);
+					finish();
 					return true;
 				}
 

@@ -22,8 +22,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-/* contact Leovao/Orrozco for questions on this file */
 public class CourseSelectScreen extends BaseScene {
+
 	@SuppressWarnings("deprecation")
 	@Override
 	// ran when the screen is created, aka after startScreen(); most of it is
@@ -123,5 +123,5 @@ public class CourseSelectScreen extends BaseScene {
 		/* ======== End add continue BTN ======= */
 
 	}
-	
+
 }

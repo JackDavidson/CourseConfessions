@@ -1,8 +1,6 @@
 package activities.main;
 
-import user.User;
 import util.LoginException;
-import util.SDCardWriter;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
@@ -10,14 +8,13 @@ import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import android.graphics.Color;
+import activities.BaseScene.Screen;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
@@ -122,9 +119,7 @@ public class SignupScreen extends BaseScene {
 		Button loginButton = new Button(this);
 		loginButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.loginbtn));
-		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio); // - lp.width /
-																	// 2));// +
-																	// 65*nativeToPxRatio);
+		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		loginButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams loginBtnLayout = new RelativeLayout.LayoutParams(
@@ -133,6 +128,7 @@ public class SignupScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startScreen(Screen.HomeScreen);
 					finish();
 					return true;
 				}
@@ -147,10 +143,7 @@ public class SignupScreen extends BaseScene {
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.forgotbtn));
-		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);// -
-																// lp.width));//
-																// +
-																// 250*nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
@@ -159,8 +152,8 @@ public class SignupScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					finish();
 					startScreen(Screen.ForgotScreen);
+					finish();
 					return true;
 				}
 
