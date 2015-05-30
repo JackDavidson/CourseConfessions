@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 public class BaseScene extends Activity {
+	
+	protected static String XML_SCREEN_DATA_NAME = "screenData";
 
 	/* native size = 1280x800, or 1280x??? */
 	public float nativeToPxRatio;
@@ -200,6 +202,11 @@ public class BaseScene extends Activity {
 					activities.writeReview.WriteReviewScreen.class);
 			this.startActivity(writeReviewScreen);
 			break;
+		case CourseReviewsBrowser:
+			Intent CourseReviewsBrowser = new Intent(this,
+					activities.courseReviewsBrowser.CourseReviewsBrowser.class);
+			this.startActivity(CourseReviewsBrowser);
+			break;
 
 		}
 
@@ -207,6 +214,10 @@ public class BaseScene extends Activity {
 
 	// defines the different screens
 	public enum Screen {
-		HomeScreen, SignupScreen, ForgotScreen, CourseSelectScreen, WriteReviewScreen
+		HomeScreen, SignupScreen, ForgotScreen, CourseSelectScreen, WriteReviewScreen, CourseReviewsBrowser
+	}
+	
+	protected BaseScene getContext(){
+		return this;
 	}
 }
