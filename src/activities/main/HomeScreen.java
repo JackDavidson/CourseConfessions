@@ -2,21 +2,18 @@ package activities.main;
 
 import user.User;
 import util.LoginException;
-import util.SDCardWriter;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 import activities.BaseScene;
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
@@ -126,6 +123,7 @@ public class HomeScreen extends BaseScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					startScreen(Screen.SignupScreen);
+					finish();
 					return true;
 				}
 
@@ -149,6 +147,7 @@ public class HomeScreen extends BaseScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					startScreen(Screen.ForgotScreen);
+					finish();
 					return true;
 				}
 
@@ -173,15 +172,13 @@ public class HomeScreen extends BaseScene {
 		User user = null;
 		String userName = placeUserText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
-
+		
 		try {
-			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass,
-					this);
+			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass, this);
 			loginSuccess = true;
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
-			Toast.makeText(this, e.getMessage(),
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		if (loginSuccess) {
 			/* Make some toast, but butter it this time */
@@ -193,7 +190,7 @@ public class HomeScreen extends BaseScene {
 	}
 
 	@Override
-	protected void onDestroy(){
+	protected void onDestroy() {
 		super.onDestroy();
 	}
 }

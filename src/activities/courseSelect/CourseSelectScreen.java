@@ -32,14 +32,16 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  *
  */
+
 //this is the course select screen, where you select courses.
 public class CourseSelectScreen extends BaseScene {
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	//ran when the screen is created, aka after startScreen(); most of it is explained inside the method.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		/* ==== TODO set background ===== */
 				//copy and paste code from HomeScreen.java here and change it a little maybe
 		

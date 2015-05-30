@@ -97,14 +97,13 @@ public abstract class phpInteractions {
 				"http://www.courseconfessions.com/androidforgotpassword.php")));
 
 		if (stringResultUserEmail == null) {
-			throw new LoginException("Failed to connect to server.");
+			throw new LoginException("Failed to connect to server");
 		} else if (stringResultUserEmail.equals("success")) {
 			Toast.makeText(context, "Password Reset Email has been sent",
 					Toast.LENGTH_LONG).show();
 			return true;
 		} else {
-			Toast.makeText(context, stringResultUserEmail, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(context, stringResultUserEmail, Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}
@@ -131,18 +130,16 @@ public abstract class phpInteractions {
 		nameValuePairs.add(new BasicNameValuePair("username", userName));
 		nameValuePairs.add(new BasicNameValuePair("email", userEmail));
 		nameValuePairs.add(new BasicNameValuePair("password", userPass));
-		nameValuePairs
-				.add(new BasicNameValuePair("cpassword", userConfirmPass));
+		nameValuePairs.add(new BasicNameValuePair("cpassword", userConfirmPass));
 
 		stringResultUserEmail = Splitter
 				.splitStringArray((convertRespToString(httpPost(nameValuePairs,
 						"http://www.courseconfessions.com/androidcreateaccount.php"))));
 
 		if (stringResultUserEmail.size() == 0) {
-			throw new LoginException("Failed to connect to server.");
+			throw new LoginException("Failed to connect to server");
 		} else if (stringResultUserEmail.get(0).equals("success")) {
-			Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG).show();
 			return true;
 		} else {
 			for (String a : stringResultUserEmail) {
