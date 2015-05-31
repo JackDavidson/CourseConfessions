@@ -2,7 +2,7 @@ package activities.writeReview;
 
 import user.User;
 import visuals.PlacementEditText;
-import activities.BaseScene;
+import activities.SideMenuScene;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -22,7 +22,7 @@ import android.widget.Toast;
  * 
  */
 //this will be the class that holds the write review screen.
-public class WriteReviewScreen extends BaseScene {
+public class WriteReviewScreen extends SideMenuScene {
 
 	private PlacementEditText placeReviewText; //the textbox where we're putting the review in 
 	//TODO: cap the textbox at 1000 characters?

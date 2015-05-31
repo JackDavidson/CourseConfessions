@@ -6,6 +6,7 @@ import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
 import activities.BaseScene;
+import activities.SideMenuScene;
 import activities.courseReviewsBrowser.CourseReviewsBrowser;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CourseSelectScreen extends BaseScene {
+public class CourseSelectScreen extends SideMenuScene {
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -79,7 +80,8 @@ public class CourseSelectScreen extends BaseScene {
 			tableRow.addView(textView); // add txt
 
 			checkBoxes[i] = new CheckBox(this); // add a check box
-			checkBoxes[i].setBackgroundColor(Color.DKGRAY);// add a check box
+			checkBoxes[i].setBackgroundColor(Color.WHITE);// add a check box
+			checkBoxes[i].setX((width / 2 - 58) * nativeToPxRatio);
 			tableRow.addView(checkBoxes[i]); // add a check box
 			tableLayout.addView(tableRow); // add txt
 		}
