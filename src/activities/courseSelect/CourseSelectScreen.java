@@ -2,9 +2,12 @@ package activities.courseSelect;
 
 import java.util.ArrayList;
 
+import com.bitsplease.courseconfessions.R;
+
 import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
+import visuals.PlacementImage;
 import activities.BaseScene;
 import activities.SideMenuScene;
 import activities.courseReviewsBrowser.CourseReviewsBrowser;
@@ -31,23 +34,16 @@ public class CourseSelectScreen extends SideMenuScene {
 	// explained inside the method.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		/* ==== TODO set background ===== */
-		// copy and paste code from HomeScreen.java here and change it a little
-		// maybe
-		/* === END set background ==== */
-
+		
 		/* ====== reloading the User object ======== */
 		final User user = new User(this);
 		/* ===== end reloading the user object ==== */
 
 		/* ==== how to make the view scrollable === */
-		// there are 3 objects here.
 		final ArrayList<String> courses = phpInteractions.getListOfCourses(
 				"any", 0, 10);
 		final CheckBox[] checkBoxes = new CheckBox[courses.size()];
 		Log.e("Select screen", courses.toString());
-		// [{"COURSES":["CSE 100","CSE 110","CSE 140","ECE 30"]}]
 
 		/* ===== Create the scroll view, set up the table layout params ===== */
 		ScrollView scroll = new ScrollView(this);
@@ -64,25 +60,24 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ==== END Create the scroll view, set up layout params ==== */
 
 		/*** ==== Add list of reviews ==== ***/
-
+		
 		TableLayout tableLayout = new TableLayout(this);
 		tableLayout.setLayoutParams(tableParams);
+		tableLayout.setY(160*nativeToPxRatio);
 
 		for (int i = 0; i < courses.size(); i++) {
-			TableRow tableRow = new TableRow(this);// create a new row
-			tableRow.setLayoutParams(tableParams); // set the params
-			TextView textView = new TextView(this);// add txt
-			textView.setText("Course " + (i + 1) + ": "
-					+ courses.get(i).replaceAll("[^a-zA-Z0-9\\s]", "")
-					+ "\t\t\t");
-			textView.setLayoutParams(rowParams); // add txt
-			textView.setTextColor(Color.BLACK); // add txt
-			tableRow.addView(textView); // add txt
-			checkBoxes[i] = new CheckBox(this); // add a check box
-			checkBoxes[i].setBackgroundColor(Color.WHITE);// add a check box
-			checkBoxes[i].setX((width / 2 - 58) * nativeToPxRatio);
-			tableRow.addView(checkBoxes[i]); // add a check box
-			tableLayout.addView(tableRow); // add txt
+			TableRow tableRow = new TableRow(this);
+			tableRow.setLayoutParams(tableParams); 
+			TextView textView = new TextView(this);
+			textView.setText(courses.get(i).replaceAll("[^a-zA-Z0-9\\s]", ""));
+			textView.setLayoutParams(rowParams);
+			textView.setTextColor(Color.BLACK);
+			textView.setX(35*nativeToPxRatio);
+			tableRow.addView(textView);
+			checkBoxes[i] = new CheckBox(this);
+			checkBoxes[i].setX((width - 200) * nativeToPxRatio);
+			tableRow.addView(checkBoxes[i]);
+			tableLayout.addView(tableRow);
 		}
 
 		scroll.addView(tableLayout);
@@ -92,12 +87,12 @@ public class CourseSelectScreen extends SideMenuScene {
 
 		/* ========= Add continue button ============ */
 		Button viewCoursesBt = new Button(this);
-		viewCoursesBt.setBackgroundColor(Color.parseColor("#1A3754"));
-		viewCoursesBt.setX((width / 2 - 200) * nativeToPxRatio);
-		viewCoursesBt.setY((height - 150) * nativeToPxRatio);
+		viewCoursesBt.setBackgroundResource(R.raw.placeholdersearch);
+		viewCoursesBt.setX((widthPx / 2) + 30*nativeToPxRatio);
+		viewCoursesBt.setY((height - 70) * nativeToPxRatio);
 
-		RelativeLayout.LayoutParams offscreenBtnLP = new RelativeLayout.LayoutParams(
-				(int) (400 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
+		RelativeLayout.LayoutParams searchBtnLayout = new RelativeLayout.LayoutParams(
+				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
 		viewCoursesBt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -119,11 +114,18 @@ public class CourseSelectScreen extends SideMenuScene {
 				return true;
 			}
 		});
-		addContentView(viewCoursesBt, offscreenBtnLP); // add the button to the
-														// side
-														// menu
+		addContentView(viewCoursesBt, searchBtnLayout);
 		/* ======== End add continue BTN ======= */
-
+		
 	}
-
+	
+	@Override
+	/**
+	 * Override the SideMenuScene courses function so the current 
+	 * page is not reloaded.
+	 */
+	public void courses() {
+		/** Do Nothing, on purpose */
+	}
+	
 }

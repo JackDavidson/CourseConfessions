@@ -54,4 +54,14 @@ public class WriteReviewScreen extends SideMenuScene {
 		/* ===== end reloading the user object ==== */
 
 	}
+	
+	@Override
+	/**
+	 * Override the SideMenuScene writeReview function so the current 
+	 * page is not reloaded.
+	 */
+	public void writeReview() {
+		/** Do nothing, on purpose */
+	}
+	
 }

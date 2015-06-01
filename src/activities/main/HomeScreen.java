@@ -135,8 +135,7 @@ public class HomeScreen extends BaseScene {
 		
 		/* ========= Forgot Button ========= */
 		Button forgotButton = new Button(this);
-		forgotButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.forgotbtn));
+		forgotButton.setBackgroundResource(R.raw.forgotbtn);
 		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
@@ -172,7 +171,9 @@ public class HomeScreen extends BaseScene {
 		User user = null;
 		String userName = placeUserText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
-		
+
+		this.startScreen(Screen.MainMenuScreen);
+		finish();
 		try {
 			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass, this);
 			loginSuccess = true;

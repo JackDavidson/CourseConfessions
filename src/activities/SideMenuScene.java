@@ -4,6 +4,7 @@ import visuals.PlacementImage;
 
 import com.bitsplease.courseconfessions.R;
 
+import activities.BaseScene.Screen;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -33,16 +34,17 @@ public class SideMenuScene extends BaseScene {
 		super.onCreate(savedInstanceState);
 		
 		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this, R.raw.titleplaceholder, 0, 0, 1000, 180);
+		PlacementImage image = new PlacementImage(this, R.raw.titleplaceholder,
+				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000, (int) (90*nativeToPxRatio));
 		image.attachToScene();
 		/* ==== END set background ===== */
 		
 		/* ========= How to add a button ======================= */
 		menuBtn = new Button(this);
 
-		menuBtn.setBackgroundResource(R.raw.menubtn);
-		menuBtn.setX(15 * nativeToPxRatio);
-		menuBtn.setY(20 * nativeToPxRatio);
+		menuBtn.setBackgroundResource(R.raw.slidemenubtn);
+		menuBtn.setX(30 * nativeToPxRatio);
+		menuBtn.setY(40 * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams menuLP = new RelativeLayout.LayoutParams(
 				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio));
@@ -66,27 +68,27 @@ public class SideMenuScene extends BaseScene {
 				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
 		sideMenu.setBackgroundColor(Color.parseColor("#0C1E2A"));
 		sideMenu.setX(-500 * nativeToPxRatio);
-		sideMenu.setY(100 * nativeToPxRatio);
+		sideMenu.setY(134 * nativeToPxRatio);
 		addContentView(sideMenu, menuViewLP);
 		/* ===== End Add a view for sliding in/out ======== */
 
 		/* ========= Add Menu icon ========= */
 		sideMenuIcon = new Button(this);
 		sideMenuIcon.setBackgroundResource(R.raw.slidemenuicon);
-		sideMenuIcon.setX(50 * nativeToPxRatio);
-		sideMenuIcon.setY(50 * nativeToPxRatio);
+		sideMenuIcon.setX(90 * nativeToPxRatio);
+		sideMenuIcon.setY(90 * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams offscreenBtnLP = new RelativeLayout.LayoutParams(
-				(int) (350 * nativeToPxRatio), (int) (350 * nativeToPxRatio));
+				(int) (300 * nativeToPxRatio), (int) (300 * nativeToPxRatio));
 		sideMenuIcon.setLayoutParams(offscreenBtnLP);
 		sideMenu.addView(sideMenuIcon);
 		/* ========= END Menu Icon ========= */
 
 		/* ========= Add Home button ========= */
 		sideMenuHome = new Button(this);
-		sideMenuHome.setBackgroundResource(R.raw.slidemenuhome);
-		sideMenuHome.setX(100 * nativeToPxRatio);
-		sideMenuHome.setY(380 * nativeToPxRatio);
+		sideMenuHome.setBackgroundResource(R.raw.slidemenuhomescreen);
+		sideMenuHome.setX(125 * nativeToPxRatio);
+		sideMenuHome.setY(420 * nativeToPxRatio); 
 
 		RelativeLayout.LayoutParams offscreenForgotBtn = new RelativeLayout.LayoutParams(
 				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
@@ -94,7 +96,7 @@ public class SideMenuScene extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					logout();
+					home();
 					return true;
 				}
 
@@ -108,8 +110,8 @@ public class SideMenuScene extends BaseScene {
 		/* ========= Add Courses button ========= */
 		sideMenuCourses = new Button(this);
 		sideMenuCourses.setBackgroundResource(R.raw.slidemenucourses);
-		sideMenuCourses.setX(100 * nativeToPxRatio);
-		sideMenuCourses.setY(440 * nativeToPxRatio);
+		sideMenuCourses.setX(125 * nativeToPxRatio);
+		sideMenuCourses.setY(500 * nativeToPxRatio); // 440
 
 		RelativeLayout.LayoutParams offscreenCoursesBtn = new RelativeLayout.LayoutParams(
 				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
@@ -117,7 +119,7 @@ public class SideMenuScene extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					logout();
+					courses();
 					return true;
 				}
 
@@ -128,34 +130,11 @@ public class SideMenuScene extends BaseScene {
 		sideMenu.addView(sideMenuCourses);
 		/* ========== END Courses button ========= */
 
-		/* ========= Add Ratings button ========= */
-		sideMenuRatings = new Button(this);
-		sideMenuRatings.setBackgroundResource(R.raw.slidemenuratings);
-		sideMenuRatings.setX(100 * nativeToPxRatio);
-		sideMenuRatings.setY(500 * nativeToPxRatio);
-
-		RelativeLayout.LayoutParams offscreenRatingsBtn = new RelativeLayout.LayoutParams(
-				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
-		sideMenuRatings.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					logout();
-					return true;
-				}
-
-				return true;
-			}
-		});
-		sideMenuRatings.setLayoutParams(offscreenRatingsBtn);
-		sideMenu.addView(sideMenuRatings);
-		/* ========== END Ratings button ========= */
-
-		/* ========= Add Settings button ========= */
+		/* ========= Add Write Review button ========= */
 		sideMenuSettings = new Button(this);
-		sideMenuSettings.setBackgroundResource(R.raw.slidemenusettings);
-		sideMenuSettings.setX(100 * nativeToPxRatio);
-		sideMenuSettings.setY(560 * nativeToPxRatio);
+		sideMenuSettings.setBackgroundResource(R.raw.slidemenuwritereview);
+		sideMenuSettings.setX(125 * nativeToPxRatio);
+		sideMenuSettings.setY(580 * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams offscreenSettingsBtn = new RelativeLayout.LayoutParams(
 				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
@@ -163,7 +142,7 @@ public class SideMenuScene extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					logout();
+					writeReview();
 					return true;
 				}
 
@@ -177,8 +156,8 @@ public class SideMenuScene extends BaseScene {
 		/* ========= Add Logout button ========= */
 		sideMenuLogout = new Button(this);
 		sideMenuLogout.setBackgroundResource(R.raw.slidemenulogout);
-		sideMenuLogout.setX(100 * nativeToPxRatio);
-		sideMenuLogout.setY(620 * nativeToPxRatio);
+		sideMenuLogout.setX(125 * nativeToPxRatio);
+		sideMenuLogout.setY(660 * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams offscreenLogoutBtn = new RelativeLayout.LayoutParams(
 				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
@@ -197,12 +176,43 @@ public class SideMenuScene extends BaseScene {
 		sideMenu.addView(sideMenuLogout);
 		/* ========== END Logout button ========= */
 	}
-
-	// logout. pretty self explanatory.
+	
+	/**
+	 * The Home function from the side menu
+	 * When called from Home, don't do anything
+	 */
+	public void home() {
+		startScreen(Screen.MainMenuScreen);
+		finish();
+	}
+	
+	/**
+	 * The course that the user is trying to find
+	 * When pressed, he will be directed to the CSE courses page
+	 */
+	public void courses() {
+		startScreen(Screen.CourseSelectScreen);
+		finish();
+	}
+	
+	/**
+	 * Write a review for a course
+	 */
+	public void writeReview() {
+		startScreen(Screen.WriteReviewScreen);
+		finish();
+	}
+	
+	/**
+	 * The Logout function, self-explanatory
+	 * Logs the user out and takes him back to the HomeScreen 
+	 */
 	private void logout() {
-
+		startScreen(Screen.HomeScreen);
+		finish();
 	}
 
+	
 	@Override
 	// calls android.activity's onStart() method, and brings the menu button
 	// and the logout button to the front
