@@ -1,5 +1,7 @@
 package activities;
 
+import visuals.PlacementImage;
+
 import com.bitsplease.courseconfessions.R;
 
 import android.animation.ObjectAnimator;
@@ -29,6 +31,11 @@ public class SideMenuScene extends BaseScene {
 	// method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* ==== Set background ===== */
+		PlacementImage image = new PlacementImage(this, R.raw.titleplaceholder, 0, 0, 1000, 180);
+		image.attachToScene();
+		/* ==== END set background ===== */
 		
 		/* ========= How to add a button ======================= */
 		menuBtn = new Button(this);
