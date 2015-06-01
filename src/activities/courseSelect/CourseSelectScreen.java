@@ -78,7 +78,6 @@ public class CourseSelectScreen extends SideMenuScene {
 			textView.setLayoutParams(rowParams); // add txt
 			textView.setTextColor(Color.BLACK); // add txt
 			tableRow.addView(textView); // add txt
-
 			checkBoxes[i] = new CheckBox(this); // add a check box
 			checkBoxes[i].setBackgroundColor(Color.WHITE);// add a check box
 			checkBoxes[i].setX((width / 2 - 58) * nativeToPxRatio);
