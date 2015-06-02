@@ -132,7 +132,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		ArrayList<Integer> reviewIDs = new ArrayList<Integer>();
 		for (int i = 0; i < reviews.size(); i++) {
 			//for each time the ID is returned, add to the return array
-			if ((i % 5) == 0) {
+			if ((i+1) % 6 == 0) {
 				reviewIDs.add(Integer.parseInt(reviews.get(i)));
 			}
 			//otherwise output to screen with proper formatting
@@ -148,7 +148,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 				// shape.setCornerRadius( 8 );
 	
 				String name = null;
-				switch (i % 5) {
+				switch (i % 6) {
 				case 0:
 					name = "\nSection";
 	
