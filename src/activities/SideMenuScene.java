@@ -219,7 +219,7 @@ public class SideMenuScene extends BaseScene {
 	protected void onStart() {
 		super.onStart();
 		menuBtn.bringToFront();
-		sideMenuHome.bringToFront();
+		//sideMenuHome.bringToFront();
 		sideMenu.bringToFront();
 	}
 

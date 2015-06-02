@@ -88,11 +88,11 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ========= Add continue button ============ */
 		Button viewCoursesBt = new Button(this);
 		viewCoursesBt.setBackgroundResource(R.raw.placeholdersearch);
-		viewCoursesBt.setX((widthPx / 2) + 30*nativeToPxRatio);
-		viewCoursesBt.setY((height - 70) * nativeToPxRatio);
+		viewCoursesBt.setX((widthPx / 2) - (416/2)*nativeToPxRatio);
+		viewCoursesBt.setY((height - 220) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams searchBtnLayout = new RelativeLayout.LayoutParams(
-				(int) (150 * nativeToPxRatio), (int) (32 * nativeToPxRatio));
+				(int) (416 * nativeToPxRatio), (int) (126 * nativeToPxRatio));
 		viewCoursesBt.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
