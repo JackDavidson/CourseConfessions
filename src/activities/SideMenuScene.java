@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 
 public class SideMenuScene extends BaseScene {
 
+	public static final int HEIGHT_OF_TITLE_PIC = 130;
+	
 	RelativeLayout sideMenu;
 	Button menuBtn;
 	Button sideMenuIcon;
@@ -38,7 +40,7 @@ public class SideMenuScene extends BaseScene {
 		/* ==== Set placeholder background ===== */		
 		ImageView image = new ImageView(this);
 		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
-				(int) (widthPx), (int) (130*nativeToPxRatio));
+				(int) (widthPx), (int) (HEIGHT_OF_TITLE_PIC*nativeToPxRatio));
 		image.setBackgroundResource(R.raw.titleplaceholder);
 		image.setX((width / 2)*nativeToPxRatio - (widthPx / 2));
 		image.setY(0);
