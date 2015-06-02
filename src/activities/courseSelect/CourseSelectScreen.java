@@ -80,11 +80,30 @@ public class CourseSelectScreen extends SideMenuScene {
 		for (int i = 0; i < courses.size(); i++) {
 			TableRow tableRow = new TableRow(this);
 			tableRow.setLayoutParams(tableParams); 
-			TextView textView = new TextView(this);
+			final TextView textView = new TextView(this);
 			textView.setText(courses.get(i).replaceAll("[^a-zA-Z0-9\\s]", ""));
 			textView.setLayoutParams(rowParams);
 			textView.setTextColor(Color.BLACK);
 			textView.setX(35*nativeToPxRatio);
+			textView.setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_UP) {
+						XMLStringObject xmlPageSpecifficData = new XMLStringObject(
+								User.XML_SCREEN_DATA_NAME, "");
+								xmlPageSpecifficData.addItem(
+										CourseReviewsBrowser.XML_COURSES_NAME,
+										(String) textView.getText());
+						user.addXmlPageData(xmlPageSpecifficData);
+						user.setScreen(Screen.CourseReviewsBrowser);
+						user.writeUserToFile(getContext());
+						startScreen(Screen.CourseReviewsBrowser);
+						return true;
+					}
+
+					return true;
+				}
+			});
 			tableRow.addView(textView);
 			checkBoxes[i] = new CheckBox(this);
 			checkBoxes[i].setX((width - 200) * nativeToPxRatio);
