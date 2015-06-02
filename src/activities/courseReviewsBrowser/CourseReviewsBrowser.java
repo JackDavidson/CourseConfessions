@@ -2,15 +2,23 @@ package activities.courseReviewsBrowser;
 
 import java.util.ArrayList;
 
+import com.bitsplease.courseconfessions.R;
+
 import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
 import activities.SideMenuScene;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -48,16 +56,16 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
 		RelativeLayout.LayoutParams scrollLayoutParams = new RelativeLayout.LayoutParams(
-				(int) ((width - 100) * nativeToPxRatio),
-				(int) ((height - 50) * nativeToPxRatio));
+				(int) ((width - 60) * nativeToPxRatio),
+				(int) ((height - HEIGHT_OF_TITLE_PIC) * nativeToPxRatio));
 		/*
 		 * scrollLayoutParams.setMargins((int) (50 * nativeToPxRatio), (int) (50
 		 * * nativeToPxRatio), (int) (50 * nativeToPxRatio), (int) (50 *
 		 * nativeToPxRatio));
 		 */
 
-		scroll.setX(80 * nativeToPxRatio);
-		scroll.setY(50 * nativeToPxRatio);
+		scroll.setX(30 * nativeToPxRatio);
+		scroll.setY(HEIGHT_OF_TITLE_PIC * nativeToPxRatio);
 
 		/* ========= Set up table ============ */
 		TableLayout tableLayout = new TableLayout(this);
@@ -68,7 +76,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		tableLayout.setLayoutParams(tableParams);
 
 		TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
+				(int) ((width - 175) * nativeToPxRatio),
 				TableRow.LayoutParams.WRAP_CONTENT);
 
 		rowParams.setMargins((int) (50 * nativeToPxRatio), 0,
@@ -90,7 +98,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 			Log.e("ReviewBrowser", reviews.toString());
 
 			if (!reviews.get(0).equals("fail")) {
-				ArrayList<Integer> reviewIDs = addReviewsToTable(tableLayout, reviews, tableParams, rowParams);
+				addReviewsToTable(tableLayout, reviews, tableParams, rowParams);
 			} else {
 				TableRow tableRowFailure = new TableRow(this);// create a new
 																// row
@@ -123,39 +131,40 @@ public class CourseReviewsBrowser extends SideMenuScene {
 
 	}
 
-	private ArrayList<Integer> addReviewsToTable(TableLayout tableLayout,
+	static final int REVIEW_ID_POSITION = 5;
+
+	private void addReviewsToTable(TableLayout tableLayout,
 			ArrayList<String> reviews,
 			android.widget.TableLayout.LayoutParams tableParams,
 			android.widget.TableRow.LayoutParams rowParams) {
 
-		//create return arraylist of integers
-		ArrayList<Integer> reviewIDs = new ArrayList<Integer>();
+		// create return arraylist of integers
 		for (int i = 0; i < reviews.size(); i++) {
-			//for each time the ID is returned, add to the return array
-			if ((i+1) % 6 == 0) {
-				reviewIDs.add(Integer.parseInt(reviews.get(i)));
+			// for each time the ID is returned, add to the return array
+			if ((i + 1) % 6 == 0) {
+				//reviewIDs.add(Integer.parseInt(reviews.get(i)));
 			}
-			//otherwise output to screen with proper formatting
+			// otherwise output to screen with proper formatting
 			else {
 				TableRow tableRowName = new TableRow(this);// create a new row
 				tableRowName.setLayoutParams(tableParams); // set the params
 				TextView textViewName = new TextView(this);// add txt
-	
+
 				GradientDrawable nameBackground = new GradientDrawable();
 				nameBackground.setColor(Color.WHITE);
 				GradientDrawable valueBackground = new GradientDrawable();
 				valueBackground.setColor(Color.WHITE);
 				// shape.setCornerRadius( 8 );
-	
+
 				String name = null;
 				switch (i % 6) {
 				case 0:
 					name = "\nSection";
-	
-					nameBackground
-							.setCornerRadii(new float[] { 10 * nativeToPxRatio,
-									10 * nativeToPxRatio, 10 * nativeToPxRatio,
-									10 * nativeToPxRatio, 0, 0, 0, 0 });
+
+					nameBackground.setCornerRadii(new float[] {
+							10 * nativeToPxRatio, 10 * nativeToPxRatio,
+							10 * nativeToPxRatio, 10 * nativeToPxRatio, 0, 0,
+							0, 0 });
 					break;
 				case 1:
 					name = "Course Number";
@@ -165,12 +174,11 @@ public class CourseReviewsBrowser extends SideMenuScene {
 					break;
 				case 3:
 					name = "Review";
+
 					break;
 				case 4:
 					name = "Rating";
-					valueBackground.setCornerRadii(new float[] { 0, 0, 0, 0,
-							10 * nativeToPxRatio, 10 * nativeToPxRatio,
-							10 * nativeToPxRatio, 10 * nativeToPxRatio });
+
 					break;
 				}
 				textViewName.setText(name + ":");
@@ -179,7 +187,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 				textViewName.setTextColor(Color.BLACK); // add txt
 				tableRowName.setBackgroundDrawable(nameBackground);
 				tableRowName.addView(textViewName); // add txt
-	
+
 				/* === Value pair === */
 				TableRow tableRowValue = new TableRow(this);// create a new row
 				tableRowValue.setBackgroundDrawable(valueBackground);
@@ -191,14 +199,19 @@ public class CourseReviewsBrowser extends SideMenuScene {
 				textViewValue.setTextColor(Color.BLACK); // add txt
 				tableRowValue.addView(textViewValue);
 				/* === END Value pair === */
-	
+
 				tableLayout.addView(tableRowName); // add txt
 				tableLayout.addView(tableRowValue); // add txt
-	
+
 				/* ==== add a space between each review ==== */
 				if (i % 6 == 4) {
-					TableRow tableRowSpace = new TableRow(this);// create a new row
-					tableRowSpace.setLayoutParams(tableParams); // set the params
+					int reviewId = Integer.parseInt(reviews.get(i - (i + 1) % 6 + 6));
+					addButtonsToTable(tableLayout, reviewId);
+
+					TableRow tableRowSpace = new TableRow(this);// create a new
+																// row
+					tableRowSpace.setLayoutParams(tableParams); // set the
+																// params
 					TextView textViewSpace = new TextView(this);// add txt
 					textViewSpace.setText("\n\n");
 					textViewSpace.setLayoutParams(rowParams); // add txt
@@ -209,7 +222,74 @@ public class CourseReviewsBrowser extends SideMenuScene {
 				/* ==== END add a space between each review ==== */
 			}
 		}
-		//return array of IDs
-		return reviewIDs;
+		// return array of IDs
+	}
+
+	private void addButtonsToTable(TableLayout tableLayout, final int reviewId) {
+		GradientDrawable lastBackground = new GradientDrawable();
+		lastBackground.setColor(Color.WHITE);
+
+		TableRow buttonsRow = new TableRow(this);// create a new
+		lastBackground.setCornerRadii(new float[] { 0, 0, 0, 0,
+				10 * nativeToPxRatio, 10 * nativeToPxRatio,
+				10 * nativeToPxRatio, 10 * nativeToPxRatio });
+		/* ========= How to add a button ======================= */
+		RelativeLayout images = new RelativeLayout(this);
+		RelativeLayout.LayoutParams imagesParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.FILL_PARENT);
+		images.setLayoutParams(imagesParams);
+
+		Button flagBtn = new Button(this);
+
+		flagBtn.setBackgroundResource(R.raw.flagposts);
+		flagBtn.setX(30 * nativeToPxRatio);
+		// flagBtn.setY(40 * nativeToPxRatio);
+		// flagBtn.setText("report");
+
+		TableRow.LayoutParams flagLP = new TableRow.LayoutParams(
+				// TableLayout.LayoutParams.WRAP_CONTENT,
+				// TableLayout.LayoutParams.WRAP_CONTENT);
+				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
+				0.0f);
+		flagBtn.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					// toggleSideMenu();
+
+					DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case DialogInterface.BUTTON_POSITIVE:
+								// Yes button clicked
+								break;
+
+							case DialogInterface.BUTTON_NEGATIVE:
+								// No button clicked
+								break;
+							}
+						}
+					};
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getContext());
+					builder.setMessage("Flag Review? ID:" + reviewId)
+							.setPositiveButton("Yes", dialogClickListener)
+							.setNegativeButton("No", dialogClickListener)
+							.show();
+					return true;
+				}
+
+				return false;
+			}
+		});
+		flagBtn.setLayoutParams(flagLP);
+		images.addView(flagBtn);
+		images.setBackgroundDrawable(lastBackground);
+		tableLayout.addView(images);
+		// addContentView(flagBtn, menuLP);
+		/* ========= End How to add a button =================== */
 	}
 }
