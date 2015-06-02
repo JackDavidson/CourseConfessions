@@ -101,7 +101,7 @@ public class CourseSelectScreen extends SideMenuScene {
 		Button viewCoursesBt = new Button(this);
 		viewCoursesBt.setBackgroundResource(R.raw.placeholdersearch);
 		viewCoursesBt.setX((widthPx / 2) - (416/2)*nativeToPxRatio);
-		viewCoursesBt.setY((height - 220) * nativeToPxRatio);
+		viewCoursesBt.setY((height - 200) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams searchBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (416 * nativeToPxRatio), (int) (126 * nativeToPxRatio));
