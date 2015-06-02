@@ -90,7 +90,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 			Log.e("ReviewBrowser", reviews.toString());
 
 			if (!reviews.get(0).equals("fail")) {
-				addReviewsToTable(tableLayout, reviews, tableParams, rowParams);
+				ArrayList<Integer> reviewIDs = addReviewsToTable(tableLayout, reviews, tableParams, rowParams);
 			} else {
 				TableRow tableRowFailure = new TableRow(this);// create a new
 																// row
@@ -123,83 +123,93 @@ public class CourseReviewsBrowser extends SideMenuScene {
 
 	}
 
-	private void addReviewsToTable(TableLayout tableLayout,
+	private ArrayList<Integer> addReviewsToTable(TableLayout tableLayout,
 			ArrayList<String> reviews,
 			android.widget.TableLayout.LayoutParams tableParams,
 			android.widget.TableRow.LayoutParams rowParams) {
 
+		//create return arraylist of integers
+		ArrayList<Integer> reviewIDs = new ArrayList<Integer>();
 		for (int i = 0; i < reviews.size(); i++) {
-			TableRow tableRowName = new TableRow(this);// create a new row
-			tableRowName.setLayoutParams(tableParams); // set the params
-			TextView textViewName = new TextView(this);// add txt
-
-			GradientDrawable nameBackground = new GradientDrawable();
-			nameBackground.setColor(Color.WHITE);
-			GradientDrawable valueBackground = new GradientDrawable();
-			valueBackground.setColor(Color.WHITE);
-			// shape.setCornerRadius( 8 );
-
-			String name = null;
-			switch (i % 5) {
-			case 0:
-				name = "\nSection";
-
-				nameBackground
-						.setCornerRadii(new float[] { 10 * nativeToPxRatio,
-								10 * nativeToPxRatio, 10 * nativeToPxRatio,
-								10 * nativeToPxRatio, 0, 0, 0, 0 });
-				break;
-			case 1:
-				name = "Course Number";
-				break;
-			case 2:
-				name = "Title";
-				break;
-			case 3:
-				name = "Review";
-				break;
-			case 4:
-				name = "Rating";
-				valueBackground.setCornerRadii(new float[] { 0, 0, 0, 0,
-						10 * nativeToPxRatio, 10 * nativeToPxRatio,
-						10 * nativeToPxRatio, 10 * nativeToPxRatio });
-				break;
+			//for each time the ID is returned, add to the return array
+			if ((i+1) % 6 == 0) {
+				reviewIDs.add(Integer.parseInt(reviews.get(i)));
 			}
-			textViewName.setText(name + ":");
-			textViewName.setTypeface(null, Typeface.BOLD);
-			textViewName.setLayoutParams(rowParams); // add txt
-			textViewName.setTextColor(Color.BLACK); // add txt
-			tableRowName.setBackgroundDrawable(nameBackground);
-			tableRowName.addView(textViewName); // add txt
-
-			/* === Value pair === */
-			TableRow tableRowValue = new TableRow(this);// create a new row
-			tableRowValue.setBackgroundDrawable(valueBackground);
-			tableRowValue.setLayoutParams(tableParams); // set the params
-			TextView textViewValue = new TextView(this);// add txt
-			String value = reviews.get(i);
-			textViewValue.setText("\t\t\t" + value + "\n");
-			textViewValue.setLayoutParams(rowParams); // add txt
-			textViewValue.setTextColor(Color.BLACK); // add txt
-			tableRowValue.addView(textViewValue);
-			/* === END Value pair === */
-
-			tableLayout.addView(tableRowName); // add txt
-			tableLayout.addView(tableRowValue); // add txt
-
-			/* ==== add a space between each review ==== */
-			if (i % 5 == 4) {
-				TableRow tableRowSpace = new TableRow(this);// create a new row
-				tableRowSpace.setLayoutParams(tableParams); // set the params
-				TextView textViewSpace = new TextView(this);// add txt
-				textViewSpace.setText("\n\n");
-				textViewSpace.setLayoutParams(rowParams); // add txt
-				textViewSpace.setTextColor(Color.BLACK); // add txt
-				tableRowSpace.addView(textViewSpace);
-				tableLayout.addView(tableRowSpace);
+			//otherwise output to screen with proper formatting
+			else {
+				TableRow tableRowName = new TableRow(this);// create a new row
+				tableRowName.setLayoutParams(tableParams); // set the params
+				TextView textViewName = new TextView(this);// add txt
+	
+				GradientDrawable nameBackground = new GradientDrawable();
+				nameBackground.setColor(Color.WHITE);
+				GradientDrawable valueBackground = new GradientDrawable();
+				valueBackground.setColor(Color.WHITE);
+				// shape.setCornerRadius( 8 );
+	
+				String name = null;
+				switch (i % 6) {
+				case 0:
+					name = "\nSection";
+	
+					nameBackground
+							.setCornerRadii(new float[] { 10 * nativeToPxRatio,
+									10 * nativeToPxRatio, 10 * nativeToPxRatio,
+									10 * nativeToPxRatio, 0, 0, 0, 0 });
+					break;
+				case 1:
+					name = "Course Number";
+					break;
+				case 2:
+					name = "Title";
+					break;
+				case 3:
+					name = "Review";
+					break;
+				case 4:
+					name = "Rating";
+					valueBackground.setCornerRadii(new float[] { 0, 0, 0, 0,
+							10 * nativeToPxRatio, 10 * nativeToPxRatio,
+							10 * nativeToPxRatio, 10 * nativeToPxRatio });
+					break;
+				}
+				textViewName.setText(name + ":");
+				textViewName.setTypeface(null, Typeface.BOLD);
+				textViewName.setLayoutParams(rowParams); // add txt
+				textViewName.setTextColor(Color.BLACK); // add txt
+				tableRowName.setBackgroundDrawable(nameBackground);
+				tableRowName.addView(textViewName); // add txt
+	
+				/* === Value pair === */
+				TableRow tableRowValue = new TableRow(this);// create a new row
+				tableRowValue.setBackgroundDrawable(valueBackground);
+				tableRowValue.setLayoutParams(tableParams); // set the params
+				TextView textViewValue = new TextView(this);// add txt
+				String value = reviews.get(i);
+				textViewValue.setText("\t\t\t" + value + "\n");
+				textViewValue.setLayoutParams(rowParams); // add txt
+				textViewValue.setTextColor(Color.BLACK); // add txt
+				tableRowValue.addView(textViewValue);
+				/* === END Value pair === */
+	
+				tableLayout.addView(tableRowName); // add txt
+				tableLayout.addView(tableRowValue); // add txt
+	
+				/* ==== add a space between each review ==== */
+				if (i % 6 == 4) {
+					TableRow tableRowSpace = new TableRow(this);// create a new row
+					tableRowSpace.setLayoutParams(tableParams); // set the params
+					TextView textViewSpace = new TextView(this);// add txt
+					textViewSpace.setText("\n\n");
+					textViewSpace.setLayoutParams(rowParams); // add txt
+					textViewSpace.setTextColor(Color.BLACK); // add txt
+					tableRowSpace.addView(textViewSpace);
+					tableLayout.addView(tableRowSpace);
+				}
+				/* ==== END add a space between each review ==== */
 			}
-			/* ==== END add a space between each review ==== */
 		}
-
+		//return array of IDs
+		return reviewIDs;
 	}
 }
