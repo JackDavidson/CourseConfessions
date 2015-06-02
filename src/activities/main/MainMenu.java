@@ -23,13 +23,15 @@ public class MainMenu extends SideMenuScene {
 		super.onCreate(savedInstanceState);
 		
 		/** TODO FIX THIS */
-		/* ==== Set placeholder name ===== *
+		/* ==== Set placeholder home title ===== */		
 		ImageView image = new ImageView(this);
-		LinearLayout linearLayout = new LinearLayout(this);
+		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
+				(int) (220*nativeToPxRatio), (int) (68*nativeToPxRatio));
 		image.setBackgroundResource(R.raw.slidemenuhomescreen);
-		image.setX(20);
-		image.setY(20);
-		* ==== END set placeholder name ===== */
+		image.setX((width / 2)*nativeToPxRatio - (220 / 2)*nativeToPxRatio);
+		image.setY(35*nativeToPxRatio);
+		addContentView(image, linearLayout);
+		/* ==== END set placeholder home title ===== */
 		
 		/* Layout Params of the current text */
 		LayoutParams courseConfessionsParams = new LayoutParams(

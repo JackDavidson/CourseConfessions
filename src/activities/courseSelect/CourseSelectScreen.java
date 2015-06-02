@@ -20,6 +20,8 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -34,6 +36,16 @@ public class CourseSelectScreen extends SideMenuScene {
 	// explained inside the method.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* ==== Set placeholder courses title ===== */		
+		ImageView image = new ImageView(this);
+		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
+				(int) (220*nativeToPxRatio), (int) (68*nativeToPxRatio));
+		image.setBackgroundResource(R.raw.slidemenucourses);
+		image.setX((width / 2)*nativeToPxRatio - (220 / 2)*nativeToPxRatio);
+		image.setY(35*nativeToPxRatio);
+		addContentView(image, linearLayout);
+		/* ==== END set placeholder courses title ===== */
 		
 		/* ====== reloading the User object ======== */
 		final User user = new User(this);
