@@ -171,8 +171,6 @@ public class HomeScreen extends BaseScene {
 		String userName = placeUserText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
 
-		this.startScreen(Screen.MainMenuScreen);
-		finish();
 		try {
 			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass, this);
 			loginSuccess = true;
@@ -184,7 +182,7 @@ public class HomeScreen extends BaseScene {
 			/* Make some toast, but butter it this time */
 			Toast.makeText(this, "Welcome " + user.getRealName(),
 					Toast.LENGTH_LONG).show();
-			this.startScreen(Screen.CourseSelectScreen);
+			this.startScreen(Screen.MainMenuScreen);
 			finish();
 		}
 	}

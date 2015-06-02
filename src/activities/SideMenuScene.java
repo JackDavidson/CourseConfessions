@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class SideMenuScene extends BaseScene {
@@ -33,11 +35,16 @@ public class SideMenuScene extends BaseScene {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		/* ==== Set background ===== */
-		PlacementImage image = new PlacementImage(this, R.raw.titleplaceholder,
-				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000, (int) (90*nativeToPxRatio));
-		image.attachToScene();
-		/* ==== END set background ===== */
+		/* ==== Set placeholder background ===== */		
+		ImageView image = new ImageView(this);
+		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
+				(int) (widthPx), (int) (130*nativeToPxRatio));
+		image.setBackgroundResource(R.raw.titleplaceholder);
+		image.setX((width / 2)*nativeToPxRatio - (widthPx / 2));
+		image.setY(0);
+		addContentView(image, linearLayout);
+		/* ==== END set placeholder background ===== */
+
 		
 		/* ========= How to add a button ======================= */
 		menuBtn = new Button(this);
@@ -68,7 +75,7 @@ public class SideMenuScene extends BaseScene {
 				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
 		sideMenu.setBackgroundColor(Color.parseColor("#0C1E2A"));
 		sideMenu.setX(-500 * nativeToPxRatio);
-		sideMenu.setY(134 * nativeToPxRatio);
+		sideMenu.setY(130 * nativeToPxRatio);
 		addContentView(sideMenu, menuViewLP);
 		/* ===== End Add a view for sliding in/out ======== */
 

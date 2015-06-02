@@ -1,9 +1,13 @@
 package activities.writeReview;
 
+import com.bitsplease.courseconfessions.R;
+
 import user.User;
 import visuals.PlacementEditText;
 import activities.SideMenuScene;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /* contact TODO for questions on this file */
@@ -32,10 +36,17 @@ public class WriteReviewScreen extends SideMenuScene {
 	//is explained in the method itself.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		/* ==== TODO set background ===== */
-		/* === END how to set background ==== */
-
+		
+		/* ==== Set placeholder write review title  ===== */		
+		ImageView image = new ImageView(this);
+		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
+				(int) (220*nativeToPxRatio), (int) (68*nativeToPxRatio));
+		image.setBackgroundResource(R.raw.slidemenuwritereview);
+		image.setX((width / 2)*nativeToPxRatio - (220 / 2)*nativeToPxRatio);
+		image.setY(35*nativeToPxRatio);
+		addContentView(image, linearLayout);
+		/* ==== END set placeholder write review title ===== */
+		
 		/* ===== Text Entry ===== */
 		int reviewTextWidth = 800 - 80;
 		int reviewTextX = width / 2 - reviewTextWidth / 2;
