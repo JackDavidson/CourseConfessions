@@ -111,8 +111,7 @@ public class HomeScreen extends BaseScene {
 		
 		/* ========= Signup Button ========= */
 		Button signupButton = new Button(this);
-		signupButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.signupbtn));
+		signupButton.setBackgroundResource(R.raw.signupbtn);
 		signupButton.setX((widthPx / 2) - 170*nativeToPxRatio);
 		signupButton.setY((height - 70) * nativeToPxRatio);
 
