@@ -5,8 +5,11 @@ import util.LoginException;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import visuals.PlacementImage;
+
 import com.bitsplease.courseconfessions.R;
+
 import activities.BaseScene;
+import activities.BaseScene.Screen;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -31,7 +34,7 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
-public class HomeScreen extends BaseScene {
+public class LoginScreen extends BaseScene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -43,11 +46,11 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	private PlacementEditText placeUserText;
 	private PlacementEditText placePassText;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	//phpInteractions php = new phpInteractions();
+	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	@SuppressLint("ClickableViewAccessibility")
@@ -55,9 +58,18 @@ public class HomeScreen extends BaseScene {
 	// ===========================================================
 	@SuppressWarnings("deprecation")
 	@Override
-	//set background display text and other stuff, mostly explained in method
+	// set background display text and other stuff, mostly explained in method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		User user = new User(this);
+		if (user.ready()) {
+			if (user.getScreen() != Screen.LoginScreen) {
+				startScreen(user.getScreen());
+				finish();
+				return;
+			}
+		}
 
 		/* ==== Set background ===== */
 		PlacementImage image = new PlacementImage(this, R.raw.background,
@@ -72,12 +84,12 @@ public class HomeScreen extends BaseScene {
 		placePassText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
 				height / 2 + 30, 500, 70, "Password");
 		/* ========= END Text Entry ========= */
-		
+
 		/* ========= Set Layout Params for screen ========= */
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		/* ========= END Layout Params ========= */
-		
+
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
 		 * this!!! TODO
@@ -107,12 +119,12 @@ public class HomeScreen extends BaseScene {
 			}
 		});
 		addContentView(loginBtn, login);
-		/* ========= End Login Button  ========= */
-		
+		/* ========= End Login Button ========= */
+
 		/* ========= Signup Button ========= */
 		Button signupButton = new Button(this);
 		signupButton.setBackgroundResource(R.raw.signupbtn);
-		signupButton.setX((widthPx / 2) - 170*nativeToPxRatio);
+		signupButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		signupButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams signupBtnLayout = new RelativeLayout.LayoutParams(
@@ -129,13 +141,13 @@ public class HomeScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView (signupButton, signupBtnLayout);
+		addContentView(signupButton, signupBtnLayout);
 		/* ========= End Signup Button ========= */
-		
+
 		/* ========= Forgot Button ========= */
 		Button forgotButton = new Button(this);
 		forgotButton.setBackgroundResource(R.raw.forgotbtn);
-		forgotButton.setX((widthPx / 2) + 30*nativeToPxRatio);
+		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams forgotBtnLayout = new RelativeLayout.LayoutParams(
@@ -152,7 +164,7 @@ public class HomeScreen extends BaseScene {
 				return false;
 			}
 		});
-		addContentView (forgotButton, forgotBtnLayout);
+		addContentView(forgotButton, forgotBtnLayout);
 		/* ========= End Forgot Button ========= */
 	}
 
@@ -163,7 +175,7 @@ public class HomeScreen extends BaseScene {
 	protected void onResume() {
 		super.onResume();
 	}
-	
+
 	/* Attempt login when user click on the login screen */
 	private void attemptLogin() {
 		boolean loginSuccess = false;
@@ -171,11 +183,12 @@ public class HomeScreen extends BaseScene {
 		String userName = placeUserText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
 
-		this.startScreen(Screen.MainMenuScreen);
-		finish();
-		
+		// this.startScreen(Screen.MainMenuScreen);
+		// finish();
+
 		try {
-			user = phpInteractions.attemptLoginAndCreateUser(userName, userPass, this);
+			user = phpInteractions.attemptLoginAndCreateUser(userName,
+					userPass, this);
 			loginSuccess = true;
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
@@ -185,6 +198,8 @@ public class HomeScreen extends BaseScene {
 			/* Make some toast, but butter it this time */
 			Toast.makeText(this, "Welcome " + user.getRealName(),
 					Toast.LENGTH_LONG).show();
+			user.setScreen(Screen.MainMenuScreen);
+			user.save(this);
 			this.startScreen(Screen.MainMenuScreen);
 			finish();
 		}

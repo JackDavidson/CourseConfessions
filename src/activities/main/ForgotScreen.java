@@ -10,6 +10,7 @@ import com.bitsplease.courseconfessions.R;
 import activities.BaseScene;
 import activities.BaseScene.Screen;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -70,12 +71,11 @@ public class ForgotScreen extends BaseScene {
 		placeEmailText = new PlacementEditText(this, width / 2 - 500 / 2 + 34,
 				height / 2 + 52, 500, 70, "Email");
 		/* ========= END Text Entry ========= */
-		
+
 		/* ========= Set Layout Params for screen ========= */
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		/* ========= END Layout Params ========= */
-
 
 		/********
 		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
@@ -121,7 +121,7 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					startScreen(Screen.HomeScreen);
+					startScreen(Screen.LoginScreen);
 					finish();
 					return true;
 				}
@@ -145,7 +145,7 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					startScreen (Screen.SignupScreen);
+					startScreen(Screen.SignupScreen);
 					finish();
 					return true;
 				}
@@ -179,9 +179,18 @@ public class ForgotScreen extends BaseScene {
 		}
 		if (sendEmailSuccess) {
 			/* Make toast, but don't butter it */
-			this.startScreen(Screen.HomeScreen);
+			this.startScreen(Screen.LoginScreen);
 			finish();
 		}
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			startScreen(Screen.LoginScreen);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

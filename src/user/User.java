@@ -20,6 +20,7 @@ public class User {
 	private String password;
 	private String realName;
 	private Screen activeScreen; // the active screen
+	private boolean ready = false;
 	/* ==== End for every user ===== */
 
 	/* ===== For page-speciffic data ===== */
@@ -32,12 +33,12 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.realName = realName;
-		this.activeScreen = Screen.HomeScreen;
-		writeUserToFile(context);
+		this.activeScreen = Screen.LoginScreen;
+		save(context);
 		// TODO: write to file.
 	}
 
-	/*
+	/**
 	 * "assume we're reading from the file, and go load up the old username and
 	 * pass. the file will be in XML format."
 	 */
@@ -50,7 +51,7 @@ public class User {
 	}
 
 	// write user to an xml file...I think
-	public void writeUserToFile(Context context) {
+	public void save(Context context) {
 		XMLStringParser xmlRoot = new XMLStringParser();
 		XMLStringObject xmlUserName = new XMLStringObject(USER_NAME, userName);
 		XMLStringObject xmlUserPassword = new XMLStringObject(USER_PASSWORD,
@@ -66,6 +67,7 @@ public class User {
 		String userInfoString = xmlRoot.toString();
 		SDCardWriter.writeFile(context.getFilesDir().toString(), SAVE_FILE,
 				userInfoString);
+		ready = true;
 
 	}
 
@@ -74,6 +76,8 @@ public class User {
 
 		String userInfoString = SDCardWriter.readFile(context.getFilesDir()
 				.toString() + User.SAVE_FILE);
+		if (userInfoString.equals(""))
+			return;
 		xmlRoot = null;
 		try {
 			xmlRoot = new XMLStringParser(userInfoString);
@@ -88,6 +92,7 @@ public class User {
 		this.xmlPageSpecifficData = xmlRoot.getChild(XML_SCREEN_DATA_NAME);
 		// TODO: userName =
 		// TODO: password =
+		ready = true;
 	}
 
 	public XMLStringObject getPageData() {
@@ -120,6 +125,21 @@ public class User {
 
 	public void setScreen(Screen screen) {
 		activeScreen = screen;
+	}
+
+	/**
+	 * delete the users page specific data, and
+	 */
+	public void logout() {
+		this.userName = "";
+		this.password = "";
+		this.realName = "";
+		this.activeScreen = Screen.LoginScreen;
+		this.xmlPageSpecifficData = null;
+	}
+
+	public boolean ready() {
+		return ready;
 	}
 
 }

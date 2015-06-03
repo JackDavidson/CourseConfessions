@@ -1,5 +1,6 @@
 package activities;
 
+import user.User;
 import visuals.PlacementImage;
 
 import com.bitsplease.courseconfessions.R;
@@ -7,6 +8,8 @@ import com.bitsplease.courseconfessions.R;
 import activities.BaseScene.Screen;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -20,7 +23,7 @@ import android.widget.RelativeLayout;
 public class SideMenuScene extends BaseScene {
 
 	public static final int HEIGHT_OF_TITLE_PIC = 130;
-	
+
 	RelativeLayout sideMenu;
 	Button menuBtn;
 	Button sideMenuIcon;
@@ -36,18 +39,17 @@ public class SideMenuScene extends BaseScene {
 	// method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		/* ==== Set placeholder background ===== */		
+
+		/* ==== Set placeholder background ===== */
 		ImageView image = new ImageView(this);
 		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
-				(int) (widthPx), (int) (HEIGHT_OF_TITLE_PIC*nativeToPxRatio));
+				(int) (widthPx), (int) (HEIGHT_OF_TITLE_PIC * nativeToPxRatio));
 		image.setBackgroundResource(R.raw.titleplaceholder);
-		image.setX((width / 2)*nativeToPxRatio - (widthPx / 2));
+		image.setX((width / 2) * nativeToPxRatio - (widthPx / 2));
 		image.setY(0);
 		addContentView(image, linearLayout);
 		/* ==== END set placeholder background ===== */
 
-		
 		/* ========= How to add a button ======================= */
 		menuBtn = new Button(this);
 
@@ -97,7 +99,7 @@ public class SideMenuScene extends BaseScene {
 		sideMenuHome = new Button(this);
 		sideMenuHome.setBackgroundResource(R.raw.slidemenuhomescreen);
 		sideMenuHome.setX(125 * nativeToPxRatio);
-		sideMenuHome.setY(420 * nativeToPxRatio); 
+		sideMenuHome.setY(420 * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams offscreenForgotBtn = new RelativeLayout.LayoutParams(
 				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
@@ -185,50 +187,81 @@ public class SideMenuScene extends BaseScene {
 		sideMenu.addView(sideMenuLogout);
 		/* ========== END Logout button ========= */
 	}
-	
+
 	/**
-	 * The Home function from the side menu
-	 * When called from Home, don't do anything
+	 * The Home function from the side menu When called from Home, don't do
+	 * anything
 	 */
 	public void home() {
+		User user = new User(this);
+		user.setScreen(Screen.MainMenuScreen);
+		user.save(this);
 		startScreen(Screen.MainMenuScreen);
 		finish();
 	}
-	
+
 	/**
-	 * The course that the user is trying to find
-	 * When pressed, he will be directed to the CSE courses page
+	 * The course that the user is trying to find When pressed, he will be
+	 * directed to the CSE courses page
 	 */
 	public void courses() {
+		User user = new User(this);
+		user.setScreen(Screen.CourseSelectScreen);
+		user.save(this);
 		startScreen(Screen.CourseSelectScreen);
 		finish();
 	}
-	
+
 	/**
 	 * Write a review for a course
 	 */
 	public void writeReview() {
+		User user = new User(this);
+		user.setScreen(Screen.WriteReviewScreen);
+		user.save(this);
 		startScreen(Screen.WriteReviewScreen);
 		finish();
 	}
-	
+
 	/**
-	 * The Logout function, self-explanatory
-	 * Logs the user out and takes him back to the HomeScreen 
+	 * The Logout function, self-explanatory Logs the user out and takes him
+	 * back to the HomeScreen
 	 */
-	private void logout() {
-		startScreen(Screen.HomeScreen);
-		finish();
+	public void logout() {
+		
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					User user = new User(getContext());
+					user.logout();
+					user.save(getContext());
+					startScreen(Screen.LoginScreen);
+					finish();
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					// No button clicked
+					break;
+				}
+			}
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		builder.setMessage("Log out?")
+				.setPositiveButton("Yes", dialogClickListener)
+				.setNegativeButton("Cancel", dialogClickListener).show();
+
 	}
 
-	
 	@Override
 	// calls android.activity's onStart() method, and brings the menu button
 	// and the logout button to the front
 	protected void onStart() {
 		super.onStart();
 		menuBtn.bringToFront();
-		//sideMenuHome.bringToFront();
+		// sideMenuHome.bringToFront();
 		sideMenu.bringToFront();
 	}
 
@@ -252,4 +285,3 @@ public class SideMenuScene extends BaseScene {
 	}
 
 }
-

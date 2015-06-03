@@ -10,6 +10,7 @@ import com.bitsplease.courseconfessions.R;
 import activities.BaseScene;
 import activities.BaseScene.Screen;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -128,7 +129,7 @@ public class SignupScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					startScreen(Screen.HomeScreen);
+					startScreen(Screen.LoginScreen);
 					finish();
 					return true;
 				}
@@ -179,14 +180,25 @@ public class SignupScreen extends BaseScene {
 				.toString();
 
 		try {
-			signupSuccess = phpInteractions.attemptSignup(userName, userEmail, userPass, userConfirmPass, this);
+			signupSuccess = phpInteractions.attemptSignup(userName, userEmail,
+					userPass, userConfirmPass, this);
 		} catch (LoginException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		if (signupSuccess) {
-			this.startScreen(Screen.HomeScreen);
+			this.startScreen(Screen.LoginScreen);
 			finish();
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			startScreen(Screen.LoginScreen);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }

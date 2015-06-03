@@ -11,7 +11,9 @@ import user.User;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import activities.SideMenuScene;
+import activities.BaseScene.Screen;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -213,4 +215,19 @@ public class WriteReviewScreen extends SideMenuScene {
 		/** Do nothing, on purpose */
 	}
 
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	User user = new User(this);
+	    	user.setScreen(Screen.MainMenuScreen);
+	    	user.save(this);
+	        startScreen(Screen.MainMenuScreen);
+	        finish();
+	        return true;
+	    } else if (keyCode == KeyEvent.KEYCODE_HOME) {
+	    	finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
 }
