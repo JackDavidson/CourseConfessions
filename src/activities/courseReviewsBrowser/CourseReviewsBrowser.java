@@ -277,7 +277,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 								
 								AlertDialog.Builder builder = new AlertDialog.Builder(
 										getContext());
-								builder.setMessage("Refiew flagged! ID:" + reviewId).show();
+								builder.setMessage("Refiew flagged! ID:" + reviewId).setNegativeButton("OK", this).show();
 								
 								break;
 
