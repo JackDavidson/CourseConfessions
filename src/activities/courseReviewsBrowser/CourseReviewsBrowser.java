@@ -173,7 +173,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 					name = "Course Number";
 					break;
 				case 2:
-					name = "Title";
+					name = "User";
 					break;
 				case 3:
 					name = "Review";
