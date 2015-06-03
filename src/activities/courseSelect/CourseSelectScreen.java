@@ -10,10 +10,12 @@ import util.phpInteractions;
 import visuals.PlacementImage;
 import activities.BaseScene;
 import activities.SideMenuScene;
+import activities.BaseScene.Screen;
 import activities.courseReviewsBrowser.CourseReviewsBrowser;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -96,7 +98,7 @@ public class CourseSelectScreen extends SideMenuScene {
 										(String) textView.getText());
 						user.addXmlPageData(xmlPageSpecifficData);
 						user.setScreen(Screen.CourseReviewsBrowser);
-						user.writeUserToFile(getContext());
+						user.save(getContext());
 						startScreen(Screen.CourseReviewsBrowser);
 						return true;
 					}
@@ -117,14 +119,14 @@ public class CourseSelectScreen extends SideMenuScene {
 		/*** ==== END add list of reviews ==== ***/
 
 		/* ========= Add continue button ============ */
-		Button viewCoursesBt = new Button(this);
-		viewCoursesBt.setBackgroundResource(R.raw.placeholdersearch);
-		viewCoursesBt.setX((widthPx / 2) - (416/2)*nativeToPxRatio);
-		viewCoursesBt.setY((height - 200) * nativeToPxRatio);
+		Button searchBtn = new Button(this);
+		searchBtn.setBackgroundResource(R.raw.placeholdersearch);
+		searchBtn.setX((widthPx / 2) - (416/2)*nativeToPxRatio);
+		searchBtn.setY((height - 200) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams searchBtnLayout = new RelativeLayout.LayoutParams(
 				(int) (416 * nativeToPxRatio), (int) (126 * nativeToPxRatio));
-		viewCoursesBt.setOnTouchListener(new OnTouchListener() {
+		searchBtn.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -137,15 +139,16 @@ public class CourseSelectScreen extends SideMenuScene {
 									courses.get(i));
 					user.addXmlPageData(xmlPageSpecifficData);
 					user.setScreen(Screen.CourseReviewsBrowser);
-					user.writeUserToFile(getContext());
+					user.save(getContext());
 					startScreen(Screen.CourseReviewsBrowser);
+					finish();
 					return true;
 				}
 
 				return true;
 			}
 		});
-		addContentView(viewCoursesBt, searchBtnLayout);
+		addContentView(searchBtn, searchBtnLayout);
 		/* ======== End add continue BTN ======= */
 		
 	}
@@ -157,6 +160,19 @@ public class CourseSelectScreen extends SideMenuScene {
 	 */
 	public void courses() {
 		/** Do Nothing, on purpose */
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	User user = new User(this);
+	    	user.setScreen(Screen.MainMenuScreen);
+	    	user.save(this);
+	        startScreen(Screen.MainMenuScreen);
+	        finish();
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 	
 }

@@ -1,12 +1,24 @@
 package activities.main;
 
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import user.User;
+import util.phpInteractions;
+
 import com.bitsplease.courseconfessions.R;
 
 import activities.SideMenuScene;
+import activities.BaseScene.Screen;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -87,26 +99,27 @@ public class MainMenu extends SideMenuScene {
 		courseDescription.setTextSize(13);
 		courseDescription.setPadding((int) (70 * nativeToPxRatio), 0,
 				(int) (70 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
-		courseDescription.setText("CourseConfessions is the largest online "
-				+ "destination for professor and Computer Science course " 
-				+ "ratings from actual UCSD students. Users have contributed "
-				+ "to more than 6 course ratings and over 2 professor ratings "
-				+ "from UCSD. User-generated content makes CourseConfessions " 
-				+ "the highest trafficked app for quickly researching and "
-				+ "rating professors and courses located across the University "
-				+ "of California, San Diego. More than 7 college students each "
-				+ "month are using CourseConfessions – join the fun and begin "
-				+ "rating professors and courses today!\n\n\n"
-				+ "CourseConfessions is built for college students, "
-				+ "by college students. Choosing the best courses and "
-				+ "professors is a rite of passage for every student, "
-				+ "and connecting with peers on the site has become a "
-				+ "key way for millions of students to navigate this "
-				+ "process. The site does what students have been doing "
-				+ "forever - checking in with each other – their friends, "
-				+ "their brothers, their sisters, their classmates – to "
-				+ "figure out who's a great professor and who's one you "
-				+ "might want to avoid. ");
+		courseDescription
+				.setText("CourseConfessions is the largest online "
+						+ "destination for professor and Computer Science course "
+						+ "ratings from actual UCSD students. Users have contributed "
+						+ "to more than 6 course ratings and over 2 professor ratings "
+						+ "from UCSD. User-generated content makes CourseConfessions "
+						+ "the highest trafficked app for quickly researching and "
+						+ "rating professors and courses located across the University "
+						+ "of California, San Diego. More than 7 college students each "
+						+ "month are using CourseConfessions ��� join the fun and begin "
+						+ "rating professors and courses today!\n\n\n"
+						+ "CourseConfessions is built for college students, "
+						+ "by college students. Choosing the best courses and "
+						+ "professors is a rite of passage for every student, "
+						+ "and connecting with peers on the site has become a "
+						+ "key way for millions of students to navigate this "
+						+ "process. The site does what students have been doing "
+						+ "forever - checking in with each other ��� their friends, "
+						+ "their brothers, their sisters, their classmates ��� to "
+						+ "figure out who's a great professor and who's one you "
+						+ "might want to avoid. ");
 		courseDescription.setLayoutParams(rowParamsDescription);
 		/* ========= End set up description row in table ========= */
 
@@ -146,6 +159,15 @@ public class MainMenu extends SideMenuScene {
 	 */
 	public void home() {
 		/** Do nothing, on purpose */
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			logout();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }

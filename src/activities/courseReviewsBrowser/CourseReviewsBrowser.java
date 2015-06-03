@@ -18,6 +18,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -306,5 +307,18 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		tableLayout.addView(images);
 		// addContentView(flagBtn, menuLP);
 		/* ========= End How to add a button =================== */
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	User user = new User(this);
+	    	user.setScreen(Screen.CourseSelectScreen);
+	    	user.save(this);
+	        startScreen(Screen.CourseSelectScreen);
+	        finish();
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 }

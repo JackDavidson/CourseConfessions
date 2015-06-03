@@ -1,5 +1,6 @@
 package activities;
 
+import user.User;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -7,12 +8,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 public class BaseScene extends Activity {
-
 
 	public float nativeToPxRatio;
 	public int widthPx;
@@ -52,7 +53,8 @@ public class BaseScene extends Activity {
 		nativeToPxRatio = (float) (float) heightPx / height;
 
 	}
-	private boolean preventOpenNewScreen = true;
+
+	private boolean preventOpenNewScreen = false;
 
 	@Override
 	protected void onResume() {
@@ -69,9 +71,9 @@ public class BaseScene extends Activity {
 		}
 		preventOpenNewScreen = true;
 		switch (screen) {
-		case HomeScreen:
+		case LoginScreen:
 			Intent homeScreen = new Intent(this,
-					activities.main.HomeScreen.class);
+					activities.main.LoginScreen.class);
 			this.startActivity(homeScreen);
 			break;
 		case SignupScreen:
@@ -104,6 +106,9 @@ public class BaseScene extends Activity {
 					activities.courseReviewsBrowser.CourseReviewsBrowser.class);
 			this.startActivity(CourseReviewsBrowser);
 			break;
+		default:
+			Log.e("BaseScene", "Could not find screen ID: " + screen);
+			break;
 
 		}
 
@@ -111,10 +116,11 @@ public class BaseScene extends Activity {
 
 	// defines the different screens
 	public enum Screen {
-		HomeScreen, SignupScreen, ForgotScreen, CourseSelectScreen, WriteReviewScreen, CourseReviewsBrowser, MainMenuScreen
+		LoginScreen, SignupScreen, ForgotScreen, CourseSelectScreen, WriteReviewScreen, CourseReviewsBrowser, MainMenuScreen
 	}
 
 	protected BaseScene getContext() {
 		return this;
 	}
+
 }
