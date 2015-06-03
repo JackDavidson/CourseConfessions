@@ -2,6 +2,9 @@ package activities.courseReviewsBrowser;
 
 import java.util.ArrayList;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.bitsplease.courseconfessions.R;
 
 import user.User;
@@ -142,7 +145,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		for (int i = 0; i < reviews.size(); i++) {
 			// for each time the ID is returned, add to the return array
 			if ((i + 1) % 6 == 0) {
-				//reviewIDs.add(Integer.parseInt(reviews.get(i)));
+				// reviewIDs.add(Integer.parseInt(reviews.get(i)));
 			}
 			// otherwise output to screen with proper formatting
 			else {
@@ -205,7 +208,8 @@ public class CourseReviewsBrowser extends SideMenuScene {
 
 				/* ==== add a space between each review ==== */
 				if (i % 6 == 4) {
-					int reviewId = Integer.parseInt(reviews.get(i - (i + 1) % 6 + 6));
+					int reviewId = Integer.parseInt(reviews.get(i - (i + 1) % 6
+							+ 6));
 					addButtonsToTable(tableLayout, reviewId);
 
 					TableRow tableRowSpace = new TableRow(this);// create a new
@@ -263,7 +267,18 @@ public class CourseReviewsBrowser extends SideMenuScene {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
-								// Yes button clicked
+								ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+								nameValuePairs.add(new BasicNameValuePair(
+										"report", "hihi"));
+								nameValuePairs.add(new BasicNameValuePair(
+										"reviewid", String.valueOf(reviewId)));
+								phpInteractions.httpPost(nameValuePairs,
+										"http://www.courseconfessions.com/androidgetcoursereviews.php");
+								
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										getContext());
+								builder.setMessage("Refiew flagged! ID:" + reviewId).setNegativeButton("OK", this).show();
+								
 								break;
 
 							case DialogInterface.BUTTON_NEGATIVE:
