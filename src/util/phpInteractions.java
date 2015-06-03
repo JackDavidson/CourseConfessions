@@ -103,7 +103,8 @@ public abstract class phpInteractions {
 					Toast.LENGTH_LONG).show();
 			return true;
 		} else {
-			Toast.makeText(context, stringResultUserEmail, Toast.LENGTH_LONG).show();
+			Toast.makeText(context, stringResultUserEmail, Toast.LENGTH_LONG)
+					.show();
 			return false;
 		}
 	}
@@ -130,7 +131,8 @@ public abstract class phpInteractions {
 		nameValuePairs.add(new BasicNameValuePair("username", userName));
 		nameValuePairs.add(new BasicNameValuePair("email", userEmail));
 		nameValuePairs.add(new BasicNameValuePair("password", userPass));
-		nameValuePairs.add(new BasicNameValuePair("cpassword", userConfirmPass));
+		nameValuePairs
+				.add(new BasicNameValuePair("cpassword", userConfirmPass));
 
 		stringResultUserEmail = Splitter
 				.splitStringArray((convertRespToString(httpPost(nameValuePairs,
@@ -139,7 +141,8 @@ public abstract class phpInteractions {
 		if (stringResultUserEmail.size() == 0) {
 			throw new LoginException("Failed to connect to server");
 		} else if (stringResultUserEmail.get(0).equals("success")) {
-			Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG)
+					.show();
 			return true;
 		} else {
 			for (String a : stringResultUserEmail) {
@@ -155,7 +158,7 @@ public abstract class phpInteractions {
 	 * @param input
 	 * @return
 	 */
-	private static String trimJSONString(String input) {
+	public static String trimJSONString(String input) {
 		if (input == null || input.length() == 0) {
 			return null;
 		}
@@ -190,6 +193,34 @@ public abstract class phpInteractions {
 		ArrayList<String> resultCourses = Splitter.splitStringArray(jsonParse);
 
 		return resultCourses;
+	}
+
+	public static String parseStringJSON(String result, String itemName) {
+		// return object for all courses to be added to
+		// ArrayList<String> resultCourses = new ArrayList<String>();
+		// placeholder string to take in JSON object
+		String jsonParse = "";
+		try {
+			JSONArray jArray = new JSONArray(result);
+			Log.e("log_tag", "made it here");
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject json_data = jArray.getJSONObject(i);
+				Log.i("", "made it to second");
+				try {
+					Log.i("", json_data.getString(itemName));
+					jsonParse = json_data.getString(itemName);
+				} catch (JSONException e) {
+					Log.e("phpInteractions", "faild to get: " + itemName
+							+ " on attempt: " + i);
+				}
+				// Log.i("log_tag", "Length: " + json_data.length() + " "
+				// + "USER: " + json_data.getString("USER"));
+			}
+		} catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+
+		return jsonParse;
 	}
 
 	public static InputStream httpPost(ArrayList<NameValuePair> pairs,
