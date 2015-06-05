@@ -1,5 +1,6 @@
 package activities.courseReviewsBrowser;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
@@ -25,6 +26,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -40,10 +43,17 @@ public class CourseReviewsBrowser extends SideMenuScene {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* ==== TODO set background ===== */
-		// copy and paste code from HomeScreen.java here and change it a
-		// little
-		// maybe
+		/* ==== Set placeholder courses title ===== */
+		ImageView image = new ImageView(this);
+		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
+				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
+		image.setBackgroundResource(R.raw.slidemenucourses);
+		image.setX((width / 2) * nativeToPxRatio - (220 / 2) * nativeToPxRatio);
+		image.setY(35 * nativeToPxRatio);
+		addContentView(image, linearLayout);
+		/* ==== END set placeholder courses title ===== */
+		
+		/* ==== Set background ===== */
 		getWindow().getDecorView().setBackgroundColor(
 				Color.parseColor("#1d3c58"));
 		/* === END set background ==== */
@@ -52,8 +62,6 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		User user = new User(this);
 		/* ===== end reloading the user object ==== */
 
-		/* ==== how to make the view scrollable === */
-		// there are 3 objects here.
 
 		/*
 		 * ===== Create the scroll view, set up the table layout params =====
@@ -71,7 +79,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		 */
 
 		scroll.setX(30 * nativeToPxRatio);
-		scroll.setY(HEIGHT_OF_TITLE_PIC * nativeToPxRatio);
+		scroll.setY((HEIGHT_OF_TITLE_PIC + 40)* nativeToPxRatio);
 
 		/* ========= Set up table ============ */
 		TableLayout tableLayout = new TableLayout(this);
@@ -234,6 +242,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 	}
 
 	private void addButtonsToTable(TableLayout tableLayout, final int reviewId) {
+		
 		GradientDrawable lastBackground = new GradientDrawable();
 		lastBackground.setColor(Color.WHITE);
 
@@ -252,12 +261,8 @@ public class CourseReviewsBrowser extends SideMenuScene {
 
 		flagBtn.setBackgroundResource(R.raw.flagposts);
 		flagBtn.setX(30 * nativeToPxRatio);
-		// flagBtn.setY(40 * nativeToPxRatio);
-		// flagBtn.setText("report");
 
 		TableRow.LayoutParams flagLP = new TableRow.LayoutParams(
-				// TableLayout.LayoutParams.WRAP_CONTENT,
-				// TableLayout.LayoutParams.WRAP_CONTENT);
 				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
 				0.0f);
 		flagBtn.setOnTouchListener(new OnTouchListener() {
@@ -310,9 +315,68 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		flagBtn.setLayoutParams(flagLP);
 		images.addView(flagBtn);
 		images.setBackgroundDrawable(lastBackground);
-		tableLayout.addView(images);
-		// addContentView(flagBtn, menuLP);
 		/* ========= End How to add a button =================== */
+
+		/* ============ Add Upvote button ============= */		
+		Button upvoteBtn = new Button(this);
+		upvoteBtn.setBackgroundResource(R.raw.upvote);
+		upvoteBtn.setX(110 * nativeToPxRatio);
+		final User user = new User(this);
+		TableRow.LayoutParams upvoteLP = new TableRow.LayoutParams(
+				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
+				0.0f);
+		upvoteBtn.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					
+					DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case DialogInterface.BUTTON_POSITIVE:
+								ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+								nameValuePairs.add(new BasicNameValuePair(
+										"up", "hihi"));
+								nameValuePairs.add(new BasicNameValuePair(
+										"reviewid", String.valueOf(reviewId)));
+								nameValuePairs.add(new BasicNameValuePair(
+										"username", user.getUserName()));
+								InputStream is = phpInteractions
+										.httpPost(nameValuePairs,
+												"http://www.courseconfessions.com/androidgetcoursereviews.php");
+								String st = phpInteractions.parseStringJSON(phpInteractions.convertRespToString(is), "UPVOTE");
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										getContext());
+								builder.setMessage(
+										" " + st)
+										.setNegativeButton("OK", this).show();
+
+								break;
+
+							case DialogInterface.BUTTON_NEGATIVE:
+								// No button clicked
+								break;
+							}
+						}
+					};
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getContext());
+					builder.setMessage("Would you like to Upvote?")
+							.setPositiveButton("Yes", dialogClickListener2)
+							.setNegativeButton("No", dialogClickListener2)
+							.show();
+					return true;
+				}
+
+				return false;
+			}
+		});
+		upvoteBtn.setLayoutParams(upvoteLP);
+		images.addView(upvoteBtn);
+		images.setBackgroundDrawable(lastBackground);
+		tableLayout.addView(images);
+
 	}
 	
 	
