@@ -30,6 +30,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /* contact Leovao/Orrozco for questions on this file */
 public class CourseReviewsBrowser extends SideMenuScene {
@@ -102,6 +103,15 @@ public class CourseReviewsBrowser extends SideMenuScene {
 			ArrayList<String> reviews = phpInteractions.getReviewsOfCourses(
 					courseData[0], courseData[1]);
 			Log.e("ReviewBrowser", reviews.toString());
+			
+			if(reviews.size() == 0 || (reviews.size() == 1 && reviews.get(0).equals(""))){
+				Log.e("Course reviews browser", "Could not connect! finishing.");
+				Toast.makeText(this, "Failed to connect to server!", Toast.LENGTH_LONG).show();
+				user.setScreen(Screen.MainMenuScreen);
+				user.save(this);
+				startScreen(Screen.MainMenuScreen);
+				finish();
+			}
 
 			if (!reviews.get(0).equals("fail")) {
 				addReviewsToTable(tableLayout, reviews, tableParams, rowParams);

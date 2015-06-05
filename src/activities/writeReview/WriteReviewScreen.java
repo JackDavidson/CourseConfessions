@@ -161,11 +161,14 @@ public class WriteReviewScreen extends SideMenuScene {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					String result = attemptSubmit();
-					Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
-							.show();
-					if (!result.equals("fail")) {
-						finish();
-						startScreen(Screen.MainMenuScreen);
+					if (result != null)
+						Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
+								.show();
+					else
+						Toast.makeText(getContext(), "failed to connect!", Toast.LENGTH_LONG)
+								.show();
+					if ((result != null) && !result.equals("fail")) {
+						home();
 					}
 					return true;
 				}
@@ -215,19 +218,18 @@ public class WriteReviewScreen extends SideMenuScene {
 		/** Do nothing, on purpose */
 	}
 
-	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	User user = new User(this);
-	    	user.setScreen(Screen.MainMenuScreen);
-	    	user.save(this);
-	        startScreen(Screen.MainMenuScreen);
-	        finish();
-	        return true;
-	    } else if (keyCode == KeyEvent.KEYCODE_HOME) {
-	    	finish();
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			User user = new User(this);
+			user.setScreen(Screen.MainMenuScreen);
+			user.save(this);
+			startScreen(Screen.MainMenuScreen);
+			finish();
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_HOME) {
+			finish();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }
