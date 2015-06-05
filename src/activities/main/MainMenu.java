@@ -108,7 +108,7 @@ public class MainMenu extends SideMenuScene {
 						+ "the highest trafficked app for quickly researching and "
 						+ "rating professors and courses located across the University "
 						+ "of California, San Diego. More than 7 college students each "
-						+ "month are using CourseConfessions ��� join the fun and begin "
+						+ "month are using CourseConfessions ��������� join the fun and begin "
 						+ "rating professors and courses today!\n\n\n"
 						+ "CourseConfessions is built for college students, "
 						+ "by college students. Choosing the best courses and "
@@ -116,8 +116,8 @@ public class MainMenu extends SideMenuScene {
 						+ "and connecting with peers on the site has become a "
 						+ "key way for millions of students to navigate this "
 						+ "process. The site does what students have been doing "
-						+ "forever - checking in with each other ��� their friends, "
-						+ "their brothers, their sisters, their classmates ��� to "
+						+ "forever - checking in with each other ��������� their friends, "
+						+ "their brothers, their sisters, their classmates ��������� to "
 						+ "figure out who's a great professor and who's one you "
 						+ "might want to avoid. ");
 		courseDescription.setLayoutParams(rowParamsDescription);
@@ -164,7 +164,7 @@ public class MainMenu extends SideMenuScene {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			logout();
+			finish();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

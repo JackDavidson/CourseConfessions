@@ -11,8 +11,10 @@ import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
 import activities.SideMenuScene;
+import activities.BaseScene.Screen;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -136,6 +138,7 @@ public class CourseReviewsBrowser extends SideMenuScene {
 	}
 
 	static final int REVIEW_ID_POSITION = 5;
+	public static final int FINISH_PARENT = 0;
 
 	private void addReviewsToTable(TableLayout tableLayout,
 			ArrayList<String> reviews,
@@ -273,13 +276,16 @@ public class CourseReviewsBrowser extends SideMenuScene {
 										"report", "hihi"));
 								nameValuePairs.add(new BasicNameValuePair(
 										"reviewid", String.valueOf(reviewId)));
-								phpInteractions.httpPost(nameValuePairs,
-										"http://www.courseconfessions.com/androidgetcoursereviews.php");
-								
+								phpInteractions
+										.httpPost(nameValuePairs,
+												"http://www.courseconfessions.com/androidgetcoursereviews.php");
+
 								AlertDialog.Builder builder = new AlertDialog.Builder(
 										getContext());
-								builder.setMessage("Refiew flagged! ID:" + reviewId).setNegativeButton("OK", this).show();
-								
+								builder.setMessage(
+										"Refiew flagged! ID:" + reviewId)
+										.setNegativeButton("OK", this).show();
+
 								break;
 
 							case DialogInterface.BUTTON_NEGATIVE:
@@ -309,16 +315,61 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		/* ========= End How to add a button =================== */
 	}
 	
+	
+	
+
+	/**
+	 * The Home function from the side menu When called from Home, don't do
+	 * anything
+	 */
+	@Override
+	public void home() {
+		setResult(FINISH_PARENT);
+		super.home();
+	}
+
+	/**
+	 * The course that the user is trying to find When pressed, he will be
+	 * directed to the CSE courses page
+	 */
+	@Override
+	public void courses() {
+		setResult(FINISH_PARENT);
+		super.courses();
+	}
+
+	/**
+	 * Write a review for a course
+	 */
+	@Override
+	public void writeReview() {
+		setResult(FINISH_PARENT);
+		super.writeReview();
+	}
+
+	/**
+	 * The Logout function, self-explanatory Logs the user out and takes him
+	 * back to the HomeScreen
+	 */
+	@Override
+	public void logout() {
+		setResult(FINISH_PARENT);
+		super.logout();
+	}
+
+	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	User user = new User(this);
-	    	user.setScreen(Screen.CourseSelectScreen);
-	    	user.save(this);
-	        startScreen(Screen.CourseSelectScreen);
-	        finish();
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			User user = new User(this);
+			user.setScreen(Screen.CourseSelectScreen);
+			user.save(this);
+			//startScreen(Screen.CourseSelectScreen);
+			setResult(RESULT_OK);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }
