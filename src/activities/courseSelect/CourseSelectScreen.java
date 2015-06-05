@@ -30,6 +30,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CourseSelectScreen extends SideMenuScene {
 
@@ -57,6 +58,15 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ==== how to make the view scrollable === */
 		final ArrayList<String> courses = phpInteractions.getListOfCourses(
 				"any", 0, 10);
+		if(courses.size() == 0 || (courses.size() == 1 && courses.get(0).equals(""))){
+			Log.e("Course reviews browser", "Could not connect! finishing.");
+			Toast.makeText(this, "Failed to connect to server!", Toast.LENGTH_LONG).show();
+			user.setScreen(Screen.MainMenuScreen);
+			user.save(this);
+			startScreen(Screen.MainMenuScreen);
+			finish();
+		}
+		
 		final CheckBox[] checkBoxes = new CheckBox[courses.size()];
 		Log.e("Select screen", courses.toString());
 
