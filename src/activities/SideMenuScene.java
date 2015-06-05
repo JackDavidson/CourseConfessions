@@ -238,6 +238,7 @@ public class SideMenuScene extends BaseScene {
 					user.logout();
 					user.save(getContext());
 					startScreen(Screen.LoginScreen);
+					setResult(RESULT_OK);
 					finish();
 					break;
 

@@ -12,6 +12,7 @@ import activities.BaseScene;
 import activities.SideMenuScene;
 import activities.BaseScene.Screen;
 import activities.courseReviewsBrowser.CourseReviewsBrowser;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,17 +39,17 @@ public class CourseSelectScreen extends SideMenuScene {
 	// explained inside the method.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		/* ==== Set placeholder courses title ===== */		
+
+		/* ==== Set placeholder courses title ===== */
 		ImageView image = new ImageView(this);
 		LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
-				(int) (220*nativeToPxRatio), (int) (68*nativeToPxRatio));
+				(int) (220 * nativeToPxRatio), (int) (68 * nativeToPxRatio));
 		image.setBackgroundResource(R.raw.slidemenucourses);
-		image.setX((width / 2)*nativeToPxRatio - (220 / 2)*nativeToPxRatio);
-		image.setY(35*nativeToPxRatio);
+		image.setX((width / 2) * nativeToPxRatio - (220 / 2) * nativeToPxRatio);
+		image.setY(35 * nativeToPxRatio);
 		addContentView(image, linearLayout);
 		/* ==== END set placeholder courses title ===== */
-		
+
 		/* ====== reloading the User object ======== */
 		final User user = new User(this);
 		/* ===== end reloading the user object ==== */
@@ -74,28 +75,28 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ==== END Create the scroll view, set up layout params ==== */
 
 		/*** ==== Add list of reviews ==== ***/
-		
+
 		TableLayout tableLayout = new TableLayout(this);
 		tableLayout.setLayoutParams(tableParams);
-		tableLayout.setY(160*nativeToPxRatio);
+		tableLayout.setY(160 * nativeToPxRatio);
 
 		for (int i = 0; i < courses.size(); i++) {
 			TableRow tableRow = new TableRow(this);
-			tableRow.setLayoutParams(tableParams); 
+			tableRow.setLayoutParams(tableParams);
 			final TextView textView = new TextView(this);
 			textView.setText(courses.get(i).replaceAll("[^a-zA-Z0-9\\s]", ""));
 			textView.setLayoutParams(rowParams);
 			textView.setTextColor(Color.BLACK);
-			textView.setX(35*nativeToPxRatio);
+			textView.setX(35 * nativeToPxRatio);
 			textView.setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_UP) {
 						XMLStringObject xmlPageSpecifficData = new XMLStringObject(
 								User.XML_SCREEN_DATA_NAME, "");
-								xmlPageSpecifficData.addItem(
-										CourseReviewsBrowser.XML_COURSES_NAME,
-										(String) textView.getText());
+						xmlPageSpecifficData.addItem(
+								CourseReviewsBrowser.XML_COURSES_NAME,
+								(String) textView.getText());
 						user.addXmlPageData(xmlPageSpecifficData);
 						user.setScreen(Screen.CourseReviewsBrowser);
 						user.save(getContext());
@@ -121,7 +122,7 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ========= Add continue button ============ */
 		Button searchBtn = new Button(this);
 		searchBtn.setBackgroundResource(R.raw.placeholdersearch);
-		searchBtn.setX((widthPx / 2) - (416/2)*nativeToPxRatio);
+		searchBtn.setX((widthPx / 2) - (416 / 2) * nativeToPxRatio);
 		searchBtn.setY((height - 200) * nativeToPxRatio);
 
 		RelativeLayout.LayoutParams searchBtnLayout = new RelativeLayout.LayoutParams(
@@ -141,7 +142,7 @@ public class CourseSelectScreen extends SideMenuScene {
 					user.setScreen(Screen.CourseReviewsBrowser);
 					user.save(getContext());
 					startScreen(Screen.CourseReviewsBrowser);
-					finish();
+					//finish();
 					return true;
 				}
 
@@ -150,9 +151,9 @@ public class CourseSelectScreen extends SideMenuScene {
 		});
 		addContentView(searchBtn, searchBtnLayout);
 		/* ======== End add continue BTN ======= */
-		
+
 	}
-	
+
 	@Override
 	/**
 	 * Override the SideMenuScene courses function so the current 
@@ -161,18 +162,29 @@ public class CourseSelectScreen extends SideMenuScene {
 	public void courses() {
 		/** Do Nothing, on purpose */
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	User user = new User(this);
-	    	user.setScreen(Screen.MainMenuScreen);
-	    	user.save(this);
-	        startScreen(Screen.MainMenuScreen);
-	        finish();
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			User user = new User(this);
+			user.setScreen(Screen.MainMenuScreen);
+			user.save(this);
+			startScreen(Screen.MainMenuScreen);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check which request we're responding to
+		if (requestCode == Screen.CourseReviewsBrowser.ordinal()) {
+			if (resultCode == CourseReviewsBrowser.FINISH_PARENT) {
+				finish(); // we switched to another activity. time to be done
+							// with this one.
+			}
+		}
+	}
+
 }

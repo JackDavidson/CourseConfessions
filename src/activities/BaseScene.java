@@ -104,7 +104,8 @@ public class BaseScene extends Activity {
 		case CourseReviewsBrowser:
 			Intent CourseReviewsBrowser = new Intent(this,
 					activities.courseReviewsBrowser.CourseReviewsBrowser.class);
-			this.startActivity(CourseReviewsBrowser);
+			this.startActivityForResult(CourseReviewsBrowser,
+					Screen.CourseReviewsBrowser.ordinal());
 			break;
 		default:
 			Log.e("BaseScene", "Could not find screen ID: " + screen);
