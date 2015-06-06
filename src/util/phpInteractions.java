@@ -236,7 +236,7 @@ public abstract class phpInteractions {
 			HttpPoster httpPoster = (HttpPoster) new HttpPoster()
 					.execute(httppost);
 
-			HttpResponse response = (HttpResponse) httpPoster.get(3000,
+			HttpResponse response = (HttpResponse) httpPoster.get(7000,
 					TimeUnit.MILLISECONDS);
 
 			HttpEntity entity = response.getEntity();
