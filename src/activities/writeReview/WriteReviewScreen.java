@@ -11,7 +11,6 @@ import user.User;
 import util.phpInteractions;
 import visuals.PlacementEditText;
 import activities.SideMenuScene;
-import activities.BaseScene.Screen;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -27,13 +26,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-/* contact TODO for questions on this file */
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
- * 
- * Andengine provides a "SimpleBaseGameActivity from which your game activity
- * (in this case AndengineHello) should always be extended
  * 
  * implements IOnSceneTouchListener is for touch interface directly through the
  * screen, not through the buttons. if all interface goes through your buttons,
@@ -42,15 +37,11 @@ import android.widget.Toast;
  * @author Jack - jack.davidson38@gmail.com
  * 
  */
-// this will be the class that holds the write review screen.
 public class WriteReviewScreen extends SideMenuScene {
 
 	Spinner courseNamesSpinner;
 	Spinner sectionNumSpinner;
-	private PlacementEditText placeReviewText; // the textbox where we're
-												// putting the review in
-
-	// TODO: cap the textbox at 1000 characters?
+	private PlacementEditText placeReviewText; 
 
 	@Override
 	// when the method is created this is ran. Most of the implementation
@@ -81,7 +72,7 @@ public class WriteReviewScreen extends SideMenuScene {
 		LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(
 				(int) (300 * nativeToPxRatio), (int) (80 * nativeToPxRatio));
 
-		/* course num */
+		/* Course numbers */
 		String courseNames[] = { "CSE", "ECE" };
 		String CSEcourseNumbers[] = { "21", "100", "110", "120", "140", "140L" };
 		String ECEcourseNumbers[] = { "30", "35" };
@@ -147,7 +138,6 @@ public class WriteReviewScreen extends SideMenuScene {
 		/* === End Create a drop down menu ===== */
 
 		/* ========= Submit button ========= */
-
 		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (100 * nativeToPxRatio));
 		Button submitBtn = new Button(this);
@@ -219,6 +209,7 @@ public class WriteReviewScreen extends SideMenuScene {
 	}
 
 	@Override
+	/* ======== Back button to bring user back to login screen ======== */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			User user = new User(this);
@@ -232,4 +223,5 @@ public class WriteReviewScreen extends SideMenuScene {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	/* ======== End Back button to bring user back to login screen ======== */
 }

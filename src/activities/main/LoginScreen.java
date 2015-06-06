@@ -9,7 +9,6 @@ import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import activities.BaseScene.Screen;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -19,38 +18,23 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-/* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
  * 
- * Andengine provides a "SimpleBaseGameActivity from which your game activity
- * (in this case AndengineHello) should always be extended
- * 
  * implements IOnSceneTouchListener is for touch interface directly through the
- * screen, not through the buttons. if all interface goes through your buttons,
- * that shouldn't be necessary.
  * 
  * @author Jack - jack.davidson38@gmail.com
- * 
+ * @author Byrdor - byrdor@gmail.com
+ *  
  */
 public class LoginScreen extends BaseScene {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-	// private static final int height = 1280;
-	// private static int width;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	private PlacementEditText placeUserText;
 	private PlacementEditText placePassText;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	@SuppressLint("ClickableViewAccessibility")
@@ -62,6 +46,7 @@ public class LoginScreen extends BaseScene {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/* ===== Create a new user ===== */
 		User user = new User(this);
 		if (user.ready()) {
 			if (user.getScreen() != Screen.LoginScreen) {
@@ -70,6 +55,7 @@ public class LoginScreen extends BaseScene {
 				return;
 			}
 		}
+		/* ===== End Create a new user ===== */
 
 		/* ==== Set background ===== */
 		PlacementImage image = new PlacementImage(this, R.raw.background,
@@ -90,14 +76,12 @@ public class LoginScreen extends BaseScene {
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		/* ========= END Layout Params ========= */
 
-		/********
-		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
-		 * this!!! TODO
-		 *****/
+		
+		/*** Notice: we may need to change to honeycomb ***/
 		placeUserText.attachToScene();
 		placePassText.attachToScene();
-		/* ========= End How to do text entry ================== */
 
+		
 		/* ========= Login button ========= */
 		Button loginBtn = new Button(this);
 		loginBtn.setBackgroundDrawable(getResources().getDrawable(
@@ -183,9 +167,6 @@ public class LoginScreen extends BaseScene {
 		String userName = placeUserText.getEditText().getText().toString();
 		String userPass = placePassText.getEditText().getText().toString();
 
-		// this.startScreen(Screen.MainMenuScreen);
-		// finish();
-
 		try {
 			user = phpInteractions.attemptLoginAndCreateUser(userName,
 					userPass, this);
@@ -204,9 +185,11 @@ public class LoginScreen extends BaseScene {
 			finish();
 		}
 	}
-
+	/* ===== End Attempt Login ===== */
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 	}
+	
 }

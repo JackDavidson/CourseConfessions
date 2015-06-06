@@ -8,7 +8,6 @@ import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import activities.BaseScene.Screen;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -18,27 +17,19 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-/* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
- * 
- * Andengine provides a "SimpleBaseGameActivity from which your game activity
- * (in this case AndengineHello) should always be extended
  * 
  * implements IOnSceneTouchListener is for touch interface directly through the
  * screen, not through the buttons. if all interface goes through your buttons,
  * that shouldn't be necessary.
  * 
  * @author Jack - jack.davidson38@gmail.com
- * 
+ * @author Byrdor - byrdor@gmail.com
+ *  
  */
 public class SignupScreen extends BaseScene {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-	// private static final int height = 1280;
-	// private static int width;
 
 	// ===========================================================
 	// Fields
@@ -47,11 +38,6 @@ public class SignupScreen extends BaseScene {
 	private PlacementEditText placeEmailText;
 	private PlacementEditText placePassText;
 	private PlacementEditText placeConfirmPassText;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -83,20 +69,17 @@ public class SignupScreen extends BaseScene {
 				+ 34, height / 2 + 216, 500, 70, "Confirm Password");
 		/* ========= End Text Entry ========= */
 
-		/********
-		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
-		 * this!!! TODO
-		 *****/
+		
+		/*** Notice: we may need to change to honeycomb ***/
 		placeUserText.attachToScene();
 		placeEmailText.attachToScene();
 		placePassText.attachToScene();
 		placeConfirmPassText.attachToScene();
-		/* ========= End How to do text entry ================== */
+		
 
 		/* ========= Signup button ========= */
 		Button signupBtn = new Button(this);
-		signupBtn.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.placeholdersignup));
+		signupBtn.setBackgroundResource(R.raw.placeholdersignup);
 		signupBtn.setX(widthPx / 2 - lp.width / 2);
 		signupBtn.setY((height - 250) * nativeToPxRatio);
 
@@ -118,8 +101,7 @@ public class SignupScreen extends BaseScene {
 
 		/* ========= Login Button ========= */
 		Button loginButton = new Button(this);
-		loginButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.loginbtn));
+		loginButton.setBackgroundResource(R.raw.loginbtn);
 		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		loginButton.setY((height - 70) * nativeToPxRatio);
 
@@ -142,8 +124,7 @@ public class SignupScreen extends BaseScene {
 
 		/* ========= Forgot Button ========= */
 		Button forgotButton = new Button(this);
-		forgotButton.setBackgroundDrawable(getResources().getDrawable(
-				R.raw.forgotbtn));
+		forgotButton.setBackgroundResource(R.raw.forgotbtn);
 		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
 
@@ -171,6 +152,7 @@ public class SignupScreen extends BaseScene {
 		super.onResume();
 	}
 
+	/* ========= Attempt to create a new user ========= */
 	private void attemptSignup() {
 		boolean signupSuccess = false;
 		String userName = placeUserText.getEditText().getText().toString();
@@ -190,8 +172,11 @@ public class SignupScreen extends BaseScene {
 			finish();
 		}
 	}
-
+	/* ========= End Attempt to create a new user ========= */
+	
+	
 	@Override
+	/* ======== Back button to bring user back to login screen ======== */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			startScreen(Screen.LoginScreen);
@@ -200,5 +185,6 @@ public class SignupScreen extends BaseScene {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	/* ======== End Back button to bring user back to login screen ======== */
 
 }

@@ -7,6 +7,15 @@ import util.XMLStringParser;
 import activities.BaseScene.Screen;
 import android.content.Context;
 
+/**
+ * This is the main file for user declarations such as username, password, 
+ * realname, current screen the user is on and other things pertaining
+ * to the creation of a new user.
+ * 
+ * @author Jack - jack.davidson38@gmail.com
+ * @author Byrdor - byrdor@gmail.com
+ *  
+ */
 public class User {
 
 	/* ====== For every user ====== */

@@ -8,7 +8,6 @@ import visuals.PlacementImage;
 import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
-import activities.BaseScene.Screen;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -18,38 +17,25 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-/* contact Jack for questions on this file. look up andengine examples on github for examples of how to do stuff */
 /**
  * This is the main file, the entry point into the program. the REAL entry point
  * is onCreateScene and in what you define there.
- * 
- * Andengine provides a "SimpleBaseGameActivity from which your game activity
- * (in this case AndengineHello) should always be extended
  * 
  * implements IOnSceneTouchListener is for touch interface directly through the
  * screen, not through the buttons. if all interface goes through your buttons,
  * that shouldn't be necessary.
  * 
  * @author Jack - jack.davidson38@gmail.com
+ * @author Byrdor - byrdor@gmail.com
  * 
  */
 public class ForgotScreen extends BaseScene {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-	// private static final int height = 1280;
-	// private static int width;
-
+	
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	private PlacementEditText placeUsernameText;
 	private PlacementEditText placeEmailText;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-	// phpInteractions php = new phpInteractions();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -77,14 +63,12 @@ public class ForgotScreen extends BaseScene {
 				(int) (500 * nativeToPxRatio), (int) (70 * nativeToPxRatio));
 		/* ========= END Layout Params ========= */
 
-		/********
-		 * notice!!!!! we may need to change to honeycomb (api 11/android3.0)for
-		 * this!!! TODO
-		 *****/
+		
+		/*** Notice: we may need to change to honeycomb ***/
 		placeUsernameText.attachToScene();
 		placeEmailText.attachToScene();
-		/* ========= End How to do text entry ================== */
-
+		
+		
 		/* ========= Forgot button ========= */
 		Button forgotBtn = new Button(this);
 		forgotBtn.setBackgroundDrawable(getResources().getDrawable(
@@ -163,13 +147,14 @@ public class ForgotScreen extends BaseScene {
 		super.onResume();
 	}
 
-	/* Attempt to send an password reset email */
+	/* ===== Attempt Password Reset ===== */
 	private void attemptPasswordReset() {
-		/** TODO comments */
+		/* Declare local variables */
 		boolean sendEmailSuccess = false;
 		String userName = placeUsernameText.getEditText().getText().toString();
 		String userEmail = placeEmailText.getEditText().getText().toString();
 
+		/* Attempt communication from server to attempt password reset */
 		try {
 			sendEmailSuccess = phpInteractions.attemptForgotPassword(userName,
 					userEmail, this);
@@ -177,14 +162,16 @@ public class ForgotScreen extends BaseScene {
 			/* Throw an exception to the user */
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
+		/* Signup successful, take him back to the login screen */
 		if (sendEmailSuccess) {
-			/* Make toast, but don't butter it */
 			this.startScreen(Screen.LoginScreen);
 			finish();
 		}
 	}
+	/* ===== End Attempt Password Reset ===== */
 
 	@Override
+	/* ===== Back button pressed, take user back to login screen ===== */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			startScreen(Screen.LoginScreen);
@@ -193,4 +180,6 @@ public class ForgotScreen extends BaseScene {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	/* ===== End back button pressed ===== */
+	
 }

@@ -12,10 +12,8 @@ import user.User;
 import util.XMLStringObject;
 import util.phpInteractions;
 import activities.SideMenuScene;
-import activities.BaseScene.Screen;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -35,7 +33,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/* contact Leovao/Orrozco for questions on this file */
+/**
+ * This is the main file for the course reviews browser. Lists all
+ * of the courses that the user currently selected with the appropriate
+ * ratings. The user can select to flag the review for inappropriate
+ * content and up vote the review to let others know that it was helpful.
+ *  
+ * @author Jack - jack.davidson38@gmail.com
+ * @author Byrdor - byrdor@gmail.com
+ * @author Leovao -
+ * @author Orrozco -
+ * 
+ */
 public class CourseReviewsBrowser extends SideMenuScene {
 	public static String XML_COURSES_NAME = "course";
 
@@ -61,26 +70,18 @@ public class CourseReviewsBrowser extends SideMenuScene {
 
 		/* ====== reloading the User object ======== */
 		User user = new User(this);
-		/* ===== end reloading the user object ==== */
+		/* ===== End reloading the user object ==== */
 
 
-		/*
-		 * ===== Create the scroll view, set up the table layout params =====
-		 */
-
+		/* ===== Create the scroll view, set up the table layout params ===== */
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
 		RelativeLayout.LayoutParams scrollLayoutParams = new RelativeLayout.LayoutParams(
 				(int) ((width - 60) * nativeToPxRatio),
 				(int) ((height - HEIGHT_OF_TITLE_PIC) * nativeToPxRatio));
-		/*
-		 * scrollLayoutParams.setMargins((int) (50 * nativeToPxRatio), (int) (50
-		 * * nativeToPxRatio), (int) (50 * nativeToPxRatio), (int) (50 *
-		 * nativeToPxRatio));
-		 */
-
 		scroll.setX(30 * nativeToPxRatio);
 		scroll.setY((HEIGHT_OF_TITLE_PIC + 40)* nativeToPxRatio);
+		/* ===== End create scroll view ===== */
 
 		/* ========= Set up table ============ */
 		TableLayout tableLayout = new TableLayout(this);
@@ -124,34 +125,31 @@ public class CourseReviewsBrowser extends SideMenuScene {
 			if (!reviews.get(0).equals("fail")) {
 				addReviewsToTable(tableLayout, reviews, tableParams, rowParams);
 			} else {
-				TableRow tableRowFailure = new TableRow(this);// create a new
-																// row
-				// tableRowFailure.setLayoutParams(rowParams);
-				TextView failureTextView = new TextView(this);// add txt
+				TableRow tableRowFailure = new TableRow(this);
+																
+				TextView failureTextView = new TextView(this);
 				failureTextView.setTypeface(null, Typeface.BOLD);
-				failureTextView.setTextColor(Color.BLACK); // add txt
+				failureTextView.setTextColor(Color.BLACK); 
 				failureTextView.setText("\nThere are no reviews for: "
 						+ course.getValue() + "\n");
-				failureTextView.setLayoutParams(rowParams); // add txt
+				failureTextView.setLayoutParams(rowParams); 
 				GradientDrawable failureBackground = new GradientDrawable();
 				failureBackground.setColor(Color.WHITE);
 				failureBackground.setCornerRadius(8);
 
 				tableRowFailure.setBackgroundDrawable(failureBackground);
-				tableRowFailure.addView(failureTextView); // add txt
-				tableLayout.addView(tableRowFailure); // add txt
+				tableRowFailure.addView(failureTextView); 
+				tableLayout.addView(tableRowFailure); 
 			}
 
 		}
 
 		/* ==== End Add reviews to the table ==== */
 
-		/*** ==== Add list of reviews ==== ***/
-
+		/* ==== Add list of reviews ==== */
 		scroll.addView(tableLayout);
 		addContentView(scroll, scrollLayoutParams);
-
-		/*** ==== END add list of reviews ==== ***/
+		/* ==== END add list of reviews ==== */
 
 	}
 
@@ -167,7 +165,6 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		for (int i = 0; i < reviews.size(); i++) {
 			// for each time the ID is returned, add to the return array
 			if ((i + 1) % 6 == 0) {
-				// reviewIDs.add(Integer.parseInt(reviews.get(i)));
 			}
 			// otherwise output to screen with proper formatting
 			else {
@@ -179,7 +176,6 @@ public class CourseReviewsBrowser extends SideMenuScene {
 				nameBackground.setColor(Color.WHITE);
 				GradientDrawable valueBackground = new GradientDrawable();
 				valueBackground.setColor(Color.WHITE);
-				// shape.setCornerRadius( 8 );
 
 				String name = null;
 				switch (i % 6) {
@@ -260,7 +256,8 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		lastBackground.setCornerRadii(new float[] { 0, 0, 0, 0,
 				10 * nativeToPxRatio, 10 * nativeToPxRatio,
 				10 * nativeToPxRatio, 10 * nativeToPxRatio });
-		/* ========= How to add a button ======================= */
+
+		/* ========= Add buttons to the table =========== */
 		RelativeLayout images = new RelativeLayout(this);
 		RelativeLayout.LayoutParams imagesParams = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.FILL_PARENT,
@@ -270,10 +267,10 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		Button flagBtn = new Button(this);
 
 		flagBtn.setBackgroundResource(R.raw.flagposts);
-		flagBtn.setX(30 * nativeToPxRatio);
-
+		flagBtn.setX(120 * nativeToPxRatio);
+		
 		TableRow.LayoutParams flagLP = new TableRow.LayoutParams(
-				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
+				(int) (60 * nativeToPxRatio), (int) (60 * nativeToPxRatio),
 				0.0f);
 		flagBtn.setOnTouchListener(new OnTouchListener() {
 			@Override
@@ -325,15 +322,16 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		flagBtn.setLayoutParams(flagLP);
 		images.addView(flagBtn);
 		images.setBackgroundDrawable(lastBackground);
-		/* ========= End How to add a button =================== */
-
+		/* ========= End Add buttons to the table =========== */
+		
 		/* ============ Add Upvote button ============= */		
 		Button upvoteBtn = new Button(this);
 		upvoteBtn.setBackgroundResource(R.raw.upvote);
-		upvoteBtn.setX(110 * nativeToPxRatio);
+		upvoteBtn.setX(30 * nativeToPxRatio);
+		
 		final User user = new User(this);
 		TableRow.LayoutParams upvoteLP = new TableRow.LayoutParams(
-				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
+				(int) (60 * nativeToPxRatio), (int) (60 * nativeToPxRatio),
 				0.0f);
 		upvoteBtn.setOnTouchListener(new OnTouchListener() {
 			@Override
@@ -386,15 +384,14 @@ public class CourseReviewsBrowser extends SideMenuScene {
 		images.addView(upvoteBtn);
 		images.setBackgroundDrawable(lastBackground);
 		tableLayout.addView(images);
-
+		/* ========= End Add upvote button =========== */
+	
 	}
-	
-	
+
 	
 
 	/**
-	 * The Home function from the side menu When called from Home, don't do
-	 * anything
+	 * The Home function from the side menu When called from Home
 	 */
 	@Override
 	public void home() {

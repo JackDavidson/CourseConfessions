@@ -1,6 +1,5 @@
 package activities;
 
-import user.User;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,11 +7,18 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+/**
+ * This is the main file where all of the screen width and height
+ * calculations are done. It also declares all the scenes that 
+ * are used throughout the application 
+ * 
+ * @author Jack - jack.davidson38@gmail.com
+ *  
+ */
 public class BaseScene extends Activity {
 
 	public float nativeToPxRatio;
@@ -39,7 +45,6 @@ public class BaseScene extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		/* ==== END settings ==== */
 
 		Display display = getWindowManager().getDefaultDisplay();
