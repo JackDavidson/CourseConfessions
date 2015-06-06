@@ -1,19 +1,8 @@
 package activities.main;
 
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import user.User;
-import util.phpInteractions;
-
 import com.bitsplease.courseconfessions.R;
 
 import activities.SideMenuScene;
-import activities.BaseScene.Screen;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -27,13 +16,20 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * Main Menu, tell the user what Course Confessions is all about.
+ * Contact EricK about this file
+ * 
+ * Implement a scroll view for phones of smaller height to allow the 
+ * text to fit properly.
+ * 
+ * @author Jack - jack.davidson38@gmail.com
+ * @author Byrdor - byrdor@gmail.com
+ *  
+ */
 public class MainMenu extends SideMenuScene {
 
 	@Override
-	/** 
-	 * Main Menu, tell the user what Course Confessions is all about.
-	 * Contact EricK about this file 
-	 * */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -52,6 +48,7 @@ public class MainMenu extends SideMenuScene {
 				Color.parseColor("#1d3c58"));
 		/* === END set background ==== */
 
+		/* === Create a ScrollView === */
 		ScrollView scroll = new ScrollView(this);
 		scroll.setBackgroundColor(Color.TRANSPARENT);
 		RelativeLayout.LayoutParams scrollLayoutParams = new RelativeLayout.LayoutParams(
@@ -60,6 +57,7 @@ public class MainMenu extends SideMenuScene {
 
 		scroll.setX(20 * nativeToPxRatio);
 		scroll.setY(150 * nativeToPxRatio);
+		/* === End Create a ScrollView === */
 
 		/* ========= Set up table ============ */
 		TableLayout tableLayout = new TableLayout(this);
@@ -79,6 +77,7 @@ public class MainMenu extends SideMenuScene {
 		rowParams.setMargins((int) (50 * nativeToPxRatio),
 				(int) (50 * nativeToPxRatio), (int) (50 * nativeToPxRatio),
 				(int) (50 * nativeToPxRatio));
+		/* ========= End set up table ======== */
 
 		/* ========= Set up title row in table ========= */
 		TableRow ccTitle = new TableRow(this);

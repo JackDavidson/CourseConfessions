@@ -1,11 +1,9 @@
 package activities;
 
 import user.User;
-import visuals.PlacementImage;
 
 import com.bitsplease.courseconfessions.R;
 
-import activities.BaseScene.Screen;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,6 +18,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+/**
+ * This is the main file for the sliding side menu
+ * 
+ * Implements the Home, Courses, Write Review, and Logout buttons 
+ * for the side menu
+ * 
+ * @author Jack - jack.davidson38@gmail.com
+ * @author Byrdor - byrdor@gmail.com
+ * 
+ */
 public class SideMenuScene extends BaseScene {
 
 	public static final int HEIGHT_OF_TITLE_PIC = 130;
@@ -50,7 +58,7 @@ public class SideMenuScene extends BaseScene {
 		addContentView(image, linearLayout);
 		/* ==== END set placeholder background ===== */
 
-		/* ========= How to add a button ======================= */
+		/* ============ Add Menu Button ============ */
 		menuBtn = new Button(this);
 
 		menuBtn.setBackgroundResource(R.raw.slidemenubtn);
@@ -71,9 +79,9 @@ public class SideMenuScene extends BaseScene {
 			}
 		});
 		addContentView(menuBtn, menuLP);
-		/* ========= End How to add a button =================== */
-
-		/* ====== Add a view for sliding in/out ========== */
+		/* ============ End Add Menu Button ============ */
+		
+		/* ============ Add a view for sliding in/out ============ */
 		sideMenu = new RelativeLayout(this);
 		RelativeLayout.LayoutParams menuViewLP = new RelativeLayout.LayoutParams(
 				(int) (490 * nativeToPxRatio), (int) (1200 * nativeToPxRatio));
@@ -81,8 +89,8 @@ public class SideMenuScene extends BaseScene {
 		sideMenu.setX(-500 * nativeToPxRatio);
 		sideMenu.setY(130 * nativeToPxRatio);
 		addContentView(sideMenu, menuViewLP);
-		/* ===== End Add a view for sliding in/out ======== */
-
+		/* ============ End add a view for sliding in/out ============ */
+		
 		/* ========= Add Menu icon ========= */
 		sideMenuIcon = new Button(this);
 		sideMenuIcon.setBackgroundResource(R.raw.slidemenuicon);
@@ -189,8 +197,7 @@ public class SideMenuScene extends BaseScene {
 	}
 
 	/**
-	 * The Home function from the side menu When called from Home, don't do
-	 * anything
+	 * The Home function from the side menu When called from Home
 	 */
 	public void home() {
 		User user = new User(this);

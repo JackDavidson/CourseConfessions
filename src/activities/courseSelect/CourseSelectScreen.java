@@ -55,7 +55,7 @@ public class CourseSelectScreen extends SideMenuScene {
 		final User user = new User(this);
 		/* ===== end reloading the user object ==== */
 
-		/* ==== how to make the view scrollable === */
+		/* ==== Populate array of courses === */
 		final ArrayList<String> courses = phpInteractions.getListOfCourses(
 				"any", 0, 10);
 		if(courses.size() == 0 || (courses.size() == 1 && courses.get(0).equals(""))){
@@ -66,6 +66,7 @@ public class CourseSelectScreen extends SideMenuScene {
 			startScreen(Screen.MainMenuScreen);
 			finish();
 		}
+		/* ==== End Populate array of courses === */
 		
 		final CheckBox[] checkBoxes = new CheckBox[courses.size()];
 		Log.e("Select screen", courses.toString());
@@ -84,8 +85,7 @@ public class CourseSelectScreen extends SideMenuScene {
 				TableRow.LayoutParams.WRAP_CONTENT);
 		/* ==== END Create the scroll view, set up layout params ==== */
 
-		/*** ==== Add list of reviews ==== ***/
-
+		/* ==== Add list of reviews ==== */
 		TableLayout tableLayout = new TableLayout(this);
 		tableLayout.setLayoutParams(tableParams);
 		tableLayout.setY(160 * nativeToPxRatio);
@@ -126,8 +126,7 @@ public class CourseSelectScreen extends SideMenuScene {
 
 		scroll.addView(tableLayout);
 		addContentView(scroll, scrollLayoutParams);
-
-		/*** ==== END add list of reviews ==== ***/
+		/* ==== END add list of reviews ==== */
 
 		/* ========= Add continue button ============ */
 		Button searchBtn = new Button(this);
@@ -192,7 +191,7 @@ public class CourseSelectScreen extends SideMenuScene {
 		if (requestCode == Screen.CourseReviewsBrowser.ordinal()) {
 			if (resultCode == CourseReviewsBrowser.FINISH_PARENT) {
 				finish(); // we switched to another activity. time to be done
-							// with this one.
+						  // with this one.
 			}
 		}
 	}
