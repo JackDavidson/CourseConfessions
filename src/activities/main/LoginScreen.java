@@ -35,7 +35,9 @@ public class LoginScreen extends BaseScene {
 	// ===========================================================
 	private PlacementEditText placeUserText;
 	private PlacementEditText placePassText;
-
+	private Button forgotButton;
+	private Button loginBtn;
+	private Button signupButton;
 	// ===========================================================
 	@SuppressLint("ClickableViewAccessibility")
 	// Methods for/from SuperClass/Interfaces
@@ -83,7 +85,7 @@ public class LoginScreen extends BaseScene {
 
 		
 		/* ========= Login button ========= */
-		Button loginBtn = new Button(this);
+		loginBtn = new Button(this);
 		loginBtn.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.placeholderlogin));
 		loginBtn.setX(widthPx / 2 - lp.width / 2);
@@ -98,7 +100,7 @@ public class LoginScreen extends BaseScene {
 					attemptLogin();
 					return true;
 				}
-
+				//log = false;
 				return false;
 			}
 		});
@@ -106,7 +108,7 @@ public class LoginScreen extends BaseScene {
 		/* ========= End Login Button ========= */
 
 		/* ========= Signup Button ========= */
-		Button signupButton = new Button(this);
+		signupButton = new Button(this);
 		signupButton.setBackgroundResource(R.raw.signupbtn);
 		signupButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		signupButton.setY((height - 70) * nativeToPxRatio);
@@ -121,7 +123,7 @@ public class LoginScreen extends BaseScene {
 					finish();
 					return true;
 				}
-
+				//sign = false;
 				return false;
 			}
 		});
@@ -129,7 +131,7 @@ public class LoginScreen extends BaseScene {
 		/* ========= End Signup Button ========= */
 
 		/* ========= Forgot Button ========= */
-		Button forgotButton = new Button(this);
+		forgotButton = new Button(this);
 		forgotButton.setBackgroundResource(R.raw.forgotbtn);
 		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
@@ -144,7 +146,7 @@ public class LoginScreen extends BaseScene {
 					finish();
 					return true;
 				}
-
+				//forgot = false;
 				return false;
 			}
 		});
@@ -192,4 +194,25 @@ public class LoginScreen extends BaseScene {
 		super.onDestroy();
 	}
 	
+	/*USED FOR TESTING*/
+	public PlacementEditText getUserText()
+	{
+		return placeUserText;
+	}
+	public PlacementEditText getPassText()
+	{
+		return placePassText;
+	}
+	public Button getSignupButton()
+	{
+		return signupButton;
+	}
+	public Button getForgotButton()
+	{
+		return forgotButton;
+	}
+	public Button getLoginButton()
+	{
+		return loginBtn;
+	}	
 }
