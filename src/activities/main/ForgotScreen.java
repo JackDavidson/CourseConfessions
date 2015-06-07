@@ -9,6 +9,7 @@ import com.bitsplease.courseconfessions.R;
 
 import activities.BaseScene;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,7 +46,6 @@ public class ForgotScreen extends BaseScene {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		/* ==== Set background ===== */
 		PlacementImage image = new PlacementImage(this, R.raw.backgroundforgot,
 				(int) (widthPx / (2 * nativeToPxRatio) - 1000 / 2), 0, 1000,
@@ -107,6 +107,7 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
+					Log.w("hello","HELLO");
 					startScreen(Screen.LoginScreen);
 					finish();
 					return true;
@@ -155,7 +156,6 @@ public class ForgotScreen extends BaseScene {
 		boolean sendEmailSuccess = false;
 		String userName = placeUsernameText.getEditText().getText().toString();
 		String userEmail = placeEmailText.getEditText().getText().toString();
-
 		/* Attempt communication from server to attempt password reset */
 		try {
 			sendEmailSuccess = phpInteractions.attemptForgotPassword(userName,
@@ -205,5 +205,4 @@ public class ForgotScreen extends BaseScene {
 	{
 		return loginButton;
 	}
-	
 }
