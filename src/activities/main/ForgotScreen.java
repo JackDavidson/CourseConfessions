@@ -107,7 +107,6 @@ public class ForgotScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					Log.w("hello","HELLO");
 					startScreen(Screen.LoginScreen);
 					finish();
 					return true;

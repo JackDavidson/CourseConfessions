@@ -42,6 +42,7 @@ public class WriteReviewScreen extends SideMenuScene {
 	Spinner courseNamesSpinner;
 	Spinner sectionNumSpinner;
 	private PlacementEditText placeReviewText; 
+	private Button submitBtn;
 
 	@Override
 	// when the method is created this is ran. Most of the implementation
@@ -140,7 +141,7 @@ public class WriteReviewScreen extends SideMenuScene {
 		/* ========= Submit button ========= */
 		RelativeLayout.LayoutParams login = new RelativeLayout.LayoutParams(
 				(int) (500 * nativeToPxRatio), (int) (100 * nativeToPxRatio));
-		Button submitBtn = new Button(this);
+		submitBtn = new Button(this);
 		submitBtn.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.placeholderwritereview));
 		submitBtn.setX(widthPx / 2 - login.width / 2);
@@ -224,4 +225,14 @@ public class WriteReviewScreen extends SideMenuScene {
 		return super.onKeyDown(keyCode, event);
 	}
 	/* ======== End Back button to bring user back to login screen ======== */
+	
+	/*USED FOR TESTING*/
+	public PlacementEditText getReviewText()
+	{
+		return placeReviewText;
+	}
+	public Button getSubmitButton()
+	{
+		return submitBtn;
+	}
 }

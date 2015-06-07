@@ -32,29 +32,25 @@ public class MainMenuTest extends ActivityInstrumentationTestCase2<MainMenu>
 	}
 	public void testMainMenu() {
 		assertEquals("Text in course title is wrong","Course Confessions",courseTitle.getText().toString());
-		assertEquals("Text in course description is wrong","CourseConfessions is the largest online "
-				+ "destination for professor and Computer Science course "
+		assertEquals("CourseConfessions is the largest online "
+				+ "destination for UCSD course "
 				+ "ratings from actual UCSD students. Users have contributed "
-				+ "to more than 6 course ratings and over 2 professor ratings "
+				+ "to more than 10 course ratings "
 				+ "from UCSD. User-generated content makes CourseConfessions "
-				+ "the highest trafficked app for quickly researching and "
-				+ "rating professors and courses located across the University "
+				+ "a high traffic app for quickly researching and "
+				+ "rating courses located across the University "
 				+ "of California, San Diego. More than 7 college students each "
 				+ "month are using CourseConfessions - join the fun and begin "
 				+ "rating professors and courses today!\n\n\n"
 				+ "CourseConfessions is built for college students, "
-				+ "by college students. Choosing the best courses and "
-				+ "professors is a rite of passage for every student, "
+				+ "by college students. Choosing the best courses "
+				+ "is a necessity for every student to graduate, "
 				+ "and connecting with peers on the site has become a "
 				+ "key way for millions of students to navigate this "
 				+ "process. The site does what students have been doing "
 				+ "forever - checking in with each other: their friends, "
 				+ "their brothers, their sisters, their classmates - to "
-				+ "figure out who's a great professor and who's one you "
-				+ "might want to avoid. ",courseDescription.getText().toString());
-	}
-	public void testForgotScreen()
-	{
-		
+				+ "figure out what's a great class and which ones you "
+				+ "might want to wait for another quarter for. ",courseDescription.getText().toString());
 	}
 }

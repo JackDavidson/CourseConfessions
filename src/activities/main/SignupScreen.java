@@ -27,6 +27,7 @@ import android.widget.Toast;
  * 
  * @author Jack - jack.davidson38@gmail.com
  * @author Byrdor - byrdor@gmail.com
+ * 
  *  
  */
 public class SignupScreen extends BaseScene {
@@ -38,6 +39,9 @@ public class SignupScreen extends BaseScene {
 	private PlacementEditText placeEmailText;
 	private PlacementEditText placePassText;
 	private PlacementEditText placeConfirmPassText;
+	private Button signupBtn;
+	private Button loginButton;
+	private Button forgotButton;
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -78,7 +82,7 @@ public class SignupScreen extends BaseScene {
 		
 
 		/* ========= Signup button ========= */
-		Button signupBtn = new Button(this);
+		signupBtn = new Button(this);
 		signupBtn.setBackgroundResource(R.raw.placeholdersignup);
 		signupBtn.setX(widthPx / 2 - lp.width / 2);
 		signupBtn.setY((height - 250) * nativeToPxRatio);
@@ -100,7 +104,7 @@ public class SignupScreen extends BaseScene {
 		/* ========= End Signup Button ========= */
 
 		/* ========= Login Button ========= */
-		Button loginButton = new Button(this);
+		loginButton = new Button(this);
 		loginButton.setBackgroundResource(R.raw.loginbtn);
 		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
 		loginButton.setY((height - 70) * nativeToPxRatio);
@@ -123,7 +127,7 @@ public class SignupScreen extends BaseScene {
 		/* ========= End Login Button ========= */
 
 		/* ========= Forgot Button ========= */
-		Button forgotButton = new Button(this);
+		forgotButton = new Button(this);
 		forgotButton.setBackgroundResource(R.raw.forgotbtn);
 		forgotButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
 		forgotButton.setY((height - 70) * nativeToPxRatio);
@@ -186,5 +190,35 @@ public class SignupScreen extends BaseScene {
 		return super.onKeyDown(keyCode, event);
 	}
 	/* ======== End Back button to bring user back to login screen ======== */
+	
+	/*FOR TESTING*/
+	public PlacementEditText getUserText()
+	{
+		return placeUserText;
+	}
+	public PlacementEditText getPassText()
+	{
+		return placePassText;
+	}
+	public PlacementEditText getEmailText()
+	{
+		return placeEmailText;
+	}
+	public Button getSignupButton()
+	{
+		return signupBtn;
+	}
+	public Button getForgotButton()
+	{
+		return forgotButton;
+	}
+	public Button getLoginButton()
+	{
+		return loginButton;
+	}	
+	public PlacementEditText getConfirmText()
+	{
+		return placeConfirmPassText;
+	}
 
 }

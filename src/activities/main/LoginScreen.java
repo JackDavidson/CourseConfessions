@@ -38,9 +38,6 @@ public class LoginScreen extends BaseScene {
 	private Button forgotButton;
 	private Button loginBtn;
 	private Button signupButton;
-	private boolean log;
-	private boolean sign;
-	private boolean forgot;
 	// ===========================================================
 	@SuppressLint("ClickableViewAccessibility")
 	// Methods for/from SuperClass/Interfaces
@@ -100,11 +97,10 @@ public class LoginScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					log = true;
 					attemptLogin();
 					return true;
 				}
-				log = false;
+				//log = false;
 				return false;
 			}
 		});
@@ -123,12 +119,11 @@ public class LoginScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					sign = true;
 					startScreen(Screen.SignupScreen);
 					finish();
 					return true;
 				}
-				sign = false;
+				//sign = false;
 				return false;
 			}
 		});
@@ -147,12 +142,11 @@ public class LoginScreen extends BaseScene {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					forgot = true;
 					startScreen(Screen.ForgotScreen);
 					finish();
 					return true;
 				}
-				forgot = false;
+				//forgot = false;
 				return false;
 			}
 		});
@@ -220,9 +214,5 @@ public class LoginScreen extends BaseScene {
 	public Button getLoginButton()
 	{
 		return loginBtn;
-	}
-	public boolean getForgot() { return forgot; }
-	public boolean getLogin() { return log; } 
-	public boolean getSignup() { return sign; }
-	
+	}	
 }

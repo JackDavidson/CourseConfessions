@@ -33,11 +33,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CourseSelectScreen extends SideMenuScene {
-
+	private Button searchBtn; 
 	@SuppressWarnings("deprecation")
 	@Override
 	// ran when the screen is created, aka after startScreen(); most of it is
-	// explained inside the method.
+	// explained inside the method
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -129,7 +129,7 @@ public class CourseSelectScreen extends SideMenuScene {
 		/* ==== END add list of reviews ==== */
 
 		/* ========= Add continue button ============ */
-		Button searchBtn = new Button(this);
+		searchBtn = new Button(this);
 		searchBtn.setBackgroundResource(R.raw.placeholdersearch);
 		searchBtn.setX((widthPx / 2) - (416 / 2) * nativeToPxRatio);
 		searchBtn.setY((height - 200) * nativeToPxRatio);
@@ -195,5 +195,8 @@ public class CourseSelectScreen extends SideMenuScene {
 			}
 		}
 	}
-
+	public Button getContButton()
+	{
+		return searchBtn;
+	}
 }
