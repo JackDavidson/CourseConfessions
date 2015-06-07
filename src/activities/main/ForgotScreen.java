@@ -36,7 +36,9 @@ public class ForgotScreen extends BaseScene {
 	// ===========================================================
 	private PlacementEditText placeUsernameText;
 	private PlacementEditText placeEmailText;
-
+	private Button forgotBtn;
+	private Button loginButton;
+	private Button signupButton;
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -70,7 +72,7 @@ public class ForgotScreen extends BaseScene {
 		
 		
 		/* ========= Forgot button ========= */
-		Button forgotBtn = new Button(this);
+		forgotBtn = new Button(this);
 		forgotBtn.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.placeholderforgot));
 		forgotBtn.setX(widthPx / 2 - lp.width / 2);
@@ -93,7 +95,7 @@ public class ForgotScreen extends BaseScene {
 		/* ========= END Forgot Button ========= */
 
 		/* ========= Login Button ========= */
-		Button loginButton = new Button(this);
+		loginButton = new Button(this);
 		loginButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.loginbtn));
 		loginButton.setX((widthPx / 2) - 170 * nativeToPxRatio);
@@ -117,7 +119,7 @@ public class ForgotScreen extends BaseScene {
 		/* ========= End Login Button ========= */
 
 		/* ========= Signup Button ========= */
-		Button signupButton = new Button(this);
+		signupButton = new Button(this);
 		signupButton.setBackgroundDrawable(getResources().getDrawable(
 				R.raw.signupbtn));
 		signupButton.setX((widthPx / 2) + 30 * nativeToPxRatio);
@@ -181,5 +183,27 @@ public class ForgotScreen extends BaseScene {
 		return super.onKeyDown(keyCode, event);
 	}
 	/* ===== End back button pressed ===== */
+	
+	/*USED FOR TESTING*/
+	public PlacementEditText getUserText()
+	{
+		return placeUsernameText;
+	}
+	public PlacementEditText getEmailText()
+	{
+		return placeEmailText;
+	}
+	public Button getSignupButton()
+	{
+		return signupButton;
+	}
+	public Button getForgotButton()
+	{
+		return forgotBtn;
+	}
+	public Button getLoginButton()
+	{
+		return loginButton;
+	}
 	
 }

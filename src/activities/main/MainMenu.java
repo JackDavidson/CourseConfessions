@@ -27,8 +27,11 @@ import android.widget.TextView;
  * @author Byrdor - byrdor@gmail.com
  *  
  */
+
 public class MainMenu extends SideMenuScene {
 
+	private TextView courseTitle;
+	private TextView courseDescription;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,7 +84,7 @@ public class MainMenu extends SideMenuScene {
 
 		/* ========= Set up title row in table ========= */
 		TableRow ccTitle = new TableRow(this);
-		TextView courseTitle = new TextView(this);
+		courseTitle = new TextView(this);
 		courseTitle.setTypeface(Typeface.DEFAULT_BOLD);
 		courseTitle.setTextColor(Color.BLACK);
 		courseTitle.setTextSize(28);
@@ -92,7 +95,7 @@ public class MainMenu extends SideMenuScene {
 
 		/* ========= Set up description row in table ========= */
 		TableRow ccDescription = new TableRow(this);
-		TextView courseDescription = new TextView(this);
+		courseDescription = new TextView(this);
 		courseDescription.setTypeface(Typeface.DEFAULT_BOLD);
 		courseDescription.setTextColor(Color.BLACK);
 		courseDescription.setTextSize(13);
@@ -168,5 +171,14 @@ public class MainMenu extends SideMenuScene {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
+	
+	/* HELPER METHODS FOR UNIT TESTS */
+	public TextView getCourseTitle()
+	{
+		return courseTitle;
+	}
+	public TextView getCourseDescription()
+	{
+		return courseDescription;
+	}
 }
